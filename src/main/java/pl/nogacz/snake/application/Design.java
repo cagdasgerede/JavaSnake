@@ -15,6 +15,7 @@ import pl.nogacz.snake.pawn.PawnClass;
  */
 public class Design {
     private GridPane gridPane = new GridPane();
+    public boolean superPower = false;
 
     public Design() {
         createBoardBackground();
@@ -49,9 +50,22 @@ public class Design {
 
     public void addPawn(Coordinates coordinates, PawnClass pawn) {
         if(pawn.getPawn().isHead()) {
-            gridPane.add(pawn.getImageDirection(Board.getDirection()), coordinates.getX(), coordinates.getY());
-        } else {
-            gridPane.add(pawn.getImage(), coordinates.getX(), coordinates.getY());
+            if(superPower)
+                gridPane.add(pawn.getSuperSnakeDirection(Board.getDirection()), coordinates.getX(), coordinates.getY());
+            else
+                gridPane.add(pawn.getImageDirection(Board.getDirection()), coordinates.getX(), coordinates.getY());
+        } 
+        else if(pawn.getPawn().isItem()) {
+            gridPane.add(pawn.getItemImage(), coordinates.getX(), coordinates.getY());
+        }
+        else if(pawn.getPawn().isBrick()) {
+            gridPane.add(pawn.getBrickImage(), coordinates.getX(), coordinates.getY());
+        }
+        else {
+            if(superPower)
+                gridPane.add(pawn.getSuperSnakeImage(), coordinates.getX(), coordinates.getY());
+            else
+                gridPane.add(pawn.getImage(), coordinates.getX(), coordinates.getY());
         }
     }
 
@@ -62,4 +76,5 @@ public class Design {
     public GridPane getGridPane() {
         return gridPane;
     }
+
 }
