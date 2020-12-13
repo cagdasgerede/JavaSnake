@@ -12,8 +12,8 @@ import pl.nogacz.snake.board.Board;
  * @author Dawid Nogacz on 19.05.2019
  */
 public class Snake extends Application {
-    Design design = new Design();
-    Board board = new Board(design);
+    Design design;
+    Board board;
 
     public static void main(String[] args) {
         launch(args);
@@ -25,6 +25,8 @@ public class Snake extends Application {
         int gameMode = newGame.printDialog();
         
         if(gameMode == 0){
+            design = new Design();
+            board = new Board(design,true);
             Scene scene = new Scene(design.getGridPane(), 715, 715, Color.BLACK);
             scene.setOnKeyReleased(event -> board.readKeyboard(event));
 

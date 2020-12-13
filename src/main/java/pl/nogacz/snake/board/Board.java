@@ -27,7 +27,7 @@ public class Board {
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
     private int tailLength = 0;
 
-    private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
+    private Coordinates snakeHeadCoordinates = new Coordinates(10, 20);
 
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
@@ -35,11 +35,12 @@ public class Board {
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
-    public Board(Design design) {
+    public Board(Design design, boolean isGameStarted) {
         this.design = design;
 
         addStartEntity();
-        mapTask();
+        if(isGameStarted)
+            mapTask();
     }
 
     private void addStartEntity() {
