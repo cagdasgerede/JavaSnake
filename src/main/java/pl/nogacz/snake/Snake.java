@@ -6,7 +6,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.NewGame;
+import pl.nogacz.snake.application.TwoPlayerDesign;
 import pl.nogacz.snake.board.Board;
+import pl.nogacz.snake.board.TwoPlayerBoard;
 
 /**
  * @author Dawid Nogacz on 19.05.2019
@@ -14,6 +16,8 @@ import pl.nogacz.snake.board.Board;
 public class Snake extends Application {
     Design design;
     Board board;
+    TwoPlayerDesign tp_design;
+    TwoPlayerBoard tp_board;
 
     public static void main(String[] args) {
         launch(args);
@@ -31,6 +35,18 @@ public class Snake extends Application {
             scene.setOnKeyReleased(event -> board.readKeyboard(event));
 
             primaryStage.setTitle("JavaSnake");
+            primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
+            primaryStage.show();
+        }
+        else if(gameMode == 1){
+            tp_design = new TwoPlayerDesign();
+            tp_board = new TwoPlayerBoard(tp_design,true);
+            Scene scene = new Scene(tp_design.getGridPane(), 1430, 715, Color.BLACK);
+            scene.setOnKeyReleased(event -> tp_board.readKeyboard(event));
+
+
+            primaryStage.setTitle("JavaSnake 2 player");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
             primaryStage.show();
