@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import jdk.internal.util.jar.InvalidJarIndexError;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
 import pl.nogacz.snake.pawn.Pawn;
@@ -22,16 +23,19 @@ public class Board {
     private Design design;
     private Random random = new Random();
 
-    private boolean isEndGame = false;
+    private boolean isEndGame = false, thereIsFood = false;
 
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
     private int tailLength = 0;
+    private int counter = -1, itemTimer = -1;
+    private Coordinates liveItemCoordinates;
 
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
 
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
+    private PawnClass itemClass = new PawnClass(Pawn.ITEM);
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
@@ -52,7 +56,7 @@ public class Board {
             board.put(new Coordinates(i, 21), new PawnClass(Pawn.BRICK));
         }
 
-        addEat();
+        addEatOrItem();
         displayAllImage();
     }
 
@@ -94,14 +98,75 @@ public class Board {
                     tailLength++;
 
                     snakeHeadCoordinates = coordinates;
+                    thereIsFood = false;
 
-                    addEat();
+                    addEatOrItem();
+                }
+                else if(getPawn(coordinates).getPawn().isItem()) {
+
+                    board.remove(snakeHeadCoordinates);
+                    board.put(coordinates, snakeHeadClass);
+                    
+                    snakeHeadCoordinates = coordinates;
+
+                    if(tailLength > 0) {
+                        moveSnakeBody();
+                    }
+                    
+                    activateSuperPower();
+                    CountInvinsibleTime();
+                    
+                    addEatOrItem();
+
                 } else {
-                    isEndGame = true;
+                    if(!isInvincible()) {
+                        isEndGame = true;
 
-                    new EndGame("End game...\n" +
-                            "You have " + tailLength + " points. \n" +
-                            "Maybe try again? :)");
+                        new EndGame("End game...\n" +
+                                "You have " + tailLength + " points. \n" +
+                                "Maybe try again? :)");
+                    }
+                    else {
+                        if( getPawn(coordinates).getPawn() == Pawn.BRICK ) {
+                            int newX = coordinates.getX(), newY = coordinates.getY();
+                            if(coordinates.getX() <= 0 ) {
+                                newX = 20;
+                                newY = coordinates.getY();
+                            }
+                            else if(coordinates.getX() >= 21) {
+                                newX = 1;
+                            }
+                            else if(coordinates.getY() <= 0) {
+                                newY = 20;
+                            }
+                            else{
+                                newY = 1;
+                            }
+
+                            board.remove(snakeHeadCoordinates);
+
+                            Coordinates newCoordinates = new Coordinates(newX,newY);
+
+                            board.put(newCoordinates, snakeHeadClass);
+                            
+                            snakeHeadCoordinates = newCoordinates;
+
+                            if(tailLength > 0) {
+                                moveSnakeBody();
+                            }
+                        }
+                        else if(getPawn(coordinates).getPawn() == Pawn.SNAKE_BODY) {
+                            board.remove(snakeHeadCoordinates);
+                            board.put(coordinates, snakeBodyClass);
+                            board.put(coordinates, snakeHeadClass);
+
+                            snakeHeadCoordinates = coordinates;
+
+                            if(tailLength > 0) {
+                                moveSnakeBody();
+                            }
+                        }
+                    }
                 }
             } else {
                 board.remove(snakeHeadCoordinates);
@@ -113,6 +178,29 @@ public class Board {
                     moveSnakeBody();
                 }
             }
+            if(itemTimer != -1 && !thereIsFood) {
+                if(itemTimer > 100) {
+                    board.remove(liveItemCoordinates);
+                    liveItemCoordinates = null;
+                    itemTimer = -1;
+                    addEatOrItem();
+                }
+                else
+                    itemTimer++;
+            }
+            if(isInvincible()) {
+                CountInvinsibleTime();
+            }
+            else
+                deactivateSuperPower();
+
+            for(int i = 0; i < 22; i++) {
+                board.put(new Coordinates(0, i), new PawnClass(Pawn.BRICK));
+                board.put(new Coordinates(21, i), new PawnClass(Pawn.BRICK));
+                board.put(new Coordinates(i, 0), new PawnClass(Pawn.BRICK));
+                board.put(new Coordinates(i, 21), new PawnClass(Pawn.BRICK));
+            }
+            displayAllImage();
         }
     }
 
@@ -136,6 +224,15 @@ public class Board {
         snakeTail.add(coordinates);
     }
 
+    private void addEatOrItem() {
+        if(random.nextInt(40) % 10 == 0 && (!isInvincible())) {
+            counter = -1;
+            addItem();
+        }
+        else
+            addEat();
+    }
+
     private void addEat() {
         Coordinates foodCoordinates;
 
@@ -144,6 +241,36 @@ public class Board {
         } while(isFieldNotNull(foodCoordinates));
 
         board.put(foodCoordinates, foodClass);
+        thereIsFood = true;
+    }
+
+    private void addItem() {
+        Coordinates itemCoordinates;
+        itemTimer=0;
+
+        do {
+            itemCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
+        } while(isFieldNotNull(itemCoordinates));
+
+        liveItemCoordinates = itemCoordinates;
+        board.put(itemCoordinates, itemClass);
+    }
+
+    public boolean CountInvinsibleTime() {
+        counter++;
+        return counter > 150;
+    }
+
+    public boolean isInvincible() {
+        return (counter != -1 && !CountInvinsibleTime());
+    }
+
+    public void activateSuperPower() {
+        design.superPower = true;
+    }
+
+    public void deactivateSuperPower() {
+        design.superPower = false;
     }
 
     private void mapTask() {

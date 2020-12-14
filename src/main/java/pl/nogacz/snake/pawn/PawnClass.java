@@ -19,6 +19,27 @@ public class PawnClass {
         return new ImageView(image);
     }
 
+    public ImageView getSuperSnakeImage() {
+        if(pawn == Pawn.SNAKE_BODY) {
+            Image image = new Image(Resources.getPath(pawn + "_INVINCIBLE.png"));
+            return new ImageView(image);
+        }
+        else {
+            Image image = new Image(Resources.getPath(pawn + ".png"));
+            return new ImageView(image);
+        }
+    }
+
+    public ImageView getItemImage() {
+        Image image = new Image(Resources.getPath("ITEM.png"));
+        return new ImageView(image);
+    }
+
+    public ImageView getBrickImage() {
+        Image image = new Image(Resources.getPath("BRICK.png"));
+        return new ImageView(image);
+    }
+
     public ImageView getImageDirection(int direction) {
         String direct = "";
 
@@ -28,8 +49,22 @@ public class PawnClass {
             case 3: direct = "LEFT"; break;
             case 4: direct = "RIGHT"; break;
         }
-
+    
         Image image = new Image(Resources.getPath(pawn + "_" + direct + ".png"));
+        return new ImageView(image);
+    }
+
+    public ImageView getSuperSnakeDirection(int direction) {
+        String direct = "";
+
+        switch(direction) {
+            case 1: direct = "UP"; break;
+            case 2: direct = "BOTTOM"; break;
+            case 3: direct = "LEFT"; break;
+            case 4: direct = "RIGHT"; break;
+        }
+    
+        Image image = new Image(Resources.getPath(pawn + "_" + direct + "_INVINCIBLE.png"));
         return new ImageView(image);
     }
 
