@@ -96,25 +96,30 @@ public class UserKeySelect {
 
         // result
         Optional<List<String>> result = dialog.showAndWait();
-
         String keys = "";
-        User1Conrols[0] = textField.getCharacters().toString().toUpperCase().charAt(0);
-        keys = keys + User1Conrols[0];
-        User1Conrols[1] = textField2.getCharacters().toString().toUpperCase().charAt(0);
-        keys = keys + User1Conrols[1];
-        User1Conrols[2] = textField3.getCharacters().toString().toUpperCase().charAt(0);
-        keys = keys + User1Conrols[2];
-        User1Conrols[3] = textField4.getCharacters().toString().toUpperCase().charAt(0);
-        keys = keys + User1Conrols[3];
-        User2Conrols[0] = textField5.getCharacters().toString().toUpperCase().charAt(0);
-        keys = keys + User2Conrols[0];
-        User2Conrols[1] = textField6.getCharacters().toString().toUpperCase().charAt(0);
-        keys = keys + User2Conrols[1];
-        User2Conrols[2] = textField7.getCharacters().toString().toUpperCase().charAt(0);
-        keys = keys + User2Conrols[2];
-        User2Conrols[3] = textField8.getCharacters().toString().toUpperCase().charAt(0);
-        keys = keys + User2Conrols[3];
+        try {
+            User1Conrols[0] = textField.getCharacters().toString().toUpperCase().charAt(0);
+            keys = keys + User1Conrols[0];
+            User1Conrols[1] = textField2.getCharacters().toString().toUpperCase().charAt(0);
+            keys = keys + User1Conrols[1];
+            User1Conrols[2] = textField3.getCharacters().toString().toUpperCase().charAt(0);
+            keys = keys + User1Conrols[2];
+            User1Conrols[3] = textField4.getCharacters().toString().toUpperCase().charAt(0);
+            keys = keys + User1Conrols[3];
+            User2Conrols[0] = textField5.getCharacters().toString().toUpperCase().charAt(0);
+            keys = keys + User2Conrols[0];
+            User2Conrols[1] = textField6.getCharacters().toString().toUpperCase().charAt(0);
+            keys = keys + User2Conrols[1];
+            User2Conrols[2] = textField7.getCharacters().toString().toUpperCase().charAt(0);
+            keys = keys + User2Conrols[2];
+            User2Conrols[3] = textField8.getCharacters().toString().toUpperCase().charAt(0);
+            keys = keys + User2Conrols[3];
+        }catch (Exception e){
+            return false;
+        }
 
+
+        // check for any 2 of the key is same
         boolean duplicateCheck = true;
         for (int i = 0; i < keys.length(); i++) {
             char a = keys.charAt(i);
