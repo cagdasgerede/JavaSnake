@@ -1,6 +1,5 @@
 package pl.nogacz.snake.application;
 
-
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -8,13 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import pl.nogacz.snake.board.Coordinates2P;
 import pl.nogacz.snake.board.TwoPlayerBoard;
-import pl.nogacz.snake.board.Coordinates;
-import pl.nogacz.snake.pawn.PawnClass;
 import pl.nogacz.snake.pawn.*;
 
-/**
- * @author Dawid Nogacz on 19.05.2019
- */
 public class TwoPlayerDesign {
     private GridPane gridPane = new GridPane();
 

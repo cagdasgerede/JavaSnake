@@ -2,7 +2,6 @@ package pl.nogacz.snake.application;
 
 import java.util.List;
 import java.util.Optional;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -13,23 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Dialog;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.StageStyle;
-
-import pl.nogacz.snake.Snake;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Optional;
 
 public class UserKeySelect {
 
@@ -137,7 +121,4 @@ public class UserKeySelect {
         }
         return  duplicateCheck;
     }
-
-
-
 }

@@ -3,7 +3,7 @@ package pl.nogacz.snake.board;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCode; // this may needed when default keys are wanted to use
 import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.TwoPlayerDesign;
 import pl.nogacz.snake.application.EndGame;
@@ -14,9 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-/**
- * @author Dawid Nogacz on 19.05.2019
- */
 public class TwoPlayerBoard {
     private HashMap<Coordinates2P, PawnClass> board = new HashMap<>();
     private TwoPlayerDesign tp_design;

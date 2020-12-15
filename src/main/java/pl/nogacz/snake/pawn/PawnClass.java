@@ -4,10 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import pl.nogacz.snake.application.Resources;
 
-/**
- * @author Dawid Nogacz on 19.05.2019
- */
-public class PawnClass extends PawnSuperClass {
+public class PawnClass {
     private Pawn pawn;
 
     public PawnClass(Pawn pawn) {

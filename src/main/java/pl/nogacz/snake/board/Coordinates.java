@@ -2,9 +2,6 @@ package pl.nogacz.snake.board;
 
 import java.util.Objects;
 
-/**
- * @author Dawid Nogacz on 19.05.2019
- */
 public class Coordinates {
     private int x;
     private int y;

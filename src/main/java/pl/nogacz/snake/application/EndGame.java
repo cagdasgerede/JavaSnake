@@ -8,9 +8,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
 
-/**
- * @author Dawid Nogacz on 19.05.2019
- */
 public class EndGame {
     private String message;
 

@@ -8,15 +8,11 @@ import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-/**
- * @author Dawid Nogacz on 19.05.2019
- */
 public class Board {
     private HashMap<Coordinates, PawnClass> board = new HashMap<>();
     private Design design;
