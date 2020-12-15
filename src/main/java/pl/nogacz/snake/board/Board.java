@@ -34,8 +34,8 @@ public class Board {
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
-    private PawnClass snakeBodyClass2 = new PawnClass(Pawn.SNAKE_BODY2);
-    private PawnClass snakeBodyClass3 = new PawnClass(Pawn.SNAKE_BODY3);
+    private PawnClass snakeBodyClass2 = new PawnClass(Pawn.SNAKE_BODY_SKIN_2);
+    private PawnClass snakeBodyClass3 = new PawnClass(Pawn.SNAKE_BODY_SKIN_3);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
@@ -43,9 +43,9 @@ public class Board {
     public static PawnClass setBodySkin() {
         switch(skinTone) {
             case 1: return new PawnClass(Pawn.SNAKE_BODY);
-            case 2: return new PawnClass(Pawn.SNAKE_BODY2);
-            case 3: return new PawnClass(Pawn.SNAKE_BODY3);
-            default: return new PawnClass(Pawn.SNAKE_BODY2);
+            case 2: return new PawnClass(Pawn.SNAKE_BODY_SKIN_2);
+            case 3: return new PawnClass(Pawn.SNAKE_BODY_SKIN_3);
+            default: return new PawnClass(Pawn.SNAKE_BODY);
         }
     } 
 

@@ -32,19 +32,19 @@ public class PawnClass {
         }
         else if(headSkinTone == 2) {
             switch(direction) {
-                case 1: direct = "UP2"; break;
-                case 2: direct = "BOTTOM2"; break;
-                case 3: direct = "LEFT2"; break;
-                case 4: direct = "RIGHT2"; break;
+                case 1: direct = "UP_SKIN_2"; break;
+                case 2: direct = "BOTTOM_SKIN_2"; break;
+                case 3: direct = "LEFT_SKIN_2"; break;
+                case 4: direct = "RIGHT_SKIN_2"; break;
                 default: break;
             }
         }
         else if(headSkinTone == 3) {
             switch(direction) {
-                case 1: direct = "UP3"; break;
-                case 2: direct = "BOTTOM3"; break;
-                case 3: direct = "LEFT3"; break;
-                case 4: direct = "RIGHT3"; break;
+                case 1: direct = "UP_SKIN_3"; break;
+                case 2: direct = "BOTTOM_SKIN_3"; break;
+                case 3: direct = "LEFT_SKIN_3"; break;
+                case 4: direct = "RIGHT_SKIN_3"; break;
                 default: break;
             }
         }
