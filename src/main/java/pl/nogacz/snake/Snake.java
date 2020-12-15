@@ -46,6 +46,7 @@ public class Snake extends Application {
             scene.setOnKeyReleased(event -> tp_board.readKeyboard(event));
 
 
+
             primaryStage.setTitle("JavaSnake 2 player");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);

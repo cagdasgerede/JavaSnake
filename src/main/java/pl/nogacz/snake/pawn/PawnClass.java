@@ -7,7 +7,7 @@ import pl.nogacz.snake.application.Resources;
 /**
  * @author Dawid Nogacz on 19.05.2019
  */
-public class PawnClass {
+public class PawnClass extends PawnSuperClass {
     private Pawn pawn;
 
     public PawnClass(Pawn pawn) {

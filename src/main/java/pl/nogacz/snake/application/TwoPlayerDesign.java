@@ -6,9 +6,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import pl.nogacz.snake.board.Coordinates2P;
 import pl.nogacz.snake.board.TwoPlayerBoard;
 import pl.nogacz.snake.board.Coordinates;
 import pl.nogacz.snake.pawn.PawnClass;
+import pl.nogacz.snake.pawn.*;
 
 /**
  * @author Dawid Nogacz on 19.05.2019
@@ -47,15 +49,22 @@ public class TwoPlayerDesign {
         gridPane.setPadding(new Insets(10, 0, 0, 10));
     }
 
-    public void addPawn(Coordinates coordinates, PawnClass pawn) {
-        if(pawn.getPawn().isHead()) {
+    public void addPawn(Coordinates2P coordinates, PawnClass pawn) {
+        if(pawn.getPawn().isHead() || pawn.getPawn().isHead2() ) {
             gridPane.add(pawn.getImageDirection(TwoPlayerBoard.getDirection()), coordinates.getX(), coordinates.getY());
         } else {
             gridPane.add(pawn.getImage(), coordinates.getX(), coordinates.getY());
         }
     }
+//    public void addPawn2(Coordinates coordinates, PawnClass2 pawn) {
+//        if(pawn.getPawn().isHead2()) {
+//            gridPane.add(pawn.getImageDirection(TwoPlayerBoard.getDirection()), coordinates.getX(), coordinates.getY());
+//        } else {
+//            gridPane.add(pawn.getImage(), coordinates.getX(), coordinates.getY());
+//        }
+//    }
 
-    public void removePawn(Coordinates coordinates) {
+    public void removePawn(Coordinates2P coordinates) {
         gridPane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == coordinates.getX() && GridPane.getRowIndex(node) == coordinates.getY());
     }
 
