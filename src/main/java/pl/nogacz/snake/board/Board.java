@@ -7,7 +7,7 @@ import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
 import pl.nogacz.snake.application.PauseGame;
-import pl.nogacz.snake.application.keybindMenu;
+import pl.nogacz.snake.application.KeyBindMenu;
 import pl.nogacz.snake.application.skinMenu;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
@@ -202,7 +202,7 @@ public class Board {
     }
 
     public void readKeyboard(KeyEvent event) {
-        if(!keybindMenu.getKeymap()) {
+        if(!KeyBindMenu.getKeymap()) {
             switch(event.getCode()) {
                 case W: changeDirection(1); break;
                 case S: changeDirection(2); break;

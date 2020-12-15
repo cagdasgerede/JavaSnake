@@ -3,12 +3,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import java.util.Optional;
 
-public class skinMenu {
+public class SkinMenu {
     private String message;
     private static int skinTone = 1;
     private static int headSkin = 1;
 
-    public skinMenu(String message) {
+    public SkinMenu(String message) {
         this.message = message;
 
         printDialog();
