@@ -58,13 +58,7 @@ public class TwoPlayerDesign {
             gridPane.add(pawn.getImage(), coordinates.getX(), coordinates.getY());
         }
     }
-//    public void addPawn2(Coordinates coordinates, PawnClass2 pawn) {
-//        if(pawn.getPawn().isHead2()) {
-//            gridPane.add(pawn.getImageDirection(TwoPlayerBoard.getDirection()), coordinates.getX(), coordinates.getY());
-//        } else {
-//            gridPane.add(pawn.getImage(), coordinates.getX(), coordinates.getY());
-//        }
-//    }
+
 
     public void removePawn(Coordinates2P coordinates) {
         gridPane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == coordinates.getX() && GridPane.getRowIndex(node) == coordinates.getY());

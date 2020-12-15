@@ -41,6 +41,7 @@ public class Snake extends Application {
             primaryStage.show();
         }
         else if(gameMode == 1){
+
             UserKeySelect keyCheck = new UserKeySelect("Please define user keys");
             boolean check;
             do {

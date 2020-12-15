@@ -54,11 +54,12 @@ public class UserKeySelect {
     {
         Dialog dialog = new Dialog();
         DialogPane dialogPane = dialog.getDialogPane();
-        dialog.setHeaderText("Please define keys for players");
+        dialog.setHeaderText("Please define keys for players\nLeft Snake is Player 1\nRight Snake is Player2" +
+                "\n\nNote: Only first character is used that you typed");
         dialog.setGraphic(null);
         dialog.initStyle(StageStyle.UNDECORATED);
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.getDialogPane().setStyle("-fx-background-color: #ffffff; -fx-border-color: #e7eaec #e7eaec #e7eaec #e7eaec; -fx-border-width: 6;");
+        dialog.getDialogPane().setStyle("-fx-background-color: #ffffff; -fx-border-color: #8a7878 #8a7878 #8a7878 #e7eaec; -fx-border-width: 6;");
 
         // Set the button types.
         ButtonType okButtonType = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -97,6 +98,8 @@ public class UserKeySelect {
         // result
         Optional<List<String>> result = dialog.showAndWait();
         String keys = "";
+
+        //checks for insufficient input
         try {
             User1Conrols[0] = textField.getCharacters().toString().toUpperCase().charAt(0);
             keys = keys + User1Conrols[0];

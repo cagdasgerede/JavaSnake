@@ -95,22 +95,8 @@ public class TwoPlayerBoard {
 
     private void displayAllImage() {
         for(Map.Entry<Coordinates2P,PawnClass> entry : board.entrySet()) {
-//            System.out.println("******//////*********");
-//            System.out.println(entry.getValue().getClass());
-            //System.out.println("hey " + PawnClass2.class.toString());
-                //System.out.println((entry.getValue().getClass().toString()));
-            //if(!(entry.getValue().getClass().toString().equals((PawnClass2.class).toString()))) {
                 tp_design.addPawn(entry.getKey(), entry.getValue());
-                //System.out.println("if");
-            //}
-            //else {
-              //  System.out.println("else");
-        //        tp_design.addPawn(entry.getKey(), (PawnClass) entry.getValue());
-            //}
         }
-//        for(Map.Entry<Coordinates, ? super PawnClass> entry : board.entrySet()) {
-//            tp_design.addPawn2(entry.getKey(), (PawnClass2) entry.getValue());
-//        }
     }
 
     private void moveSnake() {
@@ -240,12 +226,6 @@ public class TwoPlayerBoard {
             case 3: moveSnakeBodyHandler(new Coordinates2P(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY())); break;
             case 4: moveSnakeBodyHandler(new Coordinates2P(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY())); break;
         }
-        // switch(direction2) {
-        //     case 1: moveSnakeBodyHandler2(new Coordinates(snakeHeadCoordinates2.getX(), snakeHeadCoordinates2.getY() + 1)); break;
-        //     case 2: moveSnakeBodyHandler2(new Coordinates(snakeHeadCoordinates2.getX(), snakeHeadCoordinates2.getY() - 1)); break;
-        //     case 3: moveSnakeBodyHandler2(new Coordinates(snakeHeadCoordinates2.getX() + 1, snakeHeadCoordinates2.getY())); break;
-        //     case 4: moveSnakeBodyHandler2(new Coordinates(snakeHeadCoordinates2.getX() - 1, snakeHeadCoordinates2.getY())); break;
-        // }
     }
 
     private void moveSnakeBody2() {
@@ -266,16 +246,8 @@ public class TwoPlayerBoard {
 
         board.put(coordinates, snakeBodyClass);
         snakeTail.add(coordinates);
-
-//        if(tailLength2 == snakeTail2.size()) {
-//             Coordinates endTail = snakeTail2.get(0);
-//             board.remove(endTail);
-//             snakeTail.remove(endTail);
-//         }
-//
-//        board.put(coordinates, snakeBodyClass);
-//        snakeTail2.add(coordinates);
     }
+
     private void moveSnakeBodyHandler2(Coordinates2P coordinates) {
         if(tailLength2 == snakeTail2.size()) {
             Coordinates endTail = snakeTail2.get(0);
@@ -337,6 +309,7 @@ public class TwoPlayerBoard {
 
     public void readKeyboard(KeyEvent event) {
         char incoming = event.getCode().toString().charAt(0);
+
         if(incoming == usr1[0])
             changeDirection1(1);
         else if(incoming == usr1[1])
@@ -354,17 +327,16 @@ public class TwoPlayerBoard {
         else if(incoming == usr2[3])
             changeDirection2(4);
 
-
-//        switch(event.getCode().toString().charAt(0)) {
-//            case usr1[0]: changeDirection1(1); break;
-//            case usr1[1]: changeDirection1(2); break;
-//            case usr1[2]: changeDirection1(3); break;
-//            case usr1[3]: changeDirection1(4); break;
+//        switch(event.getCode()) {
+//            case W: changeDirection1(1); break;
+//            case S: changeDirection1(2); break;
+//            case A: changeDirection1(3); break;
+//            case D: changeDirection1(4); break;
 //
-//            case usr2[0]: changeDirection2(1); break;
-//            case usr2[1]: changeDirection2(2); break;
-//            case usr2[2]: changeDirection2(3); break;
-//            case usr2[3]: changeDirection2(4); break;
+//            case UP: changeDirection2(1); break;
+//            case DOWN: changeDirection2(2); break;
+//            case LEFT: changeDirection2(3); break;
+//            case RIGHT: changeDirection2(4); break;
 //        }
     }
 
@@ -396,17 +368,9 @@ public class TwoPlayerBoard {
         return getPawn(coordinates) != null;
     }
 
-//    private boolean isFieldNotNull2(Coordinates coordinates) {
-//        return getPawn2(coordinates) != null;
-//    }
-
     private PawnClass getPawn(Coordinates2P coordinates) {
         return board.get(coordinates);
     }
-
-//    private PawnClass2 getPawn2(Coordinates coordinates) {
-//        return (PawnClass2) board.get(coordinates);
-//    }
 
     public static int getDirection() {
         return direction;
