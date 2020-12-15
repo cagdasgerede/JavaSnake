@@ -72,8 +72,10 @@ public class TwoPlayerBoard {
 
     private void checkMap() {
         removeAllImage();
-        moveSnake();
-        moveSnake2();
+        if(!isEndGame )
+            moveSnake();
+        if(!isEndGame2)
+            moveSnake2();
         displayAllImage();
     }
 
@@ -136,11 +138,29 @@ public class TwoPlayerBoard {
                 } else {
                      isEndGame = true;
 
-                    new EndGame("End game for Player 1.\n\n" +
-                            "   >>>>  Player 2 wins  <<<<\n\n" +
-                            "Player 1 collected " + tailLength + " points. \n" +
-                            "Player 2 collected " + tailLength2 + " points. \n" +
-                            "Thank you for playing :)");
+                    if(isEndGame && isEndGame2) {
+                        if(tailLength > tailLength2 ) {
+                            new EndGame(
+                                    "   >>>>  Player 1 wins  <<<<\n\n" +
+                                            "Player 1 collected " + tailLength + " points. \n" +
+                                            "Player 2 collected " + tailLength2 + " points. \n" +
+                                            "Thank you for playing :)");
+                        }
+                        else if(tailLength2 > tailLength ) {
+                            new EndGame(
+                                    "   >>>>  Player 2 wins  <<<<\n\n" +
+                                            "Player 1 collected " + tailLength + " points. \n" +
+                                            "Player 2 collected " + tailLength2 + " points. \n" +
+                                            "Thank you for playing :)");
+                        }
+                        else{
+                            new EndGame("   >>>>  Game is draw. No winner  <<<<\n\n" +
+                                    "Player 1 collected " + tailLength + " points. \n" +
+                                    "Player 2 collected " + tailLength2 + " points. \n" +
+                                    "Thank you for playing :)");
+                        }
+
+                    }
                 }
             } else {
                 board.remove(snakeHeadCoordinates);
@@ -174,12 +194,29 @@ public class TwoPlayerBoard {
                 } else {
                     System.out.println("4TH Game over");
                      isEndGame2 = true;
+                        if(isEndGame && isEndGame2) {
+                            if(tailLength > tailLength2 ) {
+                                new EndGame(
+                                "   >>>>  Player 1 wins  <<<<\n\n" +
+                                "Player 1 collected " + tailLength + " points. \n" +
+                                "Player 2 collected " + tailLength2 + " points. \n" +
+                                "Thank you for playing :)");
+                            }
+                            else if(tailLength2 > tailLength ) {
+                                new EndGame(
+                                "   >>>>  Player 2 wins  <<<<\n\n" +
+                                "Player 1 collected " + tailLength + " points. \n" +
+                                "Player 2 collected " + tailLength2 + " points. \n" +
+                                "Thank you for playing :)");
+                            }
+                            else{
+                                new EndGame("   >>>>  Game is draw. No winner  <<<<\n\n" +
+                                        "Player 1 collected " + tailLength + " points. \n" +
+                                        "Player 2 collected " + tailLength2 + " points. \n" +
+                                        "Thank you for playing :)");
+                            }
 
-                     new EndGame("End game for Player 2.\n\n" +
-                             "   >>>>  Player 1 wins  <<<<\n\n" +
-                             "Player 1 collected " + tailLength + " points. \n" +
-                             "Player 2 collected " + tailLength2 + " points. \n" +
-                             "Thank you for playing :)");
+                        }
                 }
             } else {
                 System.out.println("5TH snake move");
