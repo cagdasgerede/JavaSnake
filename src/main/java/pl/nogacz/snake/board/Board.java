@@ -23,11 +23,11 @@ public class Board {
     private Design design;
     private Random random = new Random();
 
-    private boolean isEndGame = false, thereIsFood = false;
+    public boolean isEndGame = false, thereIsFood = false, thereIsItem = false;
 
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
     private int tailLength = 0;
-    private int counter = -1, itemTimer = -1;
+    public int counter = -1, itemTimer = -1;
     private Coordinates liveItemCoordinates;
 
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
@@ -108,6 +108,7 @@ public class Board {
                     board.put(coordinates, snakeHeadClass);
                     
                     snakeHeadCoordinates = coordinates;
+                    thereIsItem = false;
 
                     if(tailLength > 0) {
                         moveSnakeBody();
@@ -180,10 +181,7 @@ public class Board {
             }
             if(itemTimer != -1 && !thereIsFood) {
                 if(itemTimer > 100) {
-                    board.remove(liveItemCoordinates);
-                    liveItemCoordinates = null;
-                    itemTimer = -1;
-                    addEatOrItem();
+                    dissappearItem();
                 }
                 else
                     itemTimer++;
@@ -244,7 +242,7 @@ public class Board {
         thereIsFood = true;
     }
 
-    private void addItem() {
+    public void addItem() {
         Coordinates itemCoordinates;
         itemTimer=0;
 
@@ -252,8 +250,21 @@ public class Board {
             itemCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
         } while(isFieldNotNull(itemCoordinates));
 
+        thereIsItem = true;
+
         liveItemCoordinates = itemCoordinates;
+
         board.put(itemCoordinates, itemClass);
+    }
+
+    public void dissappearItem() {
+        board.remove(liveItemCoordinates);
+                    
+        liveItemCoordinates = null;
+        
+        thereIsItem = false;   
+        itemTimer = -1;    
+        addEatOrItem();
     }
 
     public boolean CountInvinsibleTime() {
