@@ -300,7 +300,7 @@ public class TwoPlayerBoard {
         Coordinates2P foodCoordinates;
 
         do {
-            foodCoordinates = new Coordinates2P(20+random2.nextInt(21), 20+random2.nextInt(21));
+            foodCoordinates = new Coordinates2P(20+random2.nextInt(21), random2.nextInt(21));
         } while(isFieldNotNull(foodCoordinates));
 
         board.put(foodCoordinates, foodClass2);
