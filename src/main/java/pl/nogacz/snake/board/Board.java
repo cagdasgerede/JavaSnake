@@ -8,7 +8,7 @@ import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
 import pl.nogacz.snake.application.PauseGame;
 import pl.nogacz.snake.application.KeyBindMenu;
-import pl.nogacz.snake.application.skinMenu;
+import pl.nogacz.snake.application.SkinMenu;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
 
@@ -29,7 +29,7 @@ public class Board {
     private boolean isPaused = false;
 
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
-    private static int skinTone = skinMenu.getSkinTone();
+    private static int skinTone = SkinMenu.getSkinTone();
     private int tailLength = 0;
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
@@ -89,10 +89,10 @@ public class Board {
 
     private void moveSnake() {
         switch(direction) {
-            case 1: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1), skinMenu.getSkinTone()); break;
-            case 2: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1), skinMenu.getSkinTone()); break;
-            case 3: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY()), skinMenu.getSkinTone()); break;
-            case 4: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY()), skinMenu.getSkinTone()); break;
+            case 1: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1), SkinMenu.getSkinTone()); break;
+            case 2: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1), SkinMenu.getSkinTone()); break;
+            case 3: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY()), SkinMenu.getSkinTone()); break;
+            case 4: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY()), SkinMenu.getSkinTone()); break;
         }
     }
 
@@ -137,10 +137,10 @@ public class Board {
 
     private void moveSnakeBody() {
         switch(direction) {
-            case 1: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1), skinMenu.getSkinTone()); break;
-            case 2: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1), skinMenu.getSkinTone()); break;
-            case 3: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY()), skinMenu.getSkinTone()); break;
-            case 4: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY()), skinMenu.getSkinTone()); break;
+            case 1: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1), SkinMenu.getSkinTone()); break;
+            case 2: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1), SkinMenu.getSkinTone()); break;
+            case 3: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY()), SkinMenu.getSkinTone()); break;
+            case 4: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY()), SkinMenu.getSkinTone()); break;
         }
     }
 
