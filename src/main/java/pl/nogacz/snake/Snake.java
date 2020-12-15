@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.NewGame;
 import pl.nogacz.snake.application.TwoPlayerDesign;
+import pl.nogacz.snake.application.UserKeySelect;
 import pl.nogacz.snake.board.Board;
 import pl.nogacz.snake.board.TwoPlayerBoard;
 
@@ -40,8 +41,17 @@ public class Snake extends Application {
             primaryStage.show();
         }
         else if(gameMode == 1){
+            UserKeySelect keyCheck = new UserKeySelect("Please define user keys");
+            boolean check;
+            do {
+                check = keyCheck.printDialog();
+            }while (!check);
+            char[] usr1 = keyCheck.getUser1Conrols();
+            char[] usr2 = keyCheck.getUser2Conrols();
+
+
             tp_design = new TwoPlayerDesign();
-            tp_board = new TwoPlayerBoard(tp_design,true);
+            tp_board = new TwoPlayerBoard(tp_design,true, usr1, usr2);
             Scene scene = new Scene(tp_design.getGridPane(), 1430, 715, Color.BLACK);
             scene.setOnKeyReleased(event -> tp_board.readKeyboard(event));
 

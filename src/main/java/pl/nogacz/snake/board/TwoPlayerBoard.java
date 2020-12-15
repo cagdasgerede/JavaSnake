@@ -3,6 +3,7 @@ package pl.nogacz.snake.board;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.TwoPlayerDesign;
 import pl.nogacz.snake.application.EndGame;
@@ -44,9 +45,15 @@ public class TwoPlayerBoard {
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
     private ArrayList<Coordinates> snakeTail2 = new ArrayList<>(); // for second player
 
+    public char[] usr1; // user1 control keys
+    public char[] usr2; // user2 control keys
 
-    public TwoPlayerBoard(TwoPlayerDesign tp_design, boolean isGameStarted) {
+
+    public TwoPlayerBoard(TwoPlayerDesign tp_design, boolean isGameStarted, char[] usr1, char[] usr2) {
         this.tp_design = tp_design;
+
+        this.usr1 = usr1;
+        this.usr2 = usr2;
 
         addStartEntity();
         if(isGameStarted)
@@ -177,11 +184,8 @@ public class TwoPlayerBoard {
 
     private void moveSnakeHead2(Coordinates2P coordinates) {
         if(coordinates.isValid()) {
-            System.out.println("1st coordinates are valid");
             if(isFieldNotNull(coordinates)) {
-                System.out.println("2ND ");
                 if(getPawn(coordinates).getPawn().isFood2()) {
-                    System.out.println("3RD food taken");
                     board.remove(snakeHeadCoordinates2);
                     board.put(snakeHeadCoordinates2, snakeBodyClass2);
                     board.put(coordinates, snakeHeadClass2);
@@ -192,7 +196,6 @@ public class TwoPlayerBoard {
 
                     addEat2();
                 } else {
-                    System.out.println("4TH Game over");
                      isEndGame2 = true;
                         if(isEndGame && isEndGame2) {
                             if(tailLength > tailLength2 ) {
@@ -219,7 +222,6 @@ public class TwoPlayerBoard {
                         }
                 }
             } else {
-                System.out.println("5TH snake move");
                 board.remove(snakeHeadCoordinates2);
                 board.put(coordinates, snakeHeadClass2);
 
@@ -311,7 +313,7 @@ public class TwoPlayerBoard {
             @Override
             protected Void call() throws Exception {
                 try {
-                    Thread.sleep(140);
+                    Thread.sleep(200);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -334,17 +336,36 @@ public class TwoPlayerBoard {
     }
 
     public void readKeyboard(KeyEvent event) {
-        switch(event.getCode()) {
-            case W: changeDirection1(1); break;
-            case S: changeDirection1(2); break;
-            case A: changeDirection1(3); break;
-            case D: changeDirection1(4); break;
+        char incoming = event.getCode().toString().charAt(0);
+        if(incoming == usr1[0])
+            changeDirection1(1);
+        else if(incoming == usr1[1])
+            changeDirection1(2);
+        else if(incoming == usr1[2])
+            changeDirection1(3);
+        else if(incoming == usr1[3])
+            changeDirection1(4);
+        else if(incoming == usr2[0])
+            changeDirection2(1);
+        else if(incoming == usr2[1])
+            changeDirection2(2);
+        else if(incoming == usr2[2])
+            changeDirection2(3);
+        else if(incoming == usr2[3])
+            changeDirection2(4);
 
-            case UP: changeDirection2(1); break;
-            case DOWN: changeDirection2(2); break;
-            case LEFT: changeDirection2(3); break;
-            case RIGHT: changeDirection2(4); break;
-        }
+
+//        switch(event.getCode().toString().charAt(0)) {
+//            case usr1[0]: changeDirection1(1); break;
+//            case usr1[1]: changeDirection1(2); break;
+//            case usr1[2]: changeDirection1(3); break;
+//            case usr1[3]: changeDirection1(4); break;
+//
+//            case usr2[0]: changeDirection2(1); break;
+//            case usr2[1]: changeDirection2(2); break;
+//            case usr2[2]: changeDirection2(3); break;
+//            case usr2[3]: changeDirection2(4); break;
+//        }
     }
 
 
