@@ -28,7 +28,7 @@ public class TwoPlayerBoard {
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
     private static int direction2 = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT **** for 2nd player
     private int tailLength = 0;
-    private int tailLength2 = 3;
+    private int tailLength2 = 0;
 
     private Coordinates2P snakeHeadCoordinates = new Coordinates2P(10, 18);
     private Coordinates2P snakeHeadCoordinates2 = new Coordinates2P(29, 18); // for 2nd player
@@ -134,11 +134,13 @@ public class TwoPlayerBoard {
 
                     addEat();
                 } else {
-                    // isEndGame = true;
+                     isEndGame = true;
 
-                    // new EndGame("End game...\n" +
-                    //         "You have " + tailLength + " points. \n" +
-                    //         "Maybe try again? :)");
+                    new EndGame("End game for Player 1.\n\n" +
+                            "   >>>>  Player 2 wins  <<<<\n\n" +
+                            "Player 1 collected " + tailLength + " points. \n" +
+                            "Player 2 collected " + tailLength2 + " points. \n" +
+                            "Thank you for playing :)");
                 }
             } else {
                 board.remove(snakeHeadCoordinates);
@@ -155,11 +157,11 @@ public class TwoPlayerBoard {
 
     private void moveSnakeHead2(Coordinates2P coordinates) {
         if(coordinates.isValid()) {
-
-
-
+            System.out.println("1st coordinates are valid");
             if(isFieldNotNull(coordinates)) {
+                System.out.println("2ND ");
                 if(getPawn(coordinates).getPawn().isFood2()) {
+                    System.out.println("3RD food taken");
                     board.remove(snakeHeadCoordinates2);
                     board.put(snakeHeadCoordinates2, snakeBodyClass2);
                     board.put(coordinates, snakeHeadClass2);
@@ -170,13 +172,17 @@ public class TwoPlayerBoard {
 
                     addEat2();
                 } else {
-                    // isEndGame = true;
+                    System.out.println("4TH Game over");
+                     isEndGame2 = true;
 
-                    // new EndGame("End game...\n" +
-                    //         "You have " + tailLength2 + " points. \n" +
-                    //         "Maybe try again? :)");
+                     new EndGame("End game for Player 2.\n\n" +
+                             "   >>>>  Player 1 wins  <<<<\n\n" +
+                             "Player 1 collected " + tailLength + " points. \n" +
+                             "Player 2 collected " + tailLength2 + " points. \n" +
+                             "Thank you for playing :)");
                 }
             } else {
+                System.out.println("5TH snake move");
                 board.remove(snakeHeadCoordinates2);
                 board.put(coordinates, snakeHeadClass2);
 
@@ -280,7 +286,7 @@ public class TwoPlayerBoard {
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                if(!isEndGame) {
+                if(!isEndGame || !isEndGame2) {
                     checkMap();
                     mapTask();
                 }
@@ -319,16 +325,12 @@ public class TwoPlayerBoard {
     private void changeDirection2(int newDirection) {
         if(newDirection == 1 && direction2 != 2) {
             direction2 = 1;
-            System.out.println(direction2+ " direction2");
         } else if(newDirection == 2 && direction2 != 1) {
             direction2 = 2;
-            System.out.println(direction2+ " direction2");
         } else if(newDirection == 3 && direction2 != 4) {
             direction2 = 3;
-            System.out.println(direction2+ " direction2");
         } else if(newDirection == 4 && direction2 != 3) {
             direction2 = 4;
-            System.out.println(direction2+ " direction2");
         }
     }
 
@@ -350,5 +352,8 @@ public class TwoPlayerBoard {
 
     public static int getDirection() {
         return direction;
+    }
+    public static int getDirection2() {
+        return direction2;
     }
 }

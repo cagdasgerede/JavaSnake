@@ -50,9 +50,11 @@ public class TwoPlayerDesign {
     }
 
     public void addPawn(Coordinates2P coordinates, PawnClass pawn) {
-        if(pawn.getPawn().isHead() || pawn.getPawn().isHead2() ) {
+        if(pawn.getPawn().isHead() ) {
             gridPane.add(pawn.getImageDirection(TwoPlayerBoard.getDirection()), coordinates.getX(), coordinates.getY());
-        } else {
+        } else if (pawn.getPawn().isHead2() )
+            gridPane.add(pawn.getImageDirection(TwoPlayerBoard.getDirection2()), coordinates.getX(), coordinates.getY());
+        else {
             gridPane.add(pawn.getImage(), coordinates.getX(), coordinates.getY());
         }
     }
