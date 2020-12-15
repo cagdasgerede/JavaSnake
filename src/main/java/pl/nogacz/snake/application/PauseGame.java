@@ -28,10 +28,10 @@ public class PauseGame {
             alert.close();
         }
         else if(result.get() == skinButton) {
-            new SkinMenu("Select Skin");
+            new SnakeSkins("Select Skin");
         }
         else if(result.get() == keyBindButton) {
-            new KeyBindMenu("Change Key");
+            new KeyMap("Change Key");
         }
     }
 }

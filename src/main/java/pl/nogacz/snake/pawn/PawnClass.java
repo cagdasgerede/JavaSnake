@@ -2,7 +2,7 @@ package pl.nogacz.snake.pawn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import pl.nogacz.snake.application.Resources;
-import pl.nogacz.snake.application.SkinMenu;
+import pl.nogacz.snake.application.SnakeSkins;
 
 /**
  * @author Dawid Nogacz on 19.05.2019
@@ -19,7 +19,7 @@ public class PawnClass {
     }
 
     public ImageView getImageDirection(int direction) {
-        int headSkinTone = SkinMenu.getHeadSkin();
+        int headSkinTone = SnakeSkins.getHeadSkin();
         String direct = "";
         if(headSkinTone == 1) {
             switch(direction) {
