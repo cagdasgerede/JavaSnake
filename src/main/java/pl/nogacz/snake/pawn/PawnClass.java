@@ -1,6 +1,7 @@
 package pl.nogacz.snake.pawn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import pl.nogacz.snake.Snake;
 import pl.nogacz.snake.application.Resources;
 import pl.nogacz.snake.application.SnakeSkins;
 
@@ -19,9 +20,9 @@ public class PawnClass {
     }
 
     public ImageView getImageDirection(int direction) {
-        int headSkinTone = SnakeSkins.getHeadSkin();
         String direct = "";
-        if(headSkinTone == 1) {
+        SnakeSkins.bodySkinTones myVar = SnakeSkins.getBodySkin();
+        if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_1) {
             switch(direction) {
                 case 1: direct = "UP"; break;
                 case 2: direct = "BOTTOM"; break;
@@ -30,7 +31,7 @@ public class PawnClass {
                 default: break;
             }
         }
-        else if(headSkinTone == 2) {
+        else if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_2) {
             switch(direction) {
                 case 1: direct = "UP_SKIN_2"; break;
                 case 2: direct = "BOTTOM_SKIN_2"; break;
@@ -39,7 +40,7 @@ public class PawnClass {
                 default: break;
             }
         }
-        else if(headSkinTone == 3) {
+        else if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_3) {
             switch(direction) {
                 case 1: direct = "UP_SKIN_3"; break;
                 case 2: direct = "BOTTOM_SKIN_3"; break;

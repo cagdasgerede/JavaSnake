@@ -29,7 +29,8 @@ public class Board {
     private boolean isPaused = false;
 
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
-    private static int skinTone = SnakeSkins.getSkinTone();
+    //private static int skinTone = SnakeSkins.getSkinTone();
+    private static SnakeSkins.bodySkinTones myVar = SnakeSkins.getBodySkin();
     private int tailLength = 0;
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
@@ -41,10 +42,10 @@ public class Board {
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
     public static PawnClass setBodySkin() {
-        switch(skinTone) {
-            case 1: return new PawnClass(Pawn.SNAKE_BODY);
-            case 2: return new PawnClass(Pawn.SNAKE_BODY_SKIN_2);
-            case 3: return new PawnClass(Pawn.SNAKE_BODY_SKIN_3);
+        switch(myVar) {
+            case SKIN_TONE_1: return new PawnClass(Pawn.SNAKE_BODY);
+            case SKIN_TONE_2: return new PawnClass(Pawn.SNAKE_BODY_SKIN_2);
+            case SKIN_TONE_3: return new PawnClass(Pawn.SNAKE_BODY_SKIN_3);
             default: return new PawnClass(Pawn.SNAKE_BODY);
         }
     } 
@@ -89,22 +90,22 @@ public class Board {
 
     private void moveSnake() {
         switch(direction) {
-            case 1: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1), SnakeSkins.getSkinTone()); break;
-            case 2: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1), SnakeSkins.getSkinTone()); break;
-            case 3: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY()), SnakeSkins.getSkinTone()); break;
-            case 4: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY()), SnakeSkins.getSkinTone()); break;
+            case 1: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1), SnakeSkins.getBodySkin()); break;
+            case 2: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1), SnakeSkins.getBodySkin()); break;
+            case 3: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY()), SnakeSkins.getBodySkin()); break;
+            case 4: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY()), SnakeSkins.getBodySkin()); break;
         }
     }
 
-    private void moveSnakeHead(Coordinates coordinates, int skinTone) {
+    private void moveSnakeHead(Coordinates coordinates, SnakeSkins.bodySkinTones skinTone) {
         if(coordinates.isValid()) {
             if(isFieldNotNull(coordinates)) {
                 if(getPawn(coordinates).getPawn().isFood()) {
                     board.remove(snakeHeadCoordinates);
                     switch(skinTone) {
-                        case 1: board.put(snakeHeadCoordinates, snakeBodyClass); break;
-                        case 2: board.put(snakeHeadCoordinates, snakeBodyClass2); break;
-                        case 3: board.put(snakeHeadCoordinates, snakeBodyClass3); break;
+                        case SKIN_TONE_1: board.put(snakeHeadCoordinates, snakeBodyClass); break;
+                        case SKIN_TONE_2: board.put(snakeHeadCoordinates, snakeBodyClass2); break;
+                        case SKIN_TONE_3: board.put(snakeHeadCoordinates, snakeBodyClass3); break;
                         default: break;
 
                     }
@@ -137,23 +138,23 @@ public class Board {
 
     private void moveSnakeBody() {
         switch(direction) {
-            case 1: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1), SnakeSkins.getSkinTone()); break;
-            case 2: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1), SnakeSkins.getSkinTone()); break;
-            case 3: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY()), SnakeSkins.getSkinTone()); break;
-            case 4: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY()), SnakeSkins.getSkinTone()); break;
+            case 1: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1), SnakeSkins.getBodySkin()); break;
+            case 2: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1), SnakeSkins.getBodySkin()); break;
+            case 3: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY()), SnakeSkins.getBodySkin()); break;
+            case 4: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY()), SnakeSkins.getBodySkin()); break;
         }
     }
 
-    private void moveSnakeBodyHandler(Coordinates coordinates, int skinTone) {
+    private void moveSnakeBodyHandler(Coordinates coordinates, SnakeSkins.bodySkinTones skinTone) {
         if(tailLength == snakeTail.size()) {
             Coordinates endTail = snakeTail.get(0);
             board.remove(endTail);
             snakeTail.remove(endTail);
         }
         switch(skinTone) {
-            case 1: board.put(coordinates, snakeBodyClass); break;
-            case 2: board.put(coordinates, snakeBodyClass2); break;
-            case 3: board.put(coordinates, snakeBodyClass3); break;
+            case SKIN_TONE_1: board.put(coordinates, snakeBodyClass); break;
+            case SKIN_TONE_2: board.put(coordinates, snakeBodyClass2); break;
+            case SKIN_TONE_3: board.put(coordinates, snakeBodyClass3); break;
             default: break;
 
         }

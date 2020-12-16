@@ -5,8 +5,18 @@ import java.util.Optional;
 
 public class SnakeSkins {
     private String message;
-    private static int skinTone = 1;
-    private static int headSkin = 1;
+    public enum bodySkinTones {
+        SKIN_TONE_1,
+        SKIN_TONE_2,
+        SKIN_TONE_3
+    }
+    public enum headSkinTones {
+        SKIN_TONE_1,
+        SKIN_TONE_2,
+        SKIN_TONE_3
+    }
+    private static bodySkinTones body = bodySkinTones.SKIN_TONE_1;
+    private static headSkinTones head = headSkinTones.SKIN_TONE_1;
 
     public SnakeSkins(String message) {
         this.message = message;
@@ -26,24 +36,23 @@ public class SnakeSkins {
         alert.getButtonTypes().setAll(skin1, skin2, skin3);
 
         Optional<ButtonType> result = alert.showAndWait();
-
         if (result.get() == skin1){
-            skinTone = 1;
-            headSkin = 1;
+            body = bodySkinTones.SKIN_TONE_1;
+            head = headSkinTones.SKIN_TONE_1;
         }
         else if (result.get() == skin2){
-            skinTone = 2;
-            headSkin = 2;
+            body = bodySkinTones.SKIN_TONE_2;
+            head = headSkinTones.SKIN_TONE_2;
         }
         else if (result.get() == skin3){
-            skinTone = 3;
-            headSkin = 3;
+            body = bodySkinTones.SKIN_TONE_3;
+            head = headSkinTones.SKIN_TONE_3;
         }
     }
-    public static int getSkinTone() {
-        return skinTone;
+    public static bodySkinTones getBodySkin() {
+        return body;
     }
-    public static int getHeadSkin(){
-        return headSkin;
+    public static headSkinTones getHeadSkin(){
+        return head;
     }
 }
