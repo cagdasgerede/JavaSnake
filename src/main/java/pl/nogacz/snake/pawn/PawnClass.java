@@ -1,7 +1,6 @@
 package pl.nogacz.snake.pawn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import pl.nogacz.snake.Snake;
 import pl.nogacz.snake.application.Resources;
 import pl.nogacz.snake.application.SnakeSkins;
 
