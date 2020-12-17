@@ -37,7 +37,6 @@ public class Board {
     private int newRandomSpawnTimesOfApples[] = new int[3];
     private int newRandomDissappearTimesOfApples[] = new int[3];
 
-
     private Boolean dissappearRottenApplesCheck[] = new Boolean[3];
 
     private static final int APPLE_SPAWN_LIMIT = 6;
@@ -213,21 +212,21 @@ public class Board {
 
     public void spawnRottenApple(){
         if(spawnRottenApple(0)){
-            addRottenApples();
+            addRottenApples(0);
             rottenApplesBlack.add(this.currentRottenAppleCoordinates[0]);
             this.lastSpawnTimesOfApples[0] = System.currentTimeMillis();
             this.newRandomSpawnTimesOfApples[0] = random.nextInt(9) + 1;
         }
 
         if(spawnRottenApple(1)){
-            addRottenApples2();
+            addRottenApples(1);
             rottenApplesGrey.add(this.currentRottenAppleCoordinates[1]);
             this.lastSpawnTimesOfApples[1] = System.currentTimeMillis();
             this.newRandomSpawnTimesOfApples[1] = random.nextInt(20) + 1;
         }
 
         if(spawnRottenApple(2)){
-            addRottenApples3();
+            addRottenApples(2);
             rottenApplesOrange.add(this.currentRottenAppleCoordinates[2]);
             this.lastSpawnTimesOfApples[2] = System.currentTimeMillis();
             this.newRandomSpawnTimesOfApples[2] = random.nextInt(15) + 1;
@@ -329,38 +328,17 @@ public class Board {
         board.put(foodCoordinates, foodClass);
     }
 
-    private void addRottenApples(){ 
+    private void addRottenApples(int i){
         Coordinates rottenAppleCoordinates;
 
         do{
             rottenAppleCoordinates = new Coordinates(random.nextInt(21),random.nextInt(21));
-            this.currentRottenAppleCoordinates[0] = rottenAppleCoordinates;
+            this.currentRottenAppleCoordinates[i] = rottenAppleCoordinates;
         }while(isFieldNotNull(rottenAppleCoordinates));
 
-        board.put(rottenAppleCoordinates, rottenAppleClass[0]);
+        board.put(rottenAppleCoordinates, rottenAppleClass[i]);
     }
 
-    private void addRottenApples2(){ 
-        Coordinates rottenAppleCoordinates2;
-
-        do{
-            rottenAppleCoordinates2 = new Coordinates(random.nextInt(21),random.nextInt(21));
-            currentRottenAppleCoordinates[1] = rottenAppleCoordinates2;
-        }while(isFieldNotNull(rottenAppleCoordinates2));
-
-        board.put(rottenAppleCoordinates2, rottenAppleClass[1]);
-    }
-
-    private void addRottenApples3(){ 
-        Coordinates rottenAppleCoordinates3;
-
-        do{
-            rottenAppleCoordinates3 = new Coordinates(random.nextInt(21),random.nextInt(21));
-           currentRottenAppleCoordinates[2] = rottenAppleCoordinates3;
-        }while(isFieldNotNull(rottenAppleCoordinates3));
-
-        board.put(rottenAppleCoordinates3, rottenAppleClass[2]);
-    }
 
     public void clearRottenApples(){ // when rotten apples(blocks) appear at the same time more than the value of objectLimit , board will be cleared when the (objectLimit + 1)th rotten apple spawns.
         int sum = rottenApplesBlack.size() + rottenApplesGrey.size() + rottenApplesOrange.size();
