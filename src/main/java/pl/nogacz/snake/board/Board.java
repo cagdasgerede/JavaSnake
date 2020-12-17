@@ -53,6 +53,8 @@ public class Board {
     private ArrayList<Coordinates> rottenApplesGrey = new ArrayList<>();
     private ArrayList<Coordinates> rottenApplesOrange = new ArrayList<>();
 
+    private ArrayList<ArrayList<Coordinates>> rottenApples = new ArrayList<>();
+
     public Coordinates getSnakeHeadCoordinates(){
         return this.snakeHeadCoordinates;
     }
@@ -104,6 +106,10 @@ public class Board {
         newRandomSpawnTimesOfApples[2] = 7;
 
         java.util.Arrays.fill(dissappearRottenApplesCheck, true);
+
+        rottenApples.add(rottenApplesBlack);
+        rottenApples.add(rottenApplesGrey);
+        rottenApples.add(rottenApplesOrange);
 
         addStartEntity();
         mapTask();
@@ -206,31 +212,20 @@ public class Board {
         }
     }
 
-    private boolean spawnRottenApple(int i){ // control for randomly chosen spawning rotten apple time
+    private boolean conditionCheckToSpawnRottenApple(int i){ // control for randomly chosen spawning rotten apple time
         return Math.abs(this.lastSpawnTimesOfApples[i] - System.currentTimeMillis()) / 1000 == this.newRandomSpawnTimesOfApples[i];
     }
 
     public void spawnRottenApple(){
-        if(spawnRottenApple(0)){
-            addRottenApples(0);
-            rottenApplesBlack.add(this.currentRottenAppleCoordinates[0]);
-            this.lastSpawnTimesOfApples[0] = System.currentTimeMillis();
-            this.newRandomSpawnTimesOfApples[0] = random.nextInt(9) + 1;
+        for(int i = 0; i < 3; i++){
+            if(conditionCheckToSpawnRottenApple(i)){
+                addRottenApples(i);
+                rottenApples.get(i).add(this.currentRottenAppleCoordinates[i]);
+                this.lastSpawnTimesOfApples[i] = System.currentTimeMillis();
+                this.newRandomSpawnTimesOfApples[i] = random.nextInt(9) + 1;
+            }
         }
 
-        if(spawnRottenApple(1)){
-            addRottenApples(1);
-            rottenApplesGrey.add(this.currentRottenAppleCoordinates[1]);
-            this.lastSpawnTimesOfApples[1] = System.currentTimeMillis();
-            this.newRandomSpawnTimesOfApples[1] = random.nextInt(20) + 1;
-        }
-
-        if(spawnRottenApple(2)){
-            addRottenApples(2);
-            rottenApplesOrange.add(this.currentRottenAppleCoordinates[2]);
-            this.lastSpawnTimesOfApples[2] = System.currentTimeMillis();
-            this.newRandomSpawnTimesOfApples[2] = random.nextInt(15) + 1;
-        }
     }
 
     private boolean dissappearRottenAppleForFirstTime(int i){ // control for randomly chosen dissappearing rotten apple for the first time
