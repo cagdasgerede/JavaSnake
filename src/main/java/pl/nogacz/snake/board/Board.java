@@ -231,62 +231,29 @@ public class Board {
         return rottenApplesBlack.size() == 1 && dissappearRottenApplesCheck[i];
     }
 
-    private boolean dissappearRottenApple(int i){ // control for randomly chosen dissappearing rotten apple time
+    private boolean checkToDissappearRottenApple(int i){ // control for randomly chosen dissappearing rotten apple time
         return Math.abs(lastDissappearTimesOfApples[i] - System.currentTimeMillis()) / 1000 == newRandomDissappearTimesOfApples[i];
     }
 
     public void disappearRottenApple(){
-        if(dissappearRottenAppleForFirstTime(0)){ // for initial dissappear process apple1.
-            newRandomDissappearTimesOfApples[0] = random.nextInt(9) + 1;
-            lastDissappearTimesOfApples[0] = System.currentTimeMillis();
-            dissappearRottenApplesCheck[0] = false;
-        }
-
-        if(dissappearRottenAppleForFirstTime(1)){ // for initial dissappear process apple2.
-            newRandomDissappearTimesOfApples[1] = random.nextInt(9) + 1;
-            lastDissappearTimesOfApples[1] = System.currentTimeMillis();
-            dissappearRottenApplesCheck[1] = false;
-        }
-
-        if(dissappearRottenAppleForFirstTime(2)){ // for initial dissappear process apple3.
-            newRandomDissappearTimesOfApples[2] = random.nextInt(9) + 1;
-            lastDissappearTimesOfApples[2] = System.currentTimeMillis();
-            dissappearRottenApplesCheck[2] = false;
-        }
-
-        if(dissappearRottenApple(0)){
-            if(!rottenApplesBlack.isEmpty()){
-                board.remove(rottenApplesBlack.get(0));
-                design.removePawn(rottenApplesBlack.get(0));
-                
-                rottenApplesBlack.remove(0);
-                newRandomDissappearTimesOfApples[0] = random.nextInt(9) + 1;
-                lastDissappearTimesOfApples[0] = System.currentTimeMillis();
-                dissappearRottenApplesCheck[0] = true;
+        for(int i = 0; i < rottenApples.size(); i++){
+            if(dissappearRottenAppleForFirstTime(i)){
+                newRandomDissappearTimesOfApples[i] = random.nextInt(9) + 1;
+                lastDissappearTimesOfApples[i] = System.currentTimeMillis();
+                dissappearRottenApplesCheck[i] = false;
             }
-        }
-
-        if(dissappearRottenApple(1)){
-            if(!rottenApplesGrey.isEmpty()){
-                board.remove(rottenApplesGrey.get(0));
-                design.removePawn(rottenApplesGrey.get(0));
-                
-                rottenApplesGrey.remove(0);
-                newRandomDissappearTimesOfApples[1] = random.nextInt(9) + 1;
-                lastDissappearTimesOfApples[1] = System.currentTimeMillis();
-                dissappearRottenApplesCheck[1] = true;            
-            }
-        }
-
-        if(dissappearRottenApple(2)){
-            if(!rottenApplesOrange.isEmpty()){
-                board.remove(rottenApplesOrange.get(0));
-                design.removePawn(rottenApplesOrange.get(0));
-                
-                rottenApplesOrange.remove(0);
-                newRandomDissappearTimesOfApples[2] = random.nextInt(9) + 1;
-                lastDissappearTimesOfApples[2] = System.currentTimeMillis();
-                dissappearRottenApplesCheck[2] = true;            
+        
+        for(int k = 0; k < rottenApples.size(); k++){
+            if(checkToDissappearRottenApple(k))
+                if(!rottenApples.get(k).isEmpty()){
+                    board.remove(rottenApples.get(k).get(0));
+                    design.removePawn(rottenApples.get(k).get(0));
+                    
+                    rottenApples.get(k).remove(0);
+                    newRandomDissappearTimesOfApples[k] = random.nextInt(9) + 1;
+                    lastDissappearTimesOfApples[k] = System.currentTimeMillis();
+                    dissappearRottenApplesCheck[k] = true;            
+                }
             }
         }
     }
