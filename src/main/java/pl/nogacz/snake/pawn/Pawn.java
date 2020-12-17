@@ -8,24 +8,24 @@ public enum Pawn {
     BRICK,
     SNAKE_HEAD,
     SNAKE_BODY,
-    ROTTEN_APPLE,
-    ROTTEN_APPLE2,
-    ROTTEN_APPLE3;
+    ROTTEN_APPLE_BLACK,
+    ROTTEN_APPLE_GREY,
+    ROTTEN_APPLE_ORANGE;
 
     public boolean isFood() {
         return this == FOOD;
     }
 
-    public boolean isRottenApple(){
-        return this == ROTTEN_APPLE;
+    public boolean isRottenAppleBlack(){
+        return this == ROTTEN_APPLE_BLACK;
     }
 
-    public boolean isRottenApple2(){
-        return this == ROTTEN_APPLE2;
+    public boolean isRottenAppleGrey(){
+        return this == ROTTEN_APPLE_GREY;
     }
 
-    public boolean isRottenApple3(){
-        return this == ROTTEN_APPLE3;
+    public boolean isRottenAppleOrange(){
+        return this == ROTTEN_APPLE_ORANGE;
     }
 
     public boolean isHead() {

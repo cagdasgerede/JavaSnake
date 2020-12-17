@@ -18,20 +18,20 @@ public class RandomBlocksTest {
         Design design = mock(Design.class);
         Board b = new Board(design);
 
-        b.lastSpawnTimesOfApples[0] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[0] = 0;
+        b.getLastSpawnTimesOfApples()[0] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[0] = 0;
         b.spawnRottenApple();
         
-        b.lastSpawnTimesOfApples[0] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[0] = 0;
+        b.getLastSpawnTimesOfApples()[0] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[0] = 0;
         b.spawnRottenApple();
         
-        b.lastSpawnTimesOfApples[0] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[0] = 0;
+
+        b.getLastSpawnTimesOfApples()[0] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[0] = 0;
         b.spawnRottenApple();
         
-        assertEquals(3, b.rottenApples.size());
-        
+        assertEquals(3, b.getRottenApplesBlack().size());
     }
 
     @Test
@@ -40,15 +40,15 @@ public class RandomBlocksTest {
         Design design = mock(Design.class);
         Board b = new Board(design);
 
-        b.lastSpawnTimesOfApples[1] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[1] = 0;
+        b.getLastSpawnTimesOfApples()[1] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[1] = 0;
         b.spawnRottenApple();
         
-        b.lastSpawnTimesOfApples[1] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[1] = 0;
+        b.getLastSpawnTimesOfApples()[1] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[1] = 0;
         b.spawnRottenApple();
-        
-        assertEquals(2, b.rottenApples2.size());
+
+        assertEquals(2, b.getRottenApplesGrey().size());
     }
 
     @Test
@@ -57,11 +57,11 @@ public class RandomBlocksTest {
         Design design = mock(Design.class);
         Board b = new Board(design);
 
-        b.lastSpawnTimesOfApples[2] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[2] = 0;
+        b.getLastSpawnTimesOfApples()[2] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[2] = 0;
         b.spawnRottenApple();
 
-        assertEquals(1, b.rottenApples3.size());
+        assertEquals(1, b.getRottenApplesOrange().size());
     }
 
 
@@ -71,23 +71,25 @@ public class RandomBlocksTest {
         Design design = mock(Design.class);
         Board b = new Board(design);
 
-        b.lastSpawnTimesOfApples[0] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[0] = 0;
+        b.getLastSpawnTimesOfApples()[0] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[0] = 0;
         b.spawnRottenApple();
         
-        b.lastSpawnTimesOfApples[0] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[0] = 0;
+        b.getLastSpawnTimesOfApples()[0] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[0] = 0;
         b.spawnRottenApple();
         
-        b.lastSpawnTimesOfApples[0] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[0] = 0;
-        b.spawnRottenApple();
 
-        b.lastDissappearTimesOfApples[0] = System.currentTimeMillis();
-        b.newRandomDissappearTimesOfApples[0] = 0;
+        b.getLastSpawnTimesOfApples()[0] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[0] = 0;
+        b.spawnRottenApple();
+        
+
+        b.getLastDissappearTimesOfApples()[0] = System.currentTimeMillis();
+        b.getNewRandomDissappearTimesOfApples()[0] = 0;
         b.disappearRottenApple();
 
-        assertEquals(2, b.rottenApples.size());
+        assertEquals(2, b.getRottenApplesBlack().size());
     }
 
     @Test
@@ -96,27 +98,27 @@ public class RandomBlocksTest {
         Design design = mock(Design.class);
         Board b = new Board(design);
 
-        b.lastSpawnTimesOfApples[1] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[1] = 0;
+        b.getLastSpawnTimesOfApples()[1] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[1] = 0;
         b.spawnRottenApple();
         
-        b.lastSpawnTimesOfApples[1] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[1] = 0;
+        b.getLastSpawnTimesOfApples()[1] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[1] = 0;
         b.spawnRottenApple();
         
-        b.lastSpawnTimesOfApples[1] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[1] = 0;
+        b.getLastSpawnTimesOfApples()[1] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[1] = 0;
         b.spawnRottenApple();
 
-        b.lastDissappearTimesOfApples[1] = System.currentTimeMillis();
-        b.newRandomDissappearTimesOfApples[1] = 0;
+        b.getLastDissappearTimesOfApples()[1] = System.currentTimeMillis();
+        b.getNewRandomDissappearTimesOfApples()[1] = 0;
         b.disappearRottenApple();
 
-        b.lastDissappearTimesOfApples[1] = System.currentTimeMillis();
-        b.newRandomDissappearTimesOfApples[1] = 0;
+        b.getLastDissappearTimesOfApples()[1] = System.currentTimeMillis();
+        b.getNewRandomDissappearTimesOfApples()[1] = 0;
         b.disappearRottenApple();
 
-        assertEquals(1, b.rottenApples2.size());
+        assertEquals(1, b.getRottenApplesGrey().size());
     }
 
     @Test
@@ -124,16 +126,16 @@ public class RandomBlocksTest {
         
         Design design = mock(Design.class);
         Board b = new Board(design);
-
-        b.lastSpawnTimesOfApples[2] = System.currentTimeMillis();
-        b.newRandomSpawnTimesOfApples[2] = 0;
+   
+        b.getLastSpawnTimesOfApples()[2] = System.currentTimeMillis();
+        b.getNewRandomSpawnTimesOfApples()[2] = 0;
         b.spawnRottenApple();
 
-        b.lastDissappearTimesOfApples[2] = System.currentTimeMillis();
-        b.newRandomDissappearTimesOfApples[2] = 0;
+        b.getLastDissappearTimesOfApples()[2] = System.currentTimeMillis();
+        b.getNewRandomDissappearTimesOfApples()[2] = 0;
         b.disappearRottenApple();
 
-        assertEquals(0, b.rottenApples.size());
+        assertEquals(0, b.getRottenApplesOrange().size());
     }
 
     @Test
@@ -143,21 +145,20 @@ public class RandomBlocksTest {
         
         Coordinates testCoordinates = new Coordinates(10, 10);
         
-        b.rottenApples.add(testCoordinates);
-        b.rottenApples.add(testCoordinates);
-        b.rottenApples.add(testCoordinates);
+        b.getRottenApplesBlack().add(testCoordinates);
+        b.getRottenApplesBlack().add(testCoordinates);
+        b.getRottenApplesBlack().add(testCoordinates);
 
-        b.rottenApples2.add(testCoordinates);
-        b.rottenApples2.add(testCoordinates);
-        b.rottenApples2.add(testCoordinates);
+        b.getRottenApplesGrey().add(testCoordinates);
+        b.getRottenApplesGrey().add(testCoordinates);
+        b.getRottenApplesGrey().add(testCoordinates);
         
-        b.rottenApples3.add(testCoordinates);
+        b.getRottenApplesOrange().add(testCoordinates);
  
         b.clearRottenApples();
 
-        assertEquals(b.rottenApples.size(),0);
-        assertEquals(b.rottenApples2.size(),0);
-        assertEquals(b.rottenApples3.size(),0);
-    
+        assertEquals(b.getRottenApplesBlack().size(),0);
+        assertEquals(b.getRottenApplesGrey().size(),0);
+        assertEquals(b.getRottenApplesOrange().size(),0);
     }
 }
