@@ -217,7 +217,7 @@ public class Board {
     }
 
     public void spawnRottenApple(){
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < rottenApples.size(); i++){
             if(conditionCheckToSpawnRottenApple(i)){
                 addRottenApples(i);
                 rottenApples.get(i).add(this.currentRottenAppleCoordinates[i]);
@@ -225,7 +225,6 @@ public class Board {
                 this.newRandomSpawnTimesOfApples[i] = random.nextInt(9) + 1;
             }
         }
-
     }
 
     private boolean dissappearRottenAppleForFirstTime(int i){ // control for randomly chosen dissappearing rotten apple for the first time
@@ -254,7 +253,6 @@ public class Board {
             lastDissappearTimesOfApples[2] = System.currentTimeMillis();
             dissappearRottenApplesCheck[2] = false;
         }
-
 
         if(dissappearRottenApple(0)){
             if(!rottenApplesBlack.isEmpty()){
@@ -333,7 +331,6 @@ public class Board {
 
         board.put(rottenAppleCoordinates, rottenAppleClass[i]);
     }
-
 
     public void clearRottenApples(){ // when rotten apples(blocks) appear at the same time more than the value of objectLimit , board will be cleared when the (objectLimit + 1)th rotten apple spawns.
         int sum = rottenApplesBlack.size() + rottenApplesGrey.size() + rottenApplesOrange.size();
