@@ -118,7 +118,7 @@ public class Board {
     private void addStartEntity() {
         board.put(snakeHeadCoordinates, snakeHeadClass);
 
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < rottenApples.size(); i++){
             lastSpawnTimesOfApples[i] = System.currentTimeMillis();
             lastDissappearTimesOfApples[i] = System.currentTimeMillis();
         }
@@ -299,32 +299,28 @@ public class Board {
         board.put(rottenAppleCoordinates, rottenAppleClass[i]);
     }
 
+    private int totalRottenAppleSize(){
+        int sum = 0;
+        for(int i = 0; i < rottenApples.size(); i++){
+                sum = sum + rottenApples.get(i).size();
+        }
+        
+        return sum;
+    }
+
     public void clearRottenApples(){ // when rotten apples(blocks) appear at the same time more than the value of objectLimit , board will be cleared when the (objectLimit + 1)th rotten apple spawns.
-        int sum = rottenApplesBlack.size() + rottenApplesGrey.size() + rottenApplesOrange.size();
+        int sum = totalRottenAppleSize();
         if(sum > APPLE_SPAWN_LIMIT){
-            for(int i = 0; i < rottenApplesBlack.size(); i++){
-                board.remove(rottenApplesBlack.get(i));
-                design.removePawn(rottenApplesBlack.get(i));    
+            for(int i = 0; i < rottenApples.size(); i++){
+                for(int k = 0; k < rottenApples.get(i).size(); k++){
+                    board.remove(rottenApples.get(i).get(k));
+                    design.removePawn(rottenApples.get(i).get(k));
+                }
+    
+                lastDissappearTimesOfApples[i] = System.currentTimeMillis();
+                dissappearRottenApplesCheck[i] = true;
+                rottenApples.get(i).clear();
             }
-            lastDissappearTimesOfApples[0] = System.currentTimeMillis();
-            dissappearRottenApplesCheck[0] = true;
-            rottenApplesBlack.clear();
-
-            for(int i = 0; i < rottenApplesGrey.size(); i++){
-                board.remove(rottenApplesGrey.get(i));
-                design.removePawn(rottenApplesGrey.get(i));    
-            }
-            lastDissappearTimesOfApples[1] = System.currentTimeMillis();
-            dissappearRottenApplesCheck[1] = true;
-            rottenApplesGrey.clear();
-
-            for(int i = 0; i < rottenApplesOrange.size(); i++){
-                board.remove(rottenApplesOrange.get(i));
-                design.removePawn(rottenApplesOrange.get(i));    
-            }
-            lastDissappearTimesOfApples[2] = System.currentTimeMillis();
-            dissappearRottenApplesCheck[2] = true;
-            rottenApplesOrange.clear();
         }
     }
 
