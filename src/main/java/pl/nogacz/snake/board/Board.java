@@ -125,7 +125,7 @@ public class Board {
                             "You have " + tailLength + " points. \n" +
                             "Maybe try again? :)");
                     }
-
+                                       
                     board.remove(snakeHeadCoordinates);
                     board.put(snakeHeadCoordinates, snakeBodyClass);
                     board.put(coordinates, snakeHeadClass);
@@ -139,7 +139,6 @@ public class Board {
                     snakeHeadCoordinates = coordinates;
                     disappearanceCounter = 0;
                     rottenFoodCoordinates = null; 
-
                 } else {
                     isEndGame = true;
                     new EndGame("End game...\n" +
@@ -265,7 +264,48 @@ public class Board {
     public static int getDirection() {
         return direction;
     }
-    private boolean isRottenFoodExist(){
+
+    public boolean isRottenFoodExist(){
         return rottenFoodCoordinates != null;
+    }
+
+    public void setRottenFoodCoordinates(Coordinates rottenFoodCoordinates){
+        this.rottenFoodCoordinates = rottenFoodCoordinates;
+    }
+
+    public int getDisappearanceTime(){
+        return disappearanceTime;
+    }
+
+    public int getDisappearanceCounter(){
+        return disappearanceCounter;
+    }
+
+    public void setDisappearanceCounter(int disappearanceCounter){
+        this.disappearanceCounter = disappearanceCounter;
+    }
+
+    public HashMap<Coordinates, PawnClass> getBoard(){
+        return board;
+    }
+
+    public void setBoard(HashMap<Coordinates, PawnClass> board){
+        this.board = board;
+    }
+
+    public ArrayList<Coordinates> getSnakeTail() {
+        return snakeTail;
+    }
+
+    public void setSnakeTail(ArrayList<Coordinates> snakeTail) {
+        this.snakeTail = snakeTail;
+    }
+
+    public int getTailLength(){
+        return tailLength;
+    }
+
+    public void setTailLength(int tailLength){
+        this.tailLength = tailLength;
     }
 }
