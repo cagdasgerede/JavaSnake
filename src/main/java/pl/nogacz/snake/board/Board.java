@@ -5,7 +5,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.AchievementList;
-import pl.nogacz.snake.application.Achievements;
+import pl.nogacz.snake.application.AchievementHandler;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
 import pl.nogacz.snake.pawn.Pawn;
@@ -37,7 +37,13 @@ public class Board {
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
-    private Achievements trophy=new Achievements(design);                   //Creating a Achievements instance named trophy.
+    private AchievementHandler trophy=new AchievementHandler(design);                   //Creating a Achievements instance named trophy.
+
+    //achievement id's:
+    private int apple=0;
+    private int turn=1;
+    private int time=2;
+    private int length=3;
     
 
     public Board(Design design) {
@@ -99,8 +105,8 @@ public class Board {
                     tailLength++;
 
                     snakeHeadCoordinates = coordinates;
-                    trophy.addLength();                                     // Every collected apple calls addLength()
-                    trophy.addApple();                                      // and addApple() from Achievements class.
+                    trophy.addProgress(length);                                     // Every collected apple calls addLength()
+                    trophy.addProgress(apple);                                      // and addApple() from Achievements class.
                     addEat();
                 } else {
                     isEndGame = true;
@@ -178,8 +184,8 @@ public class Board {
                     checkMap();
                     mapTask();
 
-                    trophy.addTime();                                       //Calling addTime() after every 140ms.
-                    trophy.AchievementCheck();                              //Checking for newly unlocked achievements.
+                    trophy.addProgress(time);                                       //Calling addTime() after every 140ms.
+                    trophy.achievementCheck();                              //Checking for newly unlocked achievements.
                 }
             }
         });
@@ -208,16 +214,16 @@ public class Board {
     private void changeDirection(int newDirection) {                    // every turn calls addTurn from Achievements class.
         if(newDirection == 1 && direction != 2) {
             direction = 1;
-            trophy.addTurn();                                               
+            trophy.addProgress(turn);                                               
         } else if(newDirection == 2 && direction != 1) {
             direction = 2;
-            trophy.addTurn();
+            trophy.addProgress(turn); 
         } else if(newDirection == 3 && direction != 4) {
             direction = 3;
-            trophy.addTurn();
+            trophy.addProgress(turn); 
         } else if(newDirection == 4 && direction != 3) {
             direction = 4;
-            trophy.addTurn();
+            trophy.addProgress(turn); 
         }
     }
 
