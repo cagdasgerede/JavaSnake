@@ -37,7 +37,7 @@ public class Board {
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
-    private AchievementHandler trophy=new AchievementHandler(design);                   //Creating a Achievements instance named trophy.
+    private AchievementHandler trophy=new AchievementHandler(design);                 
 
     //achievement id's:
     private int apple=0;
@@ -105,9 +105,12 @@ public class Board {
                     tailLength++;
 
                     snakeHeadCoordinates = coordinates;
-                    trophy.addProgress(length);                                     // Every collected apple calls addLength()
-                    trophy.addProgress(apple);                                      // and addApple() from Achievements class.
+                    
+                    trophy.addProgress(length);                                     
+                    trophy.addProgress(apple);  
+
                     addEat();
+
                 } else {
                     isEndGame = true;
 
@@ -184,8 +187,8 @@ public class Board {
                     checkMap();
                     mapTask();
 
-                    trophy.addProgress(time);                                       //Calling addTime() after every 140ms.
-                    trophy.achievementCheck();                              //Checking for newly unlocked achievements.
+                    trophy.addProgress(time);                                       
+                    trophy.achievementCheck();                         
                 }
             }
         });
@@ -211,7 +214,7 @@ public class Board {
         }
     }
 
-    private void changeDirection(int newDirection) {                    // every turn calls addTurn from Achievements class.
+    private void changeDirection(int newDirection) {                   
         if(newDirection == 1 && direction != 2) {
             direction = 1;
             trophy.addProgress(turn);                                               
