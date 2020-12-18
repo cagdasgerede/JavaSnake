@@ -63,7 +63,7 @@ public class AchievementHandler {
 
         }
 
-        System.out.println(achievements);
+        
         try{
             File table = new File(pathToAchievements);
             FileWriter fw = new FileWriter(table);
@@ -79,7 +79,7 @@ public class AchievementHandler {
 
         }
 
-        System.out.println(progs);
+        
         try{
             File table = new File(pathToCounter);
             FileWriter fw = new FileWriter(table);
