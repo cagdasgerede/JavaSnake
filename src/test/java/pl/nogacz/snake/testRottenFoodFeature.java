@@ -15,7 +15,7 @@ import java.util.HashMap;
   
 public class testRottenFoodFeature {
     @Test
-    public void testDecreaseLengthAndEatRottenFood(){
+    public void testDecreaseLengthAndEatRottenFood() {
         Design design = mock(Design.class);    
         Board board = new Board(design);
         PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
@@ -31,12 +31,11 @@ public class testRottenFoodFeature {
         board.setBoard(boardHash);
         board.setSnakeTail(snakeTail);
         
-        try{
+        try {
             Method method = Board.class.getDeclaredMethod("moveSnakeHead", Coordinates.class); 
             method.setAccessible(true);
             method.invoke(board, new Coordinates(10, 12));   
-        }
-        catch(Exception e){
+        } catch(Exception e) {
             System.out.println(e.getMessage());
         }
 
@@ -45,7 +44,7 @@ public class testRottenFoodFeature {
     }
    
     @Test
-    public void testDisappearRottenFoodAfterCounting(){   
+    public void testDisappearRottenFoodAfterCounting() {   
         Design design = mock(Design.class);       
         Board board = new Board(design);
         Coordinates coordinates = mock(Coordinates.class);
@@ -54,12 +53,11 @@ public class testRottenFoodFeature {
         board.setRottenFoodCoordinates(coordinates);       
         board.setDisappearanceCounter(board.getDisappearanceTime());
 
-        try{
+        try {
             Method method = Board.class.getDeclaredMethod("moveSnakeHead", Coordinates.class); 
             method.setAccessible(true);
             method.invoke(board, coordinates);   
-        }
-        catch(Exception e){
+        } catch(Exception e) {
             System.out.println(e.getMessage());
         }
 
@@ -68,16 +66,15 @@ public class testRottenFoodFeature {
     }
 
     @Test
-    public void testAddRottenFood(){
+    public void testAddRottenFood() {
         Design design = mock(Design.class);       
         Board board = new Board(design);
 
-        try{  
+        try {  
             Method method = Board.class.getDeclaredMethod("addRottenFood");  
             method.setAccessible(true);  
             method.invoke(board); 
-        }
-        catch(Exception e){
+        } catch(Exception e) {
             System.out.println(e.getMessage());
         }
 

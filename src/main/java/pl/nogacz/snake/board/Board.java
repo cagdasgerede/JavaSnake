@@ -91,15 +91,14 @@ public class Board {
 
     private void moveSnakeHead(Coordinates coordinates) {
         if(coordinates.isValid()) {
-            if(!isRottenFoodExist()){
+            if(!isRottenFoodExist()) {
                 int randomnum = random.nextInt(10);
-                if(randomnum == 1){
+                if(randomnum == 1) {
                     addRottenFood();
                 } 
-            }
-            else{   
+            } else {   
                 if(disappearanceCounter < disappearanceTime) disappearanceCounter++;
-                if(disappearanceCounter == disappearanceTime){ 
+                if(disappearanceCounter == disappearanceTime) { 
                     disappearanceCounter = 0;
                     board.remove(rottenFoodCoordinates);
                     rottenFoodCoordinates = null;
@@ -116,9 +115,8 @@ public class Board {
                     snakeHeadCoordinates = coordinates;
 
                     addFreshFood();
-                }
-                else if(getPawn(coordinates).getPawn().isRottenFood()){
-                    if(tailLength == 0){
+                } else if(getPawn(coordinates).getPawn().isRottenFood()) {
+                    if(tailLength == 0) {
                         isEndGame = true;
 
                         new EndGame("End game...\n" +
@@ -187,16 +185,16 @@ public class Board {
 
         if(bool)
             board.put(foodCoordinates, freshFoodClass);
-        else{    
+        else {    
             board.put(foodCoordinates, rottenFoodClass);  
             rottenFoodCoordinates = foodCoordinates;
         }      
     }
-    private void addFreshFood(){
+    private void addFreshFood() {
         addEat(true);
     }
 
-    private void addRottenFood(){
+    private void addRottenFood() {
         addEat(false);
     }
 
@@ -265,31 +263,31 @@ public class Board {
         return direction;
     }
 
-    public boolean isRottenFoodExist(){
+    public boolean isRottenFoodExist() {
         return rottenFoodCoordinates != null;
     }
 
-    public void setRottenFoodCoordinates(Coordinates rottenFoodCoordinates){
+    public void setRottenFoodCoordinates(Coordinates rottenFoodCoordinates) {
         this.rottenFoodCoordinates = rottenFoodCoordinates;
     }
 
-    public int getDisappearanceTime(){
+    public int getDisappearanceTime() {
         return disappearanceTime;
     }
 
-    public int getDisappearanceCounter(){
+    public int getDisappearanceCounter() {
         return disappearanceCounter;
     }
 
-    public void setDisappearanceCounter(int disappearanceCounter){
+    public void setDisappearanceCounter(int disappearanceCounter) {
         this.disappearanceCounter = disappearanceCounter;
     }
 
-    public HashMap<Coordinates, PawnClass> getBoard(){
+    public HashMap<Coordinates, PawnClass> getBoard() {
         return board;
     }
 
-    public void setBoard(HashMap<Coordinates, PawnClass> board){
+    public void setBoard(HashMap<Coordinates, PawnClass> board) {
         this.board = board;
     }
 
@@ -301,11 +299,11 @@ public class Board {
         this.snakeTail = snakeTail;
     }
 
-    public int getTailLength(){
+    public int getTailLength() {
         return tailLength;
     }
 
-    public void setTailLength(int tailLength){
+    public void setTailLength(int tailLength) {
         this.tailLength = tailLength;
     }
 }
