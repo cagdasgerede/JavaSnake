@@ -36,15 +36,15 @@ public class SnakeSkins {
         alert.getButtonTypes().setAll(skin1, skin2, skin3);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == skin1){
+        if (result.get() == skin1) {
             body = bodySkinTones.SKIN_TONE_1;
             head = headSkinTones.SKIN_TONE_1;
         }
-        else if (result.get() == skin2){
+        else if (result.get() == skin2) {
             body = bodySkinTones.SKIN_TONE_2;
             head = headSkinTones.SKIN_TONE_2;
         }
-        else if (result.get() == skin3){
+        else if (result.get() == skin3) {
             body = bodySkinTones.SKIN_TONE_3;
             head = headSkinTones.SKIN_TONE_3;
         }
@@ -52,7 +52,7 @@ public class SnakeSkins {
     public static bodySkinTones getBodySkin() {
         return body;
     }
-    public static headSkinTones getHeadSkin(){
+    public static headSkinTones getHeadSkin() {
         return head;
     }
 }

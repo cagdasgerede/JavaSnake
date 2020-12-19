@@ -5,7 +5,6 @@ import java.util.Optional;
 
 public class KeyMap {
     private String message;
-    private static boolean isArrowKeymap = false;
 
     public KeyMap(String message) {
         this.message = message;
@@ -18,21 +17,28 @@ public class KeyMap {
         alert.setTitle("JavaSnake");
         alert.setContentText(message);
 
-        ButtonType keymap1 = new ButtonType("WASD Keymap");
-        ButtonType keymap2 = new ButtonType("Arrows Keymap");
+        ButtonType upButton = new ButtonType("Up");
+        ButtonType rightButton = new ButtonType("Right");
+        ButtonType downButton = new ButtonType("Down");
+        ButtonType leftButton = new ButtonType("Left");
 
-        alert.getButtonTypes().setAll(keymap1, keymap2);
+        alert.getButtonTypes().setAll(upButton, rightButton, downButton, leftButton);
 
         Optional<ButtonType> result = alert.showAndWait();
+        /*
+        if (result.get() == upButton) {
+            alert.getButtonTypes().
+        }
+        else if(result.get() == rightButton) {
 
-        if (result.get() == keymap1) {
-            isArrowKeymap = false;
+        }
+        else if(result.get() == downButton) {
             
         }
-        else if(result.get() == keymap2) {
-            isArrowKeymap = true;
+        else if(result.get() == leftButton) {
+            
         }
+        */
     }
 
-    public static boolean getKeymap() {return isArrowKeymap;}
 }

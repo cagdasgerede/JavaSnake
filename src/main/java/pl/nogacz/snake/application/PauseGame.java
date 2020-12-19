@@ -31,7 +31,7 @@ public class PauseGame {
             new SnakeSkins("Select Skin");
         }
         else if(result.get() == keyBindButton) {
-            new KeyMap("Change Key");
+            new KeyMap("Choose a direction and press a button to set");
         }
     }
 }
