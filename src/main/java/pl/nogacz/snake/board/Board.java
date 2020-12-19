@@ -97,7 +97,9 @@ public class Board {
                     addRottenFood();
                 } 
             } else {   
-                if(disappearanceCounter < disappearanceTime) disappearanceCounter++;
+                if(disappearanceCounter < disappearanceTime) {
+                     disappearanceCounter++;
+                }     
                 if(disappearanceCounter == disappearanceTime) { 
                     disappearanceCounter = 0;
                     board.remove(rottenFoodCoordinates);
@@ -183,8 +185,9 @@ public class Board {
             foodCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
         } while(isFieldNotNull(foodCoordinates));
 
-        if(bool)
+        if(bool) {
             board.put(foodCoordinates, freshFoodClass);
+        }    
         else {    
             board.put(foodCoordinates, rottenFoodClass);  
             rottenFoodCoordinates = foodCoordinates;
