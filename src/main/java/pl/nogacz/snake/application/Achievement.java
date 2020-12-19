@@ -20,8 +20,6 @@ public abstract class Achievement {
     protected String notificationMessage2="";
     protected String statusMessage1="";
     protected String statusMessage2="";
-    
-
 
     public void setAll(int achieved , double progress){
         this.achieved=achieved;
@@ -61,7 +59,6 @@ public abstract class Achievement {
         return toStr;
     }
 
-
     public void reset(){
         progress=0;
         achieved=0;
@@ -70,7 +67,6 @@ public abstract class Achievement {
     public void add(){
         progress += addition;
     }
-
 
     public void showNotification() {                           //Creates a tray notification while in game for newly unlocked achievements.
 
