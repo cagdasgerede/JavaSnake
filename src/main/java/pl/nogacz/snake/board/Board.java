@@ -7,7 +7,6 @@ import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
 import pl.nogacz.snake.application.PauseGame;
-import pl.nogacz.snake.application.KeyMap;
 import pl.nogacz.snake.application.SnakeSkins;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
