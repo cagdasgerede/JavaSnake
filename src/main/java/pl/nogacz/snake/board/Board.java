@@ -7,7 +7,6 @@ import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
 import pl.nogacz.snake.application.PauseGame;
-import pl.nogacz.snake.application.KeyMap;
 import pl.nogacz.snake.application.SnakeSkins;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
@@ -29,7 +28,6 @@ public class Board {
     private boolean isPaused = false;
 
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
-    //private static int skinTone = SnakeSkins.getBodySkin();
     private static SnakeSkins.bodySkinTones myVar = SnakeSkins.getBodySkin();
     private int tailLength = 0;
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
