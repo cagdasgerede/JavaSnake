@@ -17,8 +17,8 @@ import pl.nogacz.snake.board.TwoPlayerBoard;
 public class Snake extends Application {
     Design design;
     Board board;
-    TwoPlayerDesign tp_design;
-    TwoPlayerBoard tp_board;
+    TwoPlayerDesign twoPlayerDesign;
+    TwoPlayerBoard twoPlayerBoard;
 
     public static void main(String[] args) {
         launch(args);
@@ -28,10 +28,9 @@ public class Snake extends Application {
     public void start(Stage primaryStage) {
         NewGame newGame = new NewGame("Please select your game mode");
         int gameMode = newGame.printDialog();
-        
-        if(gameMode == 0){
+        if (gameMode == 0) {
             design = new Design();
-            board = new Board(design,true);
+            board = new Board(design, true);
             Scene scene = new Scene(design.getGridPane(), 715, 715, Color.BLACK);
             scene.setOnKeyReleased(event -> board.readKeyboard(event));
 
@@ -39,32 +38,25 @@ public class Snake extends Application {
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
             primaryStage.show();
-        }
-        else if(gameMode == 1){
-
+        } else if (gameMode == 1) {
             UserKeySelect keyCheck = new UserKeySelect("Please define user keys");
             boolean check;
             do {
                 check = keyCheck.printDialog();
-            }while (!check);
-            char[] usr1 = keyCheck.getUser1Conrols();
-            char[] usr2 = keyCheck.getUser2Conrols();
+            } while (!check);
+            String[] usr1 = keyCheck.getUser1Conrols();
+            String[] usr2 = keyCheck.getUser2Conrols();
 
+            twoPlayerDesign = new TwoPlayerDesign();
+            twoPlayerBoard = new TwoPlayerBoard(twoPlayerDesign, true, usr1, usr2);
+            Scene scene = new Scene(twoPlayerDesign.getGridPane(), 1430, 715, Color.BLACK);
+            scene.setOnKeyReleased(event -> twoPlayerBoard.readKeyboard(event));
 
-            tp_design = new TwoPlayerDesign();
-            tp_board = new TwoPlayerBoard(tp_design,true, usr1, usr2);
-            Scene scene = new Scene(tp_design.getGridPane(), 1430, 715, Color.BLACK);
-            scene.setOnKeyReleased(event -> tp_board.readKeyboard(event));
-
-
-
-            primaryStage.setTitle("JavaSnake 2 player");
+            primaryStage.setTitle("JavaSnake 2 Player");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
             primaryStage.show();
-        }
-        else if(gameMode == -1) // exitGame
+        } else if (gameMode == -1) // exitGame
             System.exit(888);
-
     }
 }

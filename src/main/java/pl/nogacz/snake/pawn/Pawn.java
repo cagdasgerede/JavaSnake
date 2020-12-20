@@ -5,16 +5,16 @@ public enum Pawn {
     BRICK,
     SNAKE_HEAD,
     SNAKE_BODY,
-    FOOD2,
-    SNAKE_HEAD2,
-    SNAKE_BODY2;
+    FOOD_SECOND_PLAYER,
+    SNAKE_HEAD_SECOND_PLAYER,
+    SNAKE_BODY_SECOND_PLAYER;
 
-    public boolean isFood2() {
-        return this == FOOD2;
+    public boolean isFoodOfSecondPlayer() {
+        return this == FOOD_SECOND_PLAYER;
     }
 
-    public boolean isHead2() {
-        return this == SNAKE_HEAD2;
+    public boolean isHeadOfSecondPlayer() {
+        return this == SNAKE_HEAD_SECOND_PLAYER;
     }
 
     public boolean isFood() {

@@ -7,6 +7,6 @@ public class Coordinates2P extends Coordinates {
     }
 
     public boolean isValid() {
-        return getX() <= 44 && getX() >= 0 && getY() <= 44 && getY() >= 0;
+        return getX() <= 44 && getX() >= 0 && getY() <= 22 && getY() >= 0;
     }
 }

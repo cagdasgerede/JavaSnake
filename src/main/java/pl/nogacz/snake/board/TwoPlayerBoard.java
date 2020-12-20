@@ -3,278 +3,239 @@ package pl.nogacz.snake.board;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import javafx.scene.input.KeyCode; // this may needed when default keys are wanted to use
 import javafx.scene.input.KeyEvent;
-import pl.nogacz.snake.application.TwoPlayerDesign;
 import pl.nogacz.snake.application.EndGame;
-import pl.nogacz.snake.pawn.*;
+import pl.nogacz.snake.application.TwoPlayerDesign;
+import pl.nogacz.snake.pawn.Pawn;
+import pl.nogacz.snake.pawn.PawnClass;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 public class TwoPlayerBoard {
+    public String[] usr1; // user1 control keys
+    public String[] usr2; // user2 control keys
+    public String user1Up, user1Down, user1Left, user1Right, user2Up, user2Down, user2Left, user2Right; // user control constants
     private HashMap<Coordinates2P, PawnClass> board = new HashMap<>();
-    private TwoPlayerDesign tp_design;
-    private Random random = new Random();
-    private Random random2 = new Random(); // random for 2nd player
+    private TwoPlayerDesign twoPlayerDesign;
+    private Random randomGeneratorForFirstPlayer = new Random();
+    private Random randomGeneratorForSecondPlayer = new Random();
+    private Player firstPlayer;
+    private Player secondPlayer;
 
-    private boolean isEndGame = false;
-    private boolean isEndGame2 = false; // for 2nd player
-
-    private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
-    private static int direction2 = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT **** for 2nd player
-    private int tailLength = 0;
-    private int tailLength2 = 0;
-
-    private Coordinates2P snakeHeadCoordinates = new Coordinates2P(10, 18);
-    private Coordinates2P snakeHeadCoordinates2 = new Coordinates2P(29, 18); // for 2nd player
-
-    private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
-    private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
-    private PawnClass foodClass = new PawnClass(Pawn.FOOD);
-
-    private PawnClass snakeHeadClass2 = new PawnClass(Pawn.SNAKE_HEAD2);
-    private PawnClass snakeBodyClass2 = new PawnClass(Pawn.SNAKE_BODY2);
-    private PawnClass foodClass2 = new PawnClass(Pawn.FOOD2);
-
-    private ArrayList<Coordinates> snakeTail = new ArrayList<>();
-    private ArrayList<Coordinates> snakeTail2 = new ArrayList<>(); // for second player
-
-    public char[] usr1; // user1 control keys
-    public char[] usr2; // user2 control keys
-
-
-    public TwoPlayerBoard(TwoPlayerDesign tp_design, boolean isGameStarted, char[] usr1, char[] usr2) {
-        this.tp_design = tp_design;
-
+    public TwoPlayerBoard(TwoPlayerDesign twoPlayerDesign, boolean isGameStarted, String[] usr1, String[] usr2) {
+        this.twoPlayerDesign = twoPlayerDesign;
+        firstPlayer = new Player(new Coordinates2P(10, 18), 1);
+        secondPlayer = new Player(new Coordinates2P(29, 18), 2);
+        initializeUserConstants(usr1[0], usr1[1], usr1[2], usr1[3], usr2[0], usr2[1], usr2[2], usr2[3]);
         this.usr1 = usr1;
         this.usr2 = usr2;
-
         addStartEntity();
-        if(isGameStarted)
+        if (isGameStarted)
             mapTask();
     }
 
-    private void addStartEntity() {
-        board.put(snakeHeadCoordinates, snakeHeadClass);
-        board.put(snakeHeadCoordinates2, snakeHeadClass2);
+    public static int directionToNumber(Direction direction) {
+        switch (direction) {
+            case UP:
+                return 1;
+            case DOWN:
+                return 2;
+            case LEFT:
+                return 3;
+            case RIGHT:
+                return 4;
+        }
+        return -1; // to return error if none of the switch cases
+    }
 
-        for(int i = 0; i < 44; i++) {
+    public void initializeUserConstants(String user1Up, String user1Down, String user1Left, String user1Right, String user2Up, String user2Down, String user2Left, String user2Right) {
+        this.user1Up = user1Up;
+        this.user1Down = user1Down;
+        this.user1Left = user1Left;
+        this.user1Right = user1Right;
+        this.user2Up = user2Up;
+        this.user2Down = user2Down;
+        this.user2Left = user2Left;
+        this.user2Right = user2Right;
+    }
+
+    private void addStartEntity() {
+        board.put(firstPlayer.getSnakeHeadCoordinates(), firstPlayer.getSnakeHeadClass());
+        board.put(secondPlayer.getSnakeHeadCoordinates(), secondPlayer.getSnakeHeadClass());
+
+        for (int i = 0; i < 44; i++) {
             board.put(new Coordinates2P(0, i), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates2P(21, i), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates2P(i, 0), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates2P(i, 21), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates2P(43, i), new PawnClass(Pawn.BRICK));
         }
-
         addEat();
-        addEat2();
+        addEatSecondPlayer();
         displayAllImage();
     }
 
     private void checkMap() {
         removeAllImage();
-        if(!isEndGame )
-            moveSnake();
-        if(!isEndGame2)
-            moveSnake2();
+        if (!firstPlayer.isEndGame())
+            moveSnake(firstPlayer);
+        if (!secondPlayer.isEndGame())
+            moveSnake(secondPlayer);
         displayAllImage();
     }
 
     private void removeAllImage() {
-        for(Map.Entry<Coordinates2P, ? super PawnClass> entry : board.entrySet()) {
-            tp_design.removePawn(entry.getKey());
+        for (Map.Entry<Coordinates2P, PawnClass> entry : board.entrySet()) {
+            twoPlayerDesign.removePawn(entry.getKey());
         }
-
     }
 
     private void displayAllImage() {
-        for(Map.Entry<Coordinates2P,PawnClass> entry : board.entrySet()) {
-                tp_design.addPawn(entry.getKey(), entry.getValue());
+        for (Map.Entry<Coordinates2P, PawnClass> entry : board.entrySet()) {
+            twoPlayerDesign.addPawn(entry.getKey(), entry.getValue(), this);
         }
     }
 
-    private void moveSnake() {
-        switch(direction) {
-            case 1: moveSnakeHead(new Coordinates2P(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1)); break;
-            case 2: moveSnakeHead(new Coordinates2P(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1)); break;
-            case 3: moveSnakeHead(new Coordinates2P(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY())); break;
-            case 4: moveSnakeHead(new Coordinates2P(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY())); break;
+    private void moveSnake(Player player) {
+        Direction playerDirection = player.getDirection();
+        switch (playerDirection) {
+            case UP:
+                moveSnakeHead(new Coordinates2P(player.getSnakeHeadCoordinates().getX(), player.getSnakeHeadCoordinates().getY() - 1), player);
+                break;
+            case DOWN:
+                moveSnakeHead(new Coordinates2P(player.getSnakeHeadCoordinates().getX(), player.getSnakeHeadCoordinates().getY() + 1), player);
+                break;
+            case LEFT:
+                moveSnakeHead(new Coordinates2P(player.getSnakeHeadCoordinates().getX() - 1, player.getSnakeHeadCoordinates().getY()), player);
+                break;
+            case RIGHT:
+                moveSnakeHead(new Coordinates2P(player.getSnakeHeadCoordinates().getX() + 1, player.getSnakeHeadCoordinates().getY()), player);
+                break;
         }
     }
-    private void moveSnake2(){
-        switch(direction2) {
-            case 1: moveSnakeHead2(new Coordinates2P(snakeHeadCoordinates2.getX(), snakeHeadCoordinates2.getY() - 1)); break;
-            case 2: moveSnakeHead2(new Coordinates2P(snakeHeadCoordinates2.getX(), snakeHeadCoordinates2.getY() + 1)); break;
-            case 3: moveSnakeHead2(new Coordinates2P(snakeHeadCoordinates2.getX() - 1, snakeHeadCoordinates2.getY())); break;
-            case 4: moveSnakeHead2(new Coordinates2P(snakeHeadCoordinates2.getX() + 1, snakeHeadCoordinates2.getY())); break;
-        }
-    }
-    private void moveSnakeHead(Coordinates2P coordinates) {
-        if(coordinates.isValid()) {
-            if(isFieldNotNull(coordinates)) {
-                if(getPawn(coordinates).getPawn().isFood()) {
-                    board.remove(snakeHeadCoordinates);
-                    board.put(snakeHeadCoordinates, snakeBodyClass);
-                    board.put(coordinates, snakeHeadClass);
-                    snakeTail.add(snakeHeadCoordinates);
-                    tailLength++;
 
-                    snakeHeadCoordinates = coordinates;
-
-                    addEat();
+    private void moveSnakeHead(Coordinates2P coordinates, Player player) {
+        if (player.equals(firstPlayer) && (!firstPlayer.isEndGame())) {
+            if (coordinates.isValid()) {
+                if (isFieldNotNull(coordinates)) {
+                    if (getPawn(coordinates).getPawn().isFood()) {
+                        board.remove(firstPlayer.getSnakeHeadCoordinates());
+                        board.put(firstPlayer.getSnakeHeadCoordinates(), firstPlayer.getSnakeBodyClass());
+                        board.put(coordinates, firstPlayer.getSnakeHeadClass());
+                        firstPlayer.getSnakeTail().add(firstPlayer.getSnakeHeadCoordinates());
+                        firstPlayer.incrementTailLength();
+                        firstPlayer.setSnakeHeadCoordinates(coordinates);
+                        addEat();
+                    } else {
+                        firstPlayer.setEndGame(true);
+                        checkAndEndGame();
+                    }
                 } else {
-                     isEndGame = true;
-
-                    if(isEndGame && isEndGame2) {
-                        if(tailLength > tailLength2 ) {
-                            new EndGame(
-                                    "   >>>>  Player 1 wins  <<<<\n\n" +
-                                            "Player 1 collected " + tailLength + " points. \n" +
-                                            "Player 2 collected " + tailLength2 + " points. \n" +
-                                            "Thank you for playing :)");
-                        }
-                        else if(tailLength2 > tailLength ) {
-                            new EndGame(
-                                    "   >>>>  Player 2 wins  <<<<\n\n" +
-                                            "Player 1 collected " + tailLength + " points. \n" +
-                                            "Player 2 collected " + tailLength2 + " points. \n" +
-                                            "Thank you for playing :)");
-                        }
-                        else{
-                            new EndGame("   >>>>  Game is draw. No winner  <<<<\n\n" +
-                                    "Player 1 collected " + tailLength + " points. \n" +
-                                    "Player 2 collected " + tailLength2 + " points. \n" +
-                                    "Thank you for playing :)");
-                        }
-
+                    board.remove(firstPlayer.getSnakeHeadCoordinates());
+                    board.put(coordinates, firstPlayer.getSnakeHeadClass());
+                    firstPlayer.setSnakeHeadCoordinates(coordinates);
+                    if (firstPlayer.getTailLength() > 0) {
+                        moveSnakeBody(firstPlayer);
                     }
                 }
-            } else {
-                board.remove(snakeHeadCoordinates);
-                board.put(coordinates, snakeHeadClass);
-
-                snakeHeadCoordinates = coordinates;
-
-                if(tailLength > 0) {
-                    moveSnakeBody();
-                }
             }
-        }
-    }
-
-    private void moveSnakeHead2(Coordinates2P coordinates) {
-        if(coordinates.isValid()) {
-            if(isFieldNotNull(coordinates)) {
-                if(getPawn(coordinates).getPawn().isFood2()) {
-                    board.remove(snakeHeadCoordinates2);
-                    board.put(snakeHeadCoordinates2, snakeBodyClass2);
-                    board.put(coordinates, snakeHeadClass2);
-                    snakeTail2.add(snakeHeadCoordinates2);
-                    tailLength2++;
-
-                    snakeHeadCoordinates2 = coordinates;
-
-                    addEat2();
+        } else if (player.equals(secondPlayer) && (!secondPlayer.isEndGame())) {
+            if (coordinates.isValid()) {
+                if (isFieldNotNull(coordinates)) {
+                    if (getPawn(coordinates).getPawn().isFoodOfSecondPlayer()) {
+                        board.remove(secondPlayer.getSnakeHeadCoordinates());
+                        board.put(secondPlayer.getSnakeHeadCoordinates(), secondPlayer.getSnakeBodyClass());
+                        board.put(coordinates, secondPlayer.getSnakeHeadClass());
+                        secondPlayer.getSnakeTail().add(secondPlayer.getSnakeHeadCoordinates());
+                        secondPlayer.incrementTailLength();
+                        secondPlayer.setSnakeHeadCoordinates(coordinates);
+                        addEatSecondPlayer();
+                    } else {
+                        secondPlayer.setEndGame(true);
+                        checkAndEndGame();
+                    }
                 } else {
-                     isEndGame2 = true;
-                        if(isEndGame && isEndGame2) {
-                            if(tailLength > tailLength2 ) {
-                                new EndGame(
-                                "   >>>>  Player 1 wins  <<<<\n\n" +
-                                "Player 1 collected " + tailLength + " points. \n" +
-                                "Player 2 collected " + tailLength2 + " points. \n" +
-                                "Thank you for playing :)");
-                            }
-                            else if(tailLength2 > tailLength ) {
-                                new EndGame(
-                                "   >>>>  Player 2 wins  <<<<\n\n" +
-                                "Player 1 collected " + tailLength + " points. \n" +
-                                "Player 2 collected " + tailLength2 + " points. \n" +
-                                "Thank you for playing :)");
-                            }
-                            else{
-                                new EndGame("   >>>>  Game is draw. No winner  <<<<\n\n" +
-                                        "Player 1 collected " + tailLength + " points. \n" +
-                                        "Player 2 collected " + tailLength2 + " points. \n" +
-                                        "Thank you for playing :)");
-                            }
-
-                        }
-                }
-            } else {
-                board.remove(snakeHeadCoordinates2);
-                board.put(coordinates, snakeHeadClass2);
-
-                snakeHeadCoordinates2 = coordinates;
-
-                if(tailLength2 > 0) {
-                    moveSnakeBody2();
+                    board.remove(secondPlayer.getSnakeHeadCoordinates());
+                    board.put(coordinates, secondPlayer.getSnakeHeadClass());
+                    secondPlayer.setSnakeHeadCoordinates(coordinates);
+                    if (secondPlayer.getTailLength() > 0) {
+                        moveSnakeBody(secondPlayer);
+                    }
                 }
             }
         }
     }
-    private void moveSnakeBody() {
-        switch(direction) {
-            case 1: moveSnakeBodyHandler(new Coordinates2P(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1)); break;
-            case 2: moveSnakeBodyHandler(new Coordinates2P(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1)); break;
-            case 3: moveSnakeBodyHandler(new Coordinates2P(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY())); break;
-            case 4: moveSnakeBodyHandler(new Coordinates2P(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY())); break;
+
+    private void checkAndEndGame() {
+        if (firstPlayer.isEndGame() && secondPlayer.isEndGame()) {
+            if (firstPlayer.getTailLength() > secondPlayer.getTailLength()) {
+                new EndGame(
+                        "Player 1 wins!\n\n" +
+                                "Player 1 collected " + firstPlayer.getTailLength() + " points. \n" +
+                                "Player 2 collected " + secondPlayer.getTailLength() + " points. \n" +
+                                "Thank you for playing :)");
+            } else if (secondPlayer.getTailLength() > firstPlayer.getTailLength()) {
+                new EndGame(
+                        "Player 2 wins!\n\n" +
+                                "Player 1 collected " + firstPlayer.getTailLength() + " points. \n" +
+                                "Player 2 collected " + secondPlayer.getTailLength() + " points. \n" +
+                                "Thank you for playing :)");
+            } else {
+                new EndGame("   Draw. No winner\n\n" +
+                        "Player 1 collected " + firstPlayer.getTailLength() + " points. \n" +
+                        "Player 2 collected " + secondPlayer.getTailLength() + " points. \n" +
+                        "Thank you for playing :)");
+            }
         }
     }
 
-    private void moveSnakeBody2() {
-        switch(direction2) {
-            case 1: moveSnakeBodyHandler2(new Coordinates2P(snakeHeadCoordinates2.getX(), snakeHeadCoordinates2.getY() + 1)); break;
-            case 2: moveSnakeBodyHandler2(new Coordinates2P(snakeHeadCoordinates2.getX(), snakeHeadCoordinates2.getY() - 1)); break;
-            case 3: moveSnakeBodyHandler2(new Coordinates2P(snakeHeadCoordinates2.getX() + 1, snakeHeadCoordinates2.getY())); break;
-            case 4: moveSnakeBodyHandler2(new Coordinates2P(snakeHeadCoordinates2.getX() - 1, snakeHeadCoordinates2.getY())); break;
+    private void moveSnakeBody(Player player) {
+        Direction playerDirection = player.getDirection();
+        switch (playerDirection) {
+            case UP:
+                moveSnakeBodyHandler(new Coordinates2P(player.getSnakeHeadCoordinates().getX(), player.getSnakeHeadCoordinates().getY() + 1), player);
+                break;
+            case DOWN:
+                moveSnakeBodyHandler(new Coordinates2P(player.getSnakeHeadCoordinates().getX(), player.getSnakeHeadCoordinates().getY() - 1), player);
+                break;
+            case LEFT:
+                moveSnakeBodyHandler(new Coordinates2P(player.getSnakeHeadCoordinates().getX() + 1, player.getSnakeHeadCoordinates().getY()), player);
+                break;
+            case RIGHT:
+                moveSnakeBodyHandler(new Coordinates2P(player.getSnakeHeadCoordinates().getX() - 1, player.getSnakeHeadCoordinates().getY()), player);
+                break;
         }
     }
 
-    private void moveSnakeBodyHandler(Coordinates2P coordinates) {
-        if(tailLength == snakeTail.size()) {
-            Coordinates endTail = snakeTail.get(0);
+    private void moveSnakeBodyHandler(Coordinates2P coordinates, Player player) {
+        if (player.getTailLength() == player.getSnakeTail().size()) {
+            Coordinates endTail = player.getSnakeTail().get(0);
             board.remove(endTail);
-            snakeTail.remove(endTail);
+            player.getSnakeTail().remove(endTail);
         }
 
-        board.put(coordinates, snakeBodyClass);
-        snakeTail.add(coordinates);
+        board.put(coordinates, player.getSnakeBodyClass());
+        player.getSnakeTail().add(coordinates);
     }
-
-    private void moveSnakeBodyHandler2(Coordinates2P coordinates) {
-        if(tailLength2 == snakeTail2.size()) {
-            Coordinates endTail = snakeTail2.get(0);
-            board.remove(endTail);
-            snakeTail2.remove(endTail);
-        }
-
-        board.put(coordinates, snakeBodyClass2);
-        snakeTail2.add(coordinates);
-    }
-
 
     private void addEat() {
-        Coordinates2P foodCoordinates;
-
+        Coordinates2P firstPlayerFoodCoordinates;
         do {
-            foodCoordinates = new Coordinates2P(random.nextInt(21), random.nextInt(21));
-        } while(isFieldNotNull(foodCoordinates));
+            firstPlayerFoodCoordinates = new Coordinates2P(randomGeneratorForFirstPlayer.nextInt(21), randomGeneratorForFirstPlayer.nextInt(21));
+        } while (isFieldNotNull(firstPlayerFoodCoordinates));
 
-        board.put(foodCoordinates, foodClass);
+        board.put(firstPlayerFoodCoordinates, firstPlayer.getFoodClass());
     }
 
-    private void addEat2() {
-        Coordinates2P foodCoordinates;
-
+    private void addEatSecondPlayer() {
+        Coordinates2P secondPlayerFoodCoordinates;
         do {
-            foodCoordinates = new Coordinates2P(22+ random2.nextInt(20) ,1+ random2.nextInt(19));
-        } while(isFieldNotNull(foodCoordinates));
+            secondPlayerFoodCoordinates = new Coordinates2P(22 + randomGeneratorForSecondPlayer.nextInt(20), 1 + randomGeneratorForSecondPlayer.nextInt(19));
+        } while (isFieldNotNull(secondPlayerFoodCoordinates));
 
-        board.put(foodCoordinates, foodClass2);
+        board.put(secondPlayerFoodCoordinates, secondPlayer.getFoodClass());
     }
 
     private void mapTask() {
@@ -286,7 +247,6 @@ public class TwoPlayerBoard {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-
                 return null;
             }
         };
@@ -294,7 +254,7 @@ public class TwoPlayerBoard {
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                if(!isEndGame || !isEndGame2) {
+                if (!firstPlayer.isEndGame() || !secondPlayer.isEndGame()) {
                     checkMap();
                     mapTask();
                 }
@@ -305,59 +265,38 @@ public class TwoPlayerBoard {
     }
 
     public void readKeyboard(KeyEvent event) {
-        char incoming = event.getCode().toString().charAt(0);
+        String keyRead = event.getCode().toString();
 
-        if(incoming == usr1[0])
-            changeDirection1(1);
-        else if(incoming == usr1[1])
-            changeDirection1(2);
-        else if(incoming == usr1[2])
-            changeDirection1(3);
-        else if(incoming == usr1[3])
-            changeDirection1(4);
-        else if(incoming == usr2[0])
-            changeDirection2(1);
-        else if(incoming == usr2[1])
-            changeDirection2(2);
-        else if(incoming == usr2[2])
-            changeDirection2(3);
-        else if(incoming == usr2[3])
-            changeDirection2(4);
-
-//        switch(event.getCode()) {
-//            case W: changeDirection1(1); break;
-//            case S: changeDirection1(2); break;
-//            case A: changeDirection1(3); break;
-//            case D: changeDirection1(4); break;
-//
-//            case UP: changeDirection2(1); break;
-//            case DOWN: changeDirection2(2); break;
-//            case LEFT: changeDirection2(3); break;
-//            case RIGHT: changeDirection2(4); break;
-//        }
+        if (keyRead.equals(user1Up))
+            changeDirection(Direction.UP, firstPlayer);
+        else if (keyRead.equals(user1Down))
+            changeDirection(Direction.DOWN, firstPlayer);
+        else if (keyRead.equals(user1Left))
+            changeDirection(Direction.LEFT, firstPlayer);
+        else if (keyRead.equals(user1Right))
+            changeDirection(Direction.RIGHT, firstPlayer);
+        else if (keyRead.equals(user2Up))
+            changeDirection(Direction.UP, secondPlayer);
+        else if (keyRead.equals(user2Down))
+            changeDirection(Direction.DOWN, secondPlayer);
+        else if (keyRead.equals(user2Left))
+            changeDirection(Direction.LEFT, secondPlayer);
+        else if (keyRead.equals(user2Right))
+            changeDirection(Direction.RIGHT, secondPlayer);
     }
 
-
-    private void changeDirection1(int newDirection) {
-        if(newDirection == 1 && direction != 2) {
-            direction = 1;
-        } else if(newDirection == 2 && direction != 1) {
-            direction = 2;
-        } else if(newDirection == 3 && direction != 4) {
-            direction = 3;
-        } else if(newDirection == 4 && direction != 3) {
-            direction = 4;
-        }
-    }
-    private void changeDirection2(int newDirection) {
-        if(newDirection == 1 && direction2 != 2) {
-            direction2 = 1;
-        } else if(newDirection == 2 && direction2 != 1) {
-            direction2 = 2;
-        } else if(newDirection == 3 && direction2 != 4) {
-            direction2 = 3;
-        } else if(newDirection == 4 && direction2 != 3) {
-            direction2 = 4;
+    private void changeDirection(Direction newDirection, Player player) {
+        if (player.isEndGame()) // this check is needed because, snake's only head keeps playing even player is dead
+            return;
+        Direction playerDirection = player.getDirection();
+        if (newDirection == Direction.UP && playerDirection != Direction.DOWN) {
+            player.setDirection(Direction.UP);
+        } else if (newDirection == Direction.DOWN && playerDirection != Direction.UP) {
+            player.setDirection(Direction.DOWN);
+        } else if (newDirection == Direction.LEFT && playerDirection != Direction.RIGHT) {
+            player.setDirection(Direction.LEFT);
+        } else if (newDirection == Direction.RIGHT && playerDirection != Direction.LEFT) {
+            player.setDirection(Direction.RIGHT);
         }
     }
 
@@ -369,10 +308,11 @@ public class TwoPlayerBoard {
         return board.get(coordinates);
     }
 
-    public static int getDirection() {
-        return direction;
+    public int getDirectionPlayerOne() {
+        return directionToNumber(firstPlayer.getDirection());
     }
-    public static int getDirection2() {
-        return direction2;
+
+    public int getDirectionPlayerTwo() {
+        return directionToNumber(secondPlayer.getDirection());
     }
 }

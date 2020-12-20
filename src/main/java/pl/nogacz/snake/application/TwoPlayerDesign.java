@@ -4,10 +4,19 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.RowConstraints;
+
 import pl.nogacz.snake.board.Coordinates2P;
 import pl.nogacz.snake.board.TwoPlayerBoard;
-import pl.nogacz.snake.pawn.*;
+import pl.nogacz.snake.pawn.PawnClass;
 
 public class TwoPlayerDesign {
     private GridPane gridPane = new GridPane();
@@ -28,7 +37,8 @@ public class TwoPlayerDesign {
         gridPane.setMinSize(1430, 715);
         gridPane.setMaxSize(1430, 715);
 
-        for(int i = 0; i < 22; i++) {
+        final int edgeLength = 22;
+        for(int i = 0; i < edgeLength; i++) {
             ColumnConstraints column = new ColumnConstraints(32);
             column.setHgrow(Priority.ALWAYS);
             column.setHalignment(HPos.CENTER);
@@ -39,20 +49,19 @@ public class TwoPlayerDesign {
             row.setValignment(VPos.CENTER);
             gridPane.getRowConstraints().add(row);
         }
-
         gridPane.setPadding(new Insets(10, 0, 0, 10));
     }
 
-    public void addPawn(Coordinates2P coordinates, PawnClass pawn) {
+    public void addPawn(Coordinates2P coordinates, PawnClass pawn, TwoPlayerBoard twoPlayerBoard) {
         if(pawn.getPawn().isHead() ) {
-            gridPane.add(pawn.getImageDirection(TwoPlayerBoard.getDirection()), coordinates.getX(), coordinates.getY());
-        } else if (pawn.getPawn().isHead2() )
-            gridPane.add(pawn.getImageDirection(TwoPlayerBoard.getDirection2()), coordinates.getX(), coordinates.getY());
+            gridPane.add(pawn.getImageDirection(twoPlayerBoard.getDirectionPlayerOne()), coordinates.getX(), coordinates.getY());
+        } else if (pawn.getPawn().isHeadOfSecondPlayer() ) {
+            gridPane.add(pawn.getImageDirection(twoPlayerBoard.getDirectionPlayerTwo()), coordinates.getX(), coordinates.getY());
+        }
         else {
             gridPane.add(pawn.getImage(), coordinates.getX(), coordinates.getY());
         }
     }
-
 
     public void removePawn(Coordinates2P coordinates) {
         gridPane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == coordinates.getX() && GridPane.getRowIndex(node) == coordinates.getY());
