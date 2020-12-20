@@ -11,17 +11,10 @@ import pl.nogacz.snake.application.SaveGame;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
 
-import java.awt.event.ActionListener;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class Board {
 
@@ -30,10 +23,19 @@ public class Board {
     private Random random = new Random();
 
     private boolean isEndGame = false;
-    private boolean isPaused = false;
 
-    private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
+    public enum Direction {
+        UP,
+        BOTTOM,
+        LEFT,
+        RIGHT
+    }
+
+    private static Direction direction = Direction.UP; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
     private int tailLength = 0;
+
+    private int autoSavePeriod = 30;
+    private int remainingForAutoSave = 0;
 
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
 
@@ -43,52 +45,11 @@ public class Board {
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
-    private JFrame info=new JFrame("Info");
-    private JPanel infoPanel=new JPanel();
-    private JLabel infoLabel=new JLabel();
-    private JButton infoButton=new JButton("OK");
-
     public Board(Design design) {
 
         this.design = design;
         addStartEntity();
         mapTask();
-    }
-
-    public void getMessage(int a,int b){
-
-        info = new JFrame("Info");
-        info.setAlwaysOnTop(true);
-        infoPanel = new JPanel();
-        infoLabel = new JLabel();
-        infoButton = new JButton("OK");
-
-        String operation = (a==0) ? "Save" : "Load";
-        String success = (b==0) ? "successful" : "failed";
-
-        infoLabel.setText(operation+" "+success+". Press OK to resume the game.");
-
-        infoButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-
-                info.setVisible(false);
-                isPaused = false;
-                mapTask();
-
-            }
-        });
-
-        
-        info.setSize(300,100);
-        infoPanel.add(infoLabel);
-        infoPanel.add(infoButton);
-        info.add(infoPanel);
-        info.setLocationRelativeTo(null);
-        
-        info.setVisible(true);
-
     }
 
     private void addStartEntity() {
@@ -125,16 +86,16 @@ public class Board {
 
     private void moveSnake() {
         switch (direction) {
-            case 1:
+            case UP:
                 moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1));
                 break;
-            case 2:
+            case BOTTOM:
                 moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1));
                 break;
-            case 3:
+            case LEFT:
                 moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY()));
                 break;
-            case 4:
+            case RIGHT:
                 moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY()));
                 break;
         }
@@ -173,16 +134,16 @@ public class Board {
 
     private void moveSnakeBody() {
         switch (direction) {
-            case 1:
+            case UP:
                 moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1));
                 break;
-            case 2:
+            case BOTTOM:
                 moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1));
                 break;
-            case 3:
+            case LEFT:
                 moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY()));
                 break;
-            case 4:
+            case RIGHT:
                 moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() - 1, snakeHeadCoordinates.getY()));
                 break;
         }
@@ -215,6 +176,19 @@ public class Board {
             protected Void call() throws Exception {
                 try {
                     Thread.sleep(140);
+                    if(++remainingForAutoSave==autoSavePeriod){
+
+                        remainingForAutoSave = 0;
+                        BoardInfo BI = new BoardInfo(board, direction, tailLength, snakeHeadCoordinates, snakeHeadClass, snakeBodyClass, foodClass, snakeTail);
+
+                        if(new SaveGame(BI, "AutoSave").startSave()){
+
+                            System.out.println("Game Saved");
+                        }
+        
+                        else
+                            System.out.println("An error occured while saving.");                            
+                    }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -226,7 +200,7 @@ public class Board {
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                if (!isEndGame && !isPaused) {
+                if (!isEndGame) {
                     checkMap();
                     mapTask();
                 }
@@ -238,45 +212,40 @@ public class Board {
 
     public void readKeyboard(KeyEvent event) {
         switch(event.getCode()) {
-            case W: changeDirection(1); break;
-            case S: changeDirection(2); break;
-            case A: changeDirection(3); break;
-            case D: changeDirection(4); break;
-
-            case UP: changeDirection(1); break;
-            case DOWN: changeDirection(2); break;
-            case LEFT: changeDirection(3); break;
-            case RIGHT: changeDirection(4); break;
-
-            case Q: System.exit(0); break;           
-
+            case W: changeDirection(Direction.UP); break;
+            case S: changeDirection(Direction.BOTTOM); break;
+            case A: changeDirection(Direction.LEFT); break;
+            case D: changeDirection(Direction.RIGHT); break;
+            case UP: changeDirection(Direction.UP); break;
+            case DOWN: changeDirection(Direction.BOTTOM); break;
+            case LEFT: changeDirection(Direction.LEFT); break;
+            case RIGHT: changeDirection(Direction.RIGHT); break;
+            
             case T:
 
-                isPaused=true;
-                BoardInfo BI=new BoardInfo(board, direction, tailLength, snakeHeadCoordinates, snakeHeadClass, snakeBodyClass, foodClass, snakeTail);
+                BoardInfo BI = new BoardInfo(board, direction, tailLength, snakeHeadCoordinates, snakeHeadClass, snakeBodyClass, foodClass, snakeTail);
 
                 if(new SaveGame(BI, "test").startSave()){
 
-                    getMessage(0, 0);
+                    System.out.println("Game Saved");
                 }
 
                 else
-                    getMessage(0, 1);
+                    System.out.println("An error occured while saving.");
 
                 break;
             
             case L:
                 
                 removeAllImage();
-                isPaused=true;
 
                 if(new LoadGame(this).startLoad()){
 
-                    getMessage(1, 0);
+                    System.out.println("Saved game loaded");
                 }
 
                 else
-                    getMessage(1, 1);
+                    System.out.println("An error occured while loading the save.");
 
                 break;
 
@@ -285,15 +254,15 @@ public class Board {
         }
     } 
 
-    private void changeDirection(int newDirection) {
-        if(newDirection == 1 && direction != 2) {
-            direction = 1;
-        } else if(newDirection == 2 && direction != 1) {
-            direction = 2;
-        } else if(newDirection == 3 && direction != 4) {
-            direction = 3;
-        } else if(newDirection == 4 && direction != 3) {
-            direction = 4;
+    private void changeDirection(Direction newDirection) {
+        if(newDirection == Direction.UP && direction != Direction.BOTTOM) {
+            direction = Direction.UP;
+        } else if(newDirection == Direction.BOTTOM && direction != Direction.UP) {
+            direction = Direction.BOTTOM;
+        } else if(newDirection == Direction.LEFT && direction != Direction.RIGHT) {
+            direction = Direction.LEFT;
+        } else if(newDirection == Direction.RIGHT && direction != Direction.LEFT) {
+            direction = Direction.RIGHT;
         }
     }
 
@@ -305,11 +274,16 @@ public class Board {
         return board.get(coordinates);
     }
 
-    public static int getDirection() {
+    public static Direction getDirection() {
         return direction;
     }
 
-    public void setParameters(HashMap<Coordinates, PawnClass> board, int directionIN, int tailLength, Coordinates snakeHeadCoordinates, PawnClass snakeHeadClass, PawnClass snakeBodyClass, PawnClass foodClass, ArrayList<Coordinates> snakeTail){
+    public void setAutoSaveFrq(int newPeriod){
+
+        autoSavePeriod = newPeriod;
+    }
+
+    public void setParameters(HashMap<Coordinates, PawnClass> board, Direction directionIN, int tailLength, Coordinates snakeHeadCoordinates, PawnClass snakeHeadClass, PawnClass snakeBodyClass, PawnClass foodClass, ArrayList<Coordinates> snakeTail){
 
         this.board = board;
         direction = directionIN;

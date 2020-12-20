@@ -4,18 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import pl.nogacz.snake.board.Board.Direction;
 import pl.nogacz.snake.pawn.PawnClass;
 
 public class BoardInfo implements Serializable{
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 8558092013837790635L;
 
     private HashMap<Coordinates, PawnClass> board;
 
-    private int direction;// 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
+    private Direction direction;
     private int tailLength;
 
     private Coordinates snakeHeadCoordinates;
@@ -25,24 +23,22 @@ public class BoardInfo implements Serializable{
     private PawnClass foodClass;
 
     private ArrayList<Coordinates> snakeTail;
+    
+    public BoardInfo(HashMap<Coordinates, PawnClass> board,Direction direction,int tailLength,Coordinates snakeHeadCoordinates,PawnClass snakeHeadClass,PawnClass snakeBodyClass,PawnClass foodClass,ArrayList<Coordinates> snakeTail){
 
-
-
-    public BoardInfo(HashMap<Coordinates, PawnClass> board,int direction,int tailLength,Coordinates snakeHeadCoordinates,PawnClass snakeHeadClass,PawnClass snakeBodyClass,PawnClass foodClass,ArrayList<Coordinates> snakeTail){
-
-        this.board=board;
-        this.direction=direction;
-        this.tailLength=tailLength;
-        this.snakeHeadCoordinates=snakeHeadCoordinates;
-        this.snakeHeadClass=snakeHeadClass;
-        this.snakeBodyClass=snakeBodyClass;
-        this.foodClass=foodClass;
-        this.snakeTail=snakeTail;
+        this.board = board;
+        this.direction = direction;
+        this.tailLength = tailLength;
+        this.snakeHeadCoordinates = snakeHeadCoordinates;
+        this.snakeHeadClass = snakeHeadClass;
+        this.snakeBodyClass = snakeBodyClass;
+        this.foodClass = foodClass;
+        this.snakeTail = snakeTail;
 
     }
 
     public HashMap<Coordinates, PawnClass> getBoard(){return board;}
-    public int getDirection(){return direction;}
+    public Direction getDirection(){return direction;}
     public int getTailLength(){return tailLength;}
     public Coordinates getHeadCoordinates(){return snakeHeadCoordinates;}
     public PawnClass getHeadClass(){return snakeHeadClass;}
