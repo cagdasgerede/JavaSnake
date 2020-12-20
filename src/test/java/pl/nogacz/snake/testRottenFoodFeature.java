@@ -1,8 +1,13 @@
 package pl.nogacz.snake;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import pl.nogacz.snake.board.Board;
 import pl.nogacz.snake.board.Coordinates;
 import pl.nogacz.snake.application.Design;
@@ -12,17 +17,36 @@ import pl.nogacz.snake.pawn.PawnClass;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-  
+
+@TestInstance(Lifecycle.PER_CLASS)
 public class testRottenFoodFeature {
+    Logger logger;
+    Design design;
+    Board board;
+    PawnClass snakeBodyClass;
+    PawnClass rottenFoodClass;
+    HashMap<Coordinates, PawnClass> boardHash;
+    ArrayList<Coordinates> snakeTail;
+    Coordinates coordinates;
+    
+    @BeforeAll
+    public void initialize() {
+        logger = LogManager.getLogger(testRottenFoodFeature.class);
+        design = mock(Design.class);    
+        board = new Board(design);
+
+        // for testDecreaseLengthAndEatRottenFood()
+        snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
+        rottenFoodClass = new PawnClass(Pawn.ROTTENFOOD);
+        boardHash = new HashMap<>();
+        snakeTail = new ArrayList<>();
+
+        //for testDisappearRottenFoodAfterCounting()
+        coordinates = mock(Coordinates.class);
+    }
+
     @Test
-    public void testDecreaseLengthAndEatRottenFood() {
-        Design design = mock(Design.class);    
-        Board board = new Board(design);
-        PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
-        PawnClass rottenFoodClass = new PawnClass(Pawn.ROTTENFOOD);
-        HashMap<Coordinates, PawnClass> boardHash = new HashMap<>();
-        ArrayList<Coordinates> snakeTail = new ArrayList<>();
-        
+    public void testDecreaseLengthAndEatRottenFood() {            
         boardHash.put(new Coordinates(10, 11), snakeBodyClass);
         snakeTail.add(new Coordinates(10, 11));        
         board.setTailLength(1);      
@@ -36,7 +60,7 @@ public class testRottenFoodFeature {
             method.setAccessible(true);
             method.invoke(board, new Coordinates(10, 12));   
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            logger.fatal(e.getMessage());
         }
 
         assertEquals(board.getTailLength(), 0);
@@ -44,11 +68,7 @@ public class testRottenFoodFeature {
     }
    
     @Test
-    public void testDisappearRottenFoodAfterCounting() {   
-        Design design = mock(Design.class);       
-        Board board = new Board(design);
-        Coordinates coordinates = mock(Coordinates.class);
-
+    public void testDisappearRottenFoodAfterCounting() {
         when(coordinates.isValid()).thenReturn(true);       
         board.setRottenFoodCoordinates(coordinates);       
         board.setDisappearanceCounter(board.getDisappearanceTime());
@@ -58,7 +78,7 @@ public class testRottenFoodFeature {
             method.setAccessible(true);
             method.invoke(board, coordinates);   
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            logger.fatal(e.getMessage());
         }
 
         assertFalse(board.isRottenFoodExist());
@@ -67,15 +87,12 @@ public class testRottenFoodFeature {
 
     @Test
     public void testAddRottenFood() {
-        Design design = mock(Design.class);       
-        Board board = new Board(design);
-
         try {  
             Method method = Board.class.getDeclaredMethod("addRottenFood");  
             method.setAccessible(true);  
             method.invoke(board); 
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            logger.fatal(e.getMessage());
         }
 
         assertTrue(board.isRottenFoodExist());
