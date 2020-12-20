@@ -6,19 +6,13 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
+import pl.nogacz.snake.application.LoadGame;
+import pl.nogacz.snake.application.SaveGame;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
 
-import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 
-/**
- * @author Dawid Nogacz on 19.05.2019
- */
 public class Board {
 
     private HashMap<Coordinates, PawnClass> board = new HashMap<>();
@@ -58,7 +47,6 @@ public class Board {
     private JPanel infoPanel=new JPanel();
     private JLabel infoLabel=new JLabel();
     private JButton infoButton=new JButton("OK");
-    boolean cancel=true;
 
     public Board(Design design) {
 
@@ -69,17 +57,15 @@ public class Board {
 
     public void getMessage(int a,int b){
 
-        info=new JFrame("Info");
-        infoPanel=new JPanel();
-        infoLabel=new JLabel();
-        infoButton=new JButton("OK");
+        info = new JFrame("Info");
+        info.setAlwaysOnTop(true);
+        infoPanel = new JPanel();
+        infoLabel = new JLabel();
+        infoButton = new JButton("OK");
 
-        String operation= (a==0) ? "Save" : "Load";
-        String success= (b==0) ? "successful" : "failed";
+        String operation = (a==0) ? "Save" : "Load";
+        String success = (b==0) ? "successful" : "failed";
 
-        if(b==-1)
-            success="canceled";
-        
         infoLabel.setText(operation+" "+success+". Press OK to resume the game.");
 
         infoButton.addActionListener(new ActionListener() {
@@ -88,7 +74,7 @@ public class Board {
             public void actionPerformed(java.awt.event.ActionEvent e) {
 
                 info.setVisible(false);
-                isPaused=false;
+                isPaused = false;
                 mapTask();
 
             }
@@ -255,7 +241,7 @@ public class Board {
             case W: changeDirection(1); break;
             case S: changeDirection(2); break;
             case A: changeDirection(3); break;
-            case D: changeDirection(4); break;            
+            case D: changeDirection(4); break;
 
             case UP: changeDirection(1); break;
             case DOWN: changeDirection(2); break;
@@ -266,336 +252,38 @@ public class Board {
 
             case T:
 
-                cancel=true;
                 isPaused=true;
                 BoardInfo BI=new BoardInfo(board, direction, tailLength, snakeHeadCoordinates, snakeHeadClass, snakeBodyClass, foodClass, snakeTail);
-                
-                JFrame saveFrame = new JFrame("Saving the game");
 
-                JPanel savePanel = new JPanel();
+                if(new SaveGame(BI, "test").startSave()){
 
-                JLabel saveLabel = new JLabel("SAVE GAME:");
-
-                JButton saveConfirm = new JButton("Confirm");
-
-                JTextField saveInput = new JTextField("Enter the destination adress here");
-
-                saveInput.addMouseListener(new MouseListener() {
-                    @Override
-                    public void mouseClicked(java.awt.event.MouseEvent e) {
-                        saveInput.setText("");
-                    }
-
-                    @Override
-                    public void mousePressed(java.awt.event.MouseEvent e) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void mouseReleased(java.awt.event.MouseEvent e) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void mouseEntered(java.awt.event.MouseEvent e) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void mouseExited(java.awt.event.MouseEvent e) {
-                        // TODO Auto-generated method stub
-                    }
-                });
-
-                saveConfirm.addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(java.awt.event.ActionEvent e) {
-
-                        String adress = saveInput.getText();
-
-                        if (adress.equals(""))
-                            saveInput.setText("Please enter a destination adress");
-
-                        else{
-                            
-                            cancel=false;
-
-                            if(startSave(adress,BI)){
-
-                                getMessage(0, 0);                              
-
-                            }
-
-                            else
-                                getMessage(0, 1);
-
-                                saveFrame.dispose();
-                        }
-                            
-
-                    }
-                });
-
-                saveFrame.setSize(500, 125);
-                saveFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                saveFrame.addWindowListener(new WindowListener() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent we) {
-                    
+                    getMessage(0, 0);
                 }
 
-				@Override
-				public void windowOpened(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void windowClosed(WindowEvent e) {
-                    
-                    if(cancel)
-                        getMessage(0, -1);
-				}
-
-				@Override
-				public void windowIconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void windowDeiconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void windowActivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void windowDeactivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-                });
-
-                saveInput.setPreferredSize(new Dimension(400, 25));
-                saveFrame.toFront();
-
-                savePanel.setPreferredSize(new Dimension(400, 400)); 
-
-                savePanel.add(saveLabel);
-                savePanel.add(saveInput);
-                savePanel.add(saveConfirm);
-                
-                saveFrame.add(savePanel);
-
-                saveFrame.setVisible(true);
+                else
+                    getMessage(0, 1);
 
                 break;
             
             case L:
                 
                 removeAllImage();
-                cancel=true;
                 isPaused=true;
 
-                JFrame frame = new JFrame("Loading the game");
+                if(new LoadGame(this).startLoad()){
 
-                JPanel panel = new JPanel();
-
-                JLabel label = new JLabel("LOAD GAME:");
-
-                JButton confirm = new JButton("Confirm");
-
-                JTextField input = new JTextField("Enter the destination adress here");
-
-                input.addMouseListener(new MouseListener() {
-                    @Override
-                    public void mouseClicked(java.awt.event.MouseEvent e) {
-                        input.setText("");
-                    }
-
-                    @Override
-                    public void mousePressed(java.awt.event.MouseEvent e) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void mouseReleased(java.awt.event.MouseEvent e) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void mouseEntered(java.awt.event.MouseEvent e) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void mouseExited(java.awt.event.MouseEvent e) {
-                        // TODO Auto-generated method stub
-                    }
-                });
-
-                confirm.addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(java.awt.event.ActionEvent e) {
-
-                        String adress = input.getText();
-
-                        if (adress.equals(""))
-                            input.setText("Please enter a destination adress");
-
-                        else
-                            cancel=false;
-
-                            if(startLoad(adress)){
-
-                                getMessage(1, 0);                              
-
-                            }
-
-                            else
-                                getMessage(1, 1);
-
-                                frame.dispose();
-
-                    }
-                });
-
-                frame.setSize(500, 125);
-                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                frame.addWindowListener(new WindowListener() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent we) {
-                    
+                    getMessage(1, 0);
                 }
 
-				@Override
-				public void windowOpened(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void windowClosed(WindowEvent e) {
-                    if(cancel)
-                        getMessage(1, -1);
-					
-				}
-
-				@Override
-				public void windowIconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void windowDeiconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void windowActivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void windowDeactivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-                });
-
-                input.setPreferredSize(new Dimension(400, 25));
-                frame.toFront();
-
-                panel.setPreferredSize(new Dimension(400, 400)); 
-
-                panel.add(label);
-                panel.add(input);
-                panel.add(confirm);
-                
-                frame.add(panel);
-
-                frame.setVisible(true);
+                else
+                    getMessage(1, 1);
 
                 break;
 
             default:
                     break;
         }
-    }
-
-    private boolean startLoad(String adress){
-
-        FileInputStream fi;
-        ObjectInputStream in;
-
-        try {
-
-            fi=new FileInputStream(adress);
-            in=new ObjectInputStream(fi);
-
-            BoardInfo BI=(BoardInfo)in.readObject();
-
-            in.close();
-            fi.close();
-
-            this.board=BI.getBoard();
-            direction=BI.getDirection();
-            this.tailLength=BI.getTailLength();
-            this.snakeHeadCoordinates=BI.getHeadCoordinates();
-            this.snakeHeadClass=BI.getHeadClass();
-            this.snakeBodyClass=BI.getBodyClass();
-            this.foodClass=BI.getFoodClass();
-            this.snakeTail=BI.getSnakeTail();
-            
-        } catch (Exception e) {
-            return false;
-        }
-
-        return true;
-
-    }
-
-    private boolean startSave(String adress,BoardInfo BI){
-
-        FileOutputStream fo;
-        ObjectOutputStream out;
-
-            try {
-                fo = new FileOutputStream(adress);
-                out = new ObjectOutputStream(fo);
-                out.writeObject(BI);
-                
-                fo.close();
-                out.close();
-
-            } catch (IOException e) {
-                return false;
-            }
-
-        
-
-        return true;
-
-    }
+    } 
 
     private void changeDirection(int newDirection) {
         if(newDirection == 1 && direction != 2) {
@@ -619,5 +307,17 @@ public class Board {
 
     public static int getDirection() {
         return direction;
+    }
+
+    public void setParameters(HashMap<Coordinates, PawnClass> board, int directionIN, int tailLength, Coordinates snakeHeadCoordinates, PawnClass snakeHeadClass, PawnClass snakeBodyClass, PawnClass foodClass, ArrayList<Coordinates> snakeTail){
+
+        this.board = board;
+        direction = directionIN;
+        this.tailLength = tailLength;
+        this.snakeHeadCoordinates = snakeHeadCoordinates;
+        this.snakeHeadClass = snakeHeadClass;
+        this.snakeBodyClass = snakeBodyClass;
+        this.foodClass = foodClass;
+        this.snakeTail = snakeTail;
     }
 }
