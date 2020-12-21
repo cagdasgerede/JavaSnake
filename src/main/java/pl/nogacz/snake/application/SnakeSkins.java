@@ -6,17 +6,17 @@ import java.util.Optional;
 public class SnakeSkins {
     private String message;
     public enum bodySkinTones {
-        SKIN_TONE_1,
-        SKIN_TONE_2,
-        SKIN_TONE_3
+        SKIN_TONE_DEFAULT,
+        SKIN_TONE_ORANGE,
+        SKIN_TONE_GREEN
     }
     public enum headSkinTones {
-        SKIN_TONE_1,
-        SKIN_TONE_2,
-        SKIN_TONE_3
+        SKIN_TONE_DEFAULT,
+        SKIN_TONE_ORANGE,
+        SKIN_TONE_GREEN
     }
-    private static bodySkinTones body = bodySkinTones.SKIN_TONE_1;
-    private static headSkinTones head = headSkinTones.SKIN_TONE_1;
+    private static bodySkinTones body = bodySkinTones.SKIN_TONE_DEFAULT;
+    private static headSkinTones head = headSkinTones.SKIN_TONE_DEFAULT;
 
     public SnakeSkins(String message) {
         this.message = message;
@@ -41,16 +41,16 @@ public class SnakeSkins {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == skin1) {
-            body = bodySkinTones.SKIN_TONE_1;
-            head = headSkinTones.SKIN_TONE_1;
+            body = bodySkinTones.SKIN_TONE_DEFAULT;
+            head = headSkinTones.SKIN_TONE_DEFAULT;
         }
         else if (result.get() == skin2) {
-            body = bodySkinTones.SKIN_TONE_2;
-            head = headSkinTones.SKIN_TONE_2;
+            body = bodySkinTones.SKIN_TONE_ORANGE;
+            head = headSkinTones.SKIN_TONE_ORANGE;
         }
         else if (result.get() == skin3) {
-            body = bodySkinTones.SKIN_TONE_3;
-            head = headSkinTones.SKIN_TONE_3;
+            body = bodySkinTones.SKIN_TONE_GREEN;
+            head = headSkinTones.SKIN_TONE_GREEN;
         }
     }
     public void setBodySkin(bodySkinTones skin) {

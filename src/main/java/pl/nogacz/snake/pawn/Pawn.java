@@ -8,8 +8,8 @@ public enum Pawn {
     BRICK,
     SNAKE_HEAD,
     SNAKE_BODY,
-    SNAKE_BODY_SKIN_2,
-    SNAKE_BODY_SKIN_3;
+    SNAKE_BODY_SKIN_ORANGE,
+    SNAKE_BODY_SKIN_GREEN;
 
     public boolean isFood() {
         return this == FOOD;

@@ -33,8 +33,8 @@ public class Board {
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
-    private PawnClass snakeBodyClass2 = new PawnClass(Pawn.SNAKE_BODY_SKIN_2);
-    private PawnClass snakeBodyClass3 = new PawnClass(Pawn.SNAKE_BODY_SKIN_3);
+    private PawnClass snakeBodyClass2 = new PawnClass(Pawn.SNAKE_BODY_SKIN_ORANGE);
+    private PawnClass snakeBodyClass3 = new PawnClass(Pawn.SNAKE_BODY_SKIN_GREEN);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
@@ -92,9 +92,9 @@ public class Board {
                 if(getPawn(coordinates).getPawn().isFood()) {
                     board.remove(snakeHeadCoordinates);
                     switch(skinTone) {
-                        case SKIN_TONE_1: board.put(snakeHeadCoordinates, snakeBodyClass); break;
-                        case SKIN_TONE_2: board.put(snakeHeadCoordinates, snakeBodyClass2); break;
-                        case SKIN_TONE_3: board.put(snakeHeadCoordinates, snakeBodyClass3); break;
+                        case SKIN_TONE_DEFAULT: board.put(snakeHeadCoordinates, snakeBodyClass); break;
+                        case SKIN_TONE_ORANGE: board.put(snakeHeadCoordinates, snakeBodyClass2); break;
+                        case SKIN_TONE_GREEN: board.put(snakeHeadCoordinates, snakeBodyClass3); break;
                         default: break;
 
                     }
@@ -141,9 +141,9 @@ public class Board {
             snakeTail.remove(endTail);
         }
         switch(skinTone) {
-            case SKIN_TONE_1: board.put(coordinates, snakeBodyClass); break;
-            case SKIN_TONE_2: board.put(coordinates, snakeBodyClass2); break;
-            case SKIN_TONE_3: board.put(coordinates, snakeBodyClass3); break;
+            case SKIN_TONE_DEFAULT: board.put(coordinates, snakeBodyClass); break;
+            case SKIN_TONE_ORANGE: board.put(coordinates, snakeBodyClass2); break;
+            case SKIN_TONE_GREEN: board.put(coordinates, snakeBodyClass3); break;
             default: break;
 
         }
@@ -236,9 +236,9 @@ public class Board {
 
     public static PawnClass setBodySkin() {
         switch(myVar) {
-            case SKIN_TONE_1: return new PawnClass(Pawn.SNAKE_BODY);
-            case SKIN_TONE_2: return new PawnClass(Pawn.SNAKE_BODY_SKIN_2);
-            case SKIN_TONE_3: return new PawnClass(Pawn.SNAKE_BODY_SKIN_3);
+            case SKIN_TONE_DEFAULT: return new PawnClass(Pawn.SNAKE_BODY);
+            case SKIN_TONE_ORANGE: return new PawnClass(Pawn.SNAKE_BODY_SKIN_ORANGE);
+            case SKIN_TONE_GREEN: return new PawnClass(Pawn.SNAKE_BODY_SKIN_GREEN);
             default: return new PawnClass(Pawn.SNAKE_BODY);
         }
     }

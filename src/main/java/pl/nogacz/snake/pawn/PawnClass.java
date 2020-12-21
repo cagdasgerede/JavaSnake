@@ -21,7 +21,7 @@ public class PawnClass {
     public ImageView getImageDirection(int direction) {
         String direct = "";
         SnakeSkins.bodySkinTones myVar = SnakeSkins.getBodySkin();
-        if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_1) {
+        if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_DEFAULT) {
             switch(direction) {
                 case 1: direct = "UP"; break;
                 case 2: direct = "BOTTOM"; break;
@@ -30,21 +30,21 @@ public class PawnClass {
                 default: break;
             }
         }
-        else if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_2) {
+        else if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_ORANGE) {
             switch(direction) {
-                case 1: direct = "UP_SKIN_2"; break;
-                case 2: direct = "BOTTOM_SKIN_2"; break;
-                case 3: direct = "LEFT_SKIN_2"; break;
-                case 4: direct = "RIGHT_SKIN_2"; break;
+                case 1: direct = "UP_SKIN_ORANGE"; break;
+                case 2: direct = "BOTTOM_SKIN_ORANGE"; break;
+                case 3: direct = "LEFT_SKIN_ORANGE"; break;
+                case 4: direct = "RIGHT_SKIN_ORANGE"; break;
                 default: break;
             }
         }
-        else if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_3) {
+        else if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_GREEN) {
             switch(direction) {
-                case 1: direct = "UP_SKIN_3"; break;
-                case 2: direct = "BOTTOM_SKIN_3"; break;
-                case 3: direct = "LEFT_SKIN_3"; break;
-                case 4: direct = "RIGHT_SKIN_3"; break;
+                case 1: direct = "UP_SKIN_GREEN"; break;
+                case 2: direct = "BOTTOM_SKIN_GREEN"; break;
+                case 3: direct = "LEFT_SKIN_GREEN"; break;
+                case 4: direct = "RIGHT_SKIN_GREEN"; break;
                 default: break;
             }
         }
