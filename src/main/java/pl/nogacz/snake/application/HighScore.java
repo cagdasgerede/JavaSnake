@@ -12,12 +12,44 @@ import java.util.stream.Collectors;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Font;
+import javafx.util.Callback;
 
 public class HighScore {
     private static final File HIGH_SCORE_FILE = new File(Paths.get(".", "high.scores").toUri()); //text file, score and name per line, tab seperated
     private static final int HIGH_SCORE_COUNT = 10;
 
     private HighScore() { }
+
+    public static class Score {
+        private int score;
+        private String name;
+
+        public Score(int score, String name) {
+            this.score = score;
+            this.name = name;
+        }
+
+        public int getScore() {
+            return score;
+        }
+
+        public void setScore(int score) {
+            this.score = score;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
 
     private static ArrayList<Object[]> readScores() { // returns an ArrayList of [Integer, String]
         if (!HIGH_SCORE_FILE.exists()) {
@@ -73,15 +105,60 @@ public class HighScore {
         }
     }
 
-    public static void showScores() {
-        ArrayList<Object[]> scores = readScores();
-        String stringOfScores = "";
-        if (scores.size() > 0) {
-            int numberOfDigits = (int) Math.floor(Math.log10((int) scores.get(0)[0])) + 1;
-            stringOfScores = scores.stream().map(x -> String.format("[%0"+numberOfDigits+"d] %s", x)).collect(Collectors.joining("\n"));
-        }
+    private static TableView<Score> getScoreTable() {
+        TableView<Score> table = new TableView();
+        table.setEditable(true);
 
-        Alert highscores = new Alert(Alert.AlertType.NONE, stringOfScores, ButtonType.CLOSE);
+        TableColumn<Score, Integer> scoreColumn = new TableColumn("Score");
+        TableColumn<Score, String> nameColumn = new TableColumn("Name");
+        table.getColumns().addAll(scoreColumn, nameColumn);
+
+        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        scoreColumn.setCellFactory(new Callback<TableColumn<Score, Integer>, TableCell<Score, Integer>>() {
+            public TableCell<Score, Integer> call(TableColumn<Score, Integer> param) {
+                return new TableCell<Score, Integer>() {
+                    public void updateItem(Integer item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            setFont(new Font(20));
+                            setText(item.toString());
+                        }
+                    }
+                };
+            }
+        });
+        nameColumn.setCellFactory(new Callback<TableColumn<Score, String>, TableCell<Score, String>>() {
+            public TableCell<Score, String> call(TableColumn<Score, String> param) {
+                return new TableCell<Score, String>() {
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            setFont(new Font(20));
+                            setText(item);
+                        }
+                    }
+                };
+            }
+        });
+
+        scoreColumn.setMinWidth(80);
+        nameColumn.setMinWidth(250);
+
+        ArrayList<Score> scores = (ArrayList<Score>) readScores().stream().map(o -> new Score((Integer) o[0], (String) o[1])).collect(Collectors.toList());
+        table.getItems().addAll(scores);
+
+        table.setPrefWidth(350);
+        table.setPrefHeight(444);
+        table.setEditable(false);
+
+        return table;
+    }
+
+    public static void showScores() {
+        Alert highscores = new Alert(Alert.AlertType.NONE, "", ButtonType.CLOSE);
+        highscores.getDialogPane().setContent(getScoreTable());
         highscores.setTitle("Highscores");
         highscores.showAndWait();
     }
