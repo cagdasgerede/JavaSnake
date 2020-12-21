@@ -161,4 +161,5 @@ public class RandomBlocksTest {
         assertEquals(b.getRottenApplesGrey().size(),0);
         assertEquals(b.getRottenApplesOrange().size(),0);
     }
+
 }

@@ -389,4 +389,5 @@ public class Board {
     public static int getDirection(){
         return direction;
     }
+
 }
