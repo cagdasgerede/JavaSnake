@@ -3,7 +3,7 @@ package pl.nogacz.snake;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 import pl.nogacz.snake.board.Board;
 import pl.nogacz.snake.board.Coordinates;
@@ -13,7 +13,7 @@ import pl.nogacz.snake.application.Design;
 public class RandomBlocksTest {
     
     @Test
-    void testSpawnRottenApple1(){
+    void testSpawnRottenAppleBlack(){
 
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -35,7 +35,7 @@ public class RandomBlocksTest {
     }
 
     @Test
-    void testSpawnRottenApple2(){
+    void testSpawnRottenAppleGrey(){
 
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -52,7 +52,7 @@ public class RandomBlocksTest {
     }
 
     @Test
-    void testSpawnRottenApple3(){
+    void testSpawnRottenAppleOrange(){
 
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -66,7 +66,7 @@ public class RandomBlocksTest {
 
 
     @Test
-    void testDissappearRottenApple1(){
+    void testDissappearRottenAppleBlack(){
         
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -93,7 +93,7 @@ public class RandomBlocksTest {
     }
 
     @Test
-    void testDissappearRottenApple2(){
+    void testDissappearRottenGrey(){
         
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -122,7 +122,7 @@ public class RandomBlocksTest {
     }
 
     @Test
-    void testDissappearRottenApple3(){
+    void testDissappearRottenOrange(){
         
         Design design = mock(Design.class);
         Board b = new Board(design);

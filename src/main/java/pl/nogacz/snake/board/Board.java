@@ -91,16 +91,11 @@ public class Board {
         return rottenApplesOrange;
     }
 
- 
-    public Board(Design design) {
-        this.design = design;
-
-        // three different rotten apple(block) classes initialized
+    private void initialAssignments(){
         rottenAppleClass[0] = new PawnClass(Pawn.ROTTEN_APPLE_BLACK);
         rottenAppleClass[1] = new PawnClass(Pawn.ROTTEN_APPLE_GREY);
         rottenAppleClass[2] = new PawnClass(Pawn.ROTTEN_APPLE_ORANGE);
         
-        // initial spawn times for three different rotten apple objects when the game starts
         newRandomSpawnTimesOfApples[0] = 5;
         newRandomSpawnTimesOfApples[1] = 10;
         newRandomSpawnTimesOfApples[2] = 7;
@@ -110,12 +105,17 @@ public class Board {
         rottenApples.add(rottenApplesBlack);
         rottenApples.add(rottenApplesGrey);
         rottenApples.add(rottenApplesOrange);
+    }
 
+    public Board(Design design){
+        this.design = design;
+
+        initialAssignments();
         addStartEntity();
         mapTask();
     }
 
-    private void addStartEntity() {
+    private void addStartEntity(){
         board.put(snakeHeadCoordinates, snakeHeadClass);
 
         for(int i = 0; i < rottenApples.size(); i++){
@@ -123,8 +123,7 @@ public class Board {
             lastDissappearTimesOfApples[i] = System.currentTimeMillis();
         }
         
-
-        for(int i = 0; i < 22; i++) {
+        for(int i = 0; i < 22; i++){
             board.put(new Coordinates(0, i), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates(21, i), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates(i, 0), new PawnClass(Pawn.BRICK));
@@ -135,25 +134,25 @@ public class Board {
         displayAllImage();
     }
 
-    private void checkMap() {
+    private void checkMap(){
         removeAllImage();
         moveSnake();
         displayAllImage();
     }
 
-    private void removeAllImage() {
-        for(Map.Entry<Coordinates, PawnClass> entry : board.entrySet()) {
+    private void removeAllImage(){
+        for(Map.Entry<Coordinates, PawnClass> entry : board.entrySet()){
             design.removePawn(entry.getKey());
         }
     }
 
-    private void displayAllImage() {
-        for(Map.Entry<Coordinates, PawnClass> entry : board.entrySet()) {
+    private void displayAllImage(){
+        for(Map.Entry<Coordinates, PawnClass> entry : board.entrySet()){
             design.addPawn(entry.getKey(), entry.getValue());
         }
     }
 
-    private void moveSnake() {
+    private void moveSnake(){
         switch(direction) {
             case 1: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1)); break;
             case 2: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1)); break;
@@ -172,15 +171,14 @@ public class Board {
             return false;
     }
 
-
     private String endGameMessage(int point){
         return "End game...\n" + "You have " + point + " points. \n" + "Maybe try again? :)";
     }
 
-    public void moveSnakeHead(Coordinates coordinates) {
-        if(coordinates.isValid()) {
-            if(isFieldNotNull(coordinates)) {
-                if(getPawn(coordinates).getPawn().isFood()) { 
+    public void moveSnakeHead(Coordinates coordinates){
+        if(coordinates.isValid()){
+            if(isFieldNotNull(coordinates)){
+                if(getPawn(coordinates).getPawn().isFood()){ 
                     board.remove(snakeHeadCoordinates);
                     board.put(snakeHeadCoordinates, snakeBodyClass);
                     board.put(coordinates, snakeHeadClass);
@@ -205,7 +203,7 @@ public class Board {
 
                 snakeHeadCoordinates = coordinates;
 
-                if(tailLength > 0) {
+                if(tailLength > 0){
                     moveSnakeBody();
                 }
             }
@@ -258,8 +256,8 @@ public class Board {
         }
     }
 
-    private void moveSnakeBody() {
-        switch(direction) {
+    private void moveSnakeBody(){
+        switch(direction){
             case 1: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1)); break;
             case 2: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1)); break;
             case 3: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY())); break;
@@ -267,7 +265,7 @@ public class Board {
         }
     }
 
-    private void moveSnakeBodyHandler(Coordinates coordinates) {
+    private void moveSnakeBodyHandler(Coordinates coordinates){
         if(tailLength == snakeTail.size()) {
             Coordinates endTail = snakeTail.get(0);
             board.remove(endTail);
@@ -278,12 +276,12 @@ public class Board {
         snakeTail.add(coordinates);
     }
 
-    private void addEat() { 
+    private void addEat(){ 
         Coordinates foodCoordinates;
 
         do {
             foodCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
-        }while(isFieldNotNull(foodCoordinates));
+        } while(isFieldNotNull(foodCoordinates));
 
         board.put(foodCoordinates, foodClass);
     }
@@ -291,10 +289,10 @@ public class Board {
     private void addRottenApples(int i){
         Coordinates rottenAppleCoordinates;
 
-        do{
+        do {
             rottenAppleCoordinates = new Coordinates(random.nextInt(21),random.nextInt(21));
             this.currentRottenAppleCoordinates[i] = rottenAppleCoordinates;
-        }while(isFieldNotNull(rottenAppleCoordinates));
+        } while(isFieldNotNull(rottenAppleCoordinates));
 
         board.put(rottenAppleCoordinates, rottenAppleClass[i]);
     }
@@ -324,10 +322,10 @@ public class Board {
         }
     }
 
-    private void mapTask() {
-        Task<Void> task = new Task<Void>() {
+    private void mapTask(){
+        Task<Void> task = new Task<Void>(){
             @Override
-            protected Void call() throws Exception {
+            protected Void call() throws Exception{
                 try {
                     Thread.sleep(140);
                 } catch (Exception e) {
@@ -338,16 +336,15 @@ public class Board {
             }
         };
 
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
             @Override
-            public void handle(WorkerStateEvent event) {
+            public void handle(WorkerStateEvent event){
                 if(!isEndGame) {
                     spawnRottenApple();
                     disappearRottenApple();
                     clearRottenApples();                   
                     checkMap();
                     mapTask();
-                   
                 }
             }
         });
@@ -355,7 +352,7 @@ public class Board {
         new Thread(task).start();
     }
 
-    public void readKeyboard(KeyEvent event) {
+    public void readKeyboard(KeyEvent event){
         switch(event.getCode()) {
             case W: changeDirection(1); break;
             case S: changeDirection(2); break;
@@ -369,27 +366,27 @@ public class Board {
         }
     }
 
-    private void changeDirection(int newDirection) {
+    private void changeDirection(int newDirection){
         if(newDirection == 1 && direction != 2) {
             direction = 1;
-        } else if(newDirection == 2 && direction != 1) {
+        } else if(newDirection == 2 && direction != 1){
             direction = 2;
-        } else if(newDirection == 3 && direction != 4) {
+        } else if(newDirection == 3 && direction != 4){
             direction = 3;
-        } else if(newDirection == 4 && direction != 3) {
+        } else if(newDirection == 4 && direction != 3){
             direction = 4;
         }
     }
 
-    private boolean isFieldNotNull(Coordinates coordinates) {
+    private boolean isFieldNotNull(Coordinates coordinates){
         return getPawn(coordinates) != null;
     }
 
-    private PawnClass getPawn(Coordinates coordinates) {
+    private PawnClass getPawn(Coordinates coordinates){
         return board.get(coordinates);
     }
 
-    public static int getDirection() {
+    public static int getDirection(){
         return direction;
     }
 }
