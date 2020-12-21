@@ -1,5 +1,6 @@
 package pl.nogacz.snake.application;
 
+
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -42,6 +43,7 @@ public class Design {
             row.setValignment(VPos.CENTER);
             gridPane.getRowConstraints().add(row);
         }
+        
         gridPane.setPadding(new Insets(10, 0, 0, 10));
     }
 
