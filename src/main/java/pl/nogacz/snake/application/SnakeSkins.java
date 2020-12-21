@@ -23,6 +23,10 @@ public class SnakeSkins {
 
         printDialog();
     }
+    
+    public SnakeSkins() {
+        super();
+    }
 
     public void printDialog() {
         Alert alert = new Alert(Alert.AlertType.NONE);
@@ -48,6 +52,12 @@ public class SnakeSkins {
             body = bodySkinTones.SKIN_TONE_3;
             head = headSkinTones.SKIN_TONE_3;
         }
+    }
+    public void setBodySkin(bodySkinTones skin) {
+        SnakeSkins.body = skin;
+    }
+    public void setHeadSkin(headSkinTones skin) {
+        SnakeSkins.head = skin;
     }
     public static bodySkinTones getBodySkin() {
         return body;

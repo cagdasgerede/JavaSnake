@@ -39,15 +39,6 @@ public class Board {
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
-    public static PawnClass setBodySkin() {
-        switch(myVar) {
-            case SKIN_TONE_1: return new PawnClass(Pawn.SNAKE_BODY);
-            case SKIN_TONE_2: return new PawnClass(Pawn.SNAKE_BODY_SKIN_2);
-            case SKIN_TONE_3: return new PawnClass(Pawn.SNAKE_BODY_SKIN_3);
-            default: return new PawnClass(Pawn.SNAKE_BODY);
-        }
-    } 
-
     public Board(Design design) {
         this.design = design;
 
@@ -241,5 +232,14 @@ public class Board {
 
     public static int getDirection() {
         return direction;
+    }
+
+    public static PawnClass setBodySkin() {
+        switch(myVar) {
+            case SKIN_TONE_1: return new PawnClass(Pawn.SNAKE_BODY);
+            case SKIN_TONE_2: return new PawnClass(Pawn.SNAKE_BODY_SKIN_2);
+            case SKIN_TONE_3: return new PawnClass(Pawn.SNAKE_BODY_SKIN_3);
+            default: return new PawnClass(Pawn.SNAKE_BODY);
+        }
     }
 }
