@@ -23,19 +23,27 @@ public class Board {
     private Design design;
     private Random random = new Random();
 
-    public boolean isEndGame = false, thereIsFood = false, thereIsItem = false;
+    private boolean isEndGame = false, thereIsFood = false, isThereInvicibilityItem = false;
 
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
     private int tailLength = 0;
-    public int counter = -1, itemTimer = -1;
-    private Coordinates liveItemCoordinates;
+    private int frameCounterOfInvisibility = -1, invicibilityItemFrameCounter = -1;
+    private Coordinates liveInvicibilityItemCoordinates;
+
+    private final int INVINCIBILITY_ITEM_LIFESPAWN_FRAME_COUNT = 100;
+    private final int MAX_FRAME_OF_INVINCIBILITY = 150;
+
+    private final int X_TO_APPEAR_ON_TOP = 1;
+    private final int X_TO_APPEAR_ON_BOTTOM = 20;
+    private final int Y_TO_APPEAR_ON_LEFT = 0;
+    private final int Y_TO_APPEAR_ON_RIGHT = 20;
 
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
 
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
-    private PawnClass itemClass = new PawnClass(Pawn.ITEM);
+    private PawnClass invicibilityItemClass = new PawnClass(Pawn.INVINCIBILITY_ITEM);
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
@@ -44,6 +52,10 @@ public class Board {
 
         addStartEntity();
         mapTask();
+    }
+
+    public boolean isThereInvicibilityItem() {
+        return isThereInvicibilityItem;
     }
 
     private void addStartEntity() {
@@ -56,7 +68,7 @@ public class Board {
             board.put(new Coordinates(i, 21), new PawnClass(Pawn.BRICK));
         }
 
-        addEatOrItem();
+        addEatOrInvincibilityItem();
         displayAllImage();
     }
 
@@ -100,24 +112,24 @@ public class Board {
                     snakeHeadCoordinates = coordinates;
                     thereIsFood = false;
 
-                    addEatOrItem();
+                    addEatOrInvincibilityItem();
                 }
-                else if(getPawn(coordinates).getPawn().isItem()) {
+                else if(getPawn(coordinates).getPawn().isInvincibilityItem()) {
 
                     board.remove(snakeHeadCoordinates);
                     board.put(coordinates, snakeHeadClass);
                     
                     snakeHeadCoordinates = coordinates;
-                    thereIsItem = false;
+                    isThereInvicibilityItem = false;
 
                     if(tailLength > 0) {
                         moveSnakeBody();
                     }
                     
-                    activateSuperPower();
-                    CountInvinsibleTime();
+                    activateInvincibility();
+                    CountInvincibilityFrame();
                     
-                    addEatOrItem();
+                    addEatOrInvincibilityItem();
 
                 } else {
                     if(!isInvincible()) {
@@ -131,17 +143,17 @@ public class Board {
                         if( getPawn(coordinates).getPawn() == Pawn.BRICK ) {
                             int newX = coordinates.getX(), newY = coordinates.getY();
                             if(coordinates.getX() <= 0 ) {
-                                newX = 20;
+                                newX = X_TO_APPEAR_ON_BOTTOM;
                                 newY = coordinates.getY();
                             }
                             else if(coordinates.getX() >= 21) {
-                                newX = 1;
+                                newX = X_TO_APPEAR_ON_TOP;
                             }
                             else if(coordinates.getY() <= 0) {
-                                newY = 20;
+                                newY = Y_TO_APPEAR_ON_RIGHT;
                             }
                             else{
-                                newY = 1;
+                                newY = Y_TO_APPEAR_ON_LEFT;
                             }
 
                             board.remove(snakeHeadCoordinates);
@@ -179,27 +191,37 @@ public class Board {
                     moveSnakeBody();
                 }
             }
-            if(itemTimer != -1 && !thereIsFood) {
-                if(itemTimer > 100) {
-                    dissappearItem();
+            if(invicibilityItemFrameCounter != -1 && !thereIsFood ) {
+                if(invicibilityItemFrameCounter > INVINCIBILITY_ITEM_LIFESPAWN_FRAME_COUNT) {
+                    dissappearInvincibilityItem();
                 }
                 else
-                    itemTimer++;
+                    invicibilityItemFrameCounter++;
             }
             if(isInvincible()) {
-                CountInvinsibleTime();
+                CountInvincibilityFrame();
             }
             else
-                deactivateSuperPower();
+                deactivateInvincibility();
 
-            for(int i = 0; i < 22; i++) {
-                board.put(new Coordinates(0, i), new PawnClass(Pawn.BRICK));
-                board.put(new Coordinates(21, i), new PawnClass(Pawn.BRICK));
-                board.put(new Coordinates(i, 0), new PawnClass(Pawn.BRICK));
-                board.put(new Coordinates(i, 21), new PawnClass(Pawn.BRICK));
-            }
-            displayAllImage();
+            addBricksWhileInvincible();
         }
+    }
+
+    //Snake removes bricks while going through them when invincible.
+    //Need to add them to board again.
+    private void addBricksWhileInvincible() {
+
+        for(int i = 0; i < 22; i++) {
+
+            board.put(new Coordinates(0, i), new PawnClass(Pawn.BRICK));
+            board.put(new Coordinates(21, i), new PawnClass(Pawn.BRICK));
+            board.put(new Coordinates(i, 0), new PawnClass(Pawn.BRICK));
+            board.put(new Coordinates(i, 21), new PawnClass(Pawn.BRICK));
+
+        }
+
+        displayAllImage();
     }
 
     private void moveSnakeBody() {
@@ -222,10 +244,10 @@ public class Board {
         snakeTail.add(coordinates);
     }
 
-    private void addEatOrItem() {
-        if(random.nextInt(40) % 10 == 0 && (!isInvincible())) {
-            counter = -1;
-            addItem();
+    private void addEatOrInvincibilityItem() {
+        if(shouldAnInvincibleItemAppearOnBoard()) {
+            frameCounterOfInvisibility = -1;
+            addInvicibilityItem();
         }
         else
             addEat();
@@ -242,46 +264,50 @@ public class Board {
         thereIsFood = true;
     }
 
-    public void addItem() {
-        Coordinates itemCoordinates;
-        itemTimer=0;
+    public void addInvicibilityItem() {
+        Coordinates invicibilityItemCoordinates;
+        invicibilityItemFrameCounter = 0;
 
         do {
-            itemCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
-        } while(isFieldNotNull(itemCoordinates));
+            invicibilityItemCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
+        } while(isFieldNotNull(invicibilityItemCoordinates));
 
-        thereIsItem = true;
+        isThereInvicibilityItem = true;
 
-        liveItemCoordinates = itemCoordinates;
+        liveInvicibilityItemCoordinates = invicibilityItemCoordinates;
 
-        board.put(itemCoordinates, itemClass);
+        board.put(invicibilityItemCoordinates, invicibilityItemClass);
     }
 
-    public void dissappearItem() {
-        board.remove(liveItemCoordinates);
+    public void dissappearInvincibilityItem() {
+        board.remove(liveInvicibilityItemCoordinates);
                     
-        liveItemCoordinates = null;
+        liveInvicibilityItemCoordinates = null;
         
-        thereIsItem = false;   
-        itemTimer = -1;    
-        addEatOrItem();
+        isThereInvicibilityItem = false;   
+        invicibilityItemFrameCounter = -1;    
+        addEatOrInvincibilityItem();
     }
 
-    public boolean CountInvinsibleTime() {
-        counter++;
-        return counter > 150;
+    private boolean shouldAnInvincibleItemAppearOnBoard() {
+        return (random.nextInt(2) % 2 == 0) && !isThereInvicibilityItem && (!isInvincible());
+    }
+
+    public boolean CountInvincibilityFrame() {
+        frameCounterOfInvisibility++;
+        return frameCounterOfInvisibility > MAX_FRAME_OF_INVINCIBILITY;
     }
 
     public boolean isInvincible() {
-        return (counter != -1 && !CountInvinsibleTime());
+        return (frameCounterOfInvisibility != -1 && !CountInvincibilityFrame());
     }
 
-    public void activateSuperPower() {
-        design.superPower = true;
+    public void activateInvincibility() {
+        design.setInvincibility(true);
     }
 
-    public void deactivateSuperPower() {
-        design.superPower = false;
+    public void deactivateInvincibility() {
+        design.setInvincibility(false);
     }
 
     private void mapTask() {

@@ -2,13 +2,10 @@ package pl.nogacz.snake;
 
 import org.junit.Test;
 
-import jdk.jfr.Timestamp;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import pl.nogacz.snake.board.Board;
-import pl.nogacz.snake.board.Coordinates;
 import pl.nogacz.snake.application.Design;
 
 
@@ -16,42 +13,62 @@ public class InvincibilityItemTest {
 
     @Test
     public void testSpawnInvincibilityItem() {
-        
+
         Design design = mock(Design.class);
         Board board = new Board(design);
 
-        board.addItem();
+        board.addInvicibilityItem();
         
-        assertFalse(-1 == board.itemTimer);
+        assertTrue(board.isThereInvicibilityItem());
         
     }
 
+    //tests if become invincible after eating invincibility item
     @Test
-    public void testEatInvincibilityItem() {
-        
+    public void testInvincibility() {
+
         Design design = mock(Design.class);
         Board board = new Board(design);
 
-        board.addItem();
+        board.addInvicibilityItem();
+        board.activateInvincibility();
 
-        board.activateSuperPower();
-
-        assertTrue(true == design.superPower);
+        assertTrue(false == board.CountInvincibilityFrame());
 
     }
 
-    @Test
+    /*@Test
     public void testDissappearNotEatenItem() {
-        
+
         Design design = mock(Design.class);
         Board board = new Board(design);
 
-        board.addItem();
+        board.addInvicibilityItem();
         
-        board.dissappearItem();
+        board.dissappearInvincibilityItem();
 
-        assertFalse(board.thereIsItem);
+        assertFalse(board.isThereInvicibilityItem());
 
     }
+
+    @Test
+    public void testInvincibilityTimeOut() {
+
+        Design design = mock(Design.class);
+        Board board = new Board(design);
+        
+        int countFrameOfInvincibility = 0;
+
+        board.activateInvincibility();
+
+        while(board.CountInvincibilityFrame()) {
+            countFrameOfInvincibility++;
+        }
+
+        countFrameOfInvincibility++;
+
+        assertTrue(countFrameOfInvincibility == 149);
+
+    }*/
 
 }

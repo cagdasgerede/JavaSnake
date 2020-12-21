@@ -31,7 +31,7 @@ public class PawnClass {
     }
 
     public ImageView getItemImage() {
-        Image image = new Image(Resources.getPath("ITEM.png"));
+        Image image = new Image(Resources.getPath("INVICIBILITY_ITEM.png"));
         return new ImageView(image);
     }
 

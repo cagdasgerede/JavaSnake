@@ -15,11 +15,19 @@ import pl.nogacz.snake.pawn.PawnClass;
  */
 public class Design {
     private GridPane gridPane = new GridPane();
-    public boolean superPower = false;
+    private boolean hasBecomeInvincible = false;
 
     public Design() {
         createBoardBackground();
         generateEmptyBoard();
+    }
+
+    public void setInvincibility(boolean b) {
+        hasBecomeInvincible = b;
+    }
+
+    public boolean getInvincibility() {
+        return hasBecomeInvincible;
     }
 
     private void createBoardBackground() {
@@ -50,19 +58,19 @@ public class Design {
 
     public void addPawn(Coordinates coordinates, PawnClass pawn) {
         if(pawn.getPawn().isHead()) {
-            if(superPower)
+            if(hasBecomeInvincible)
                 gridPane.add(pawn.getSuperSnakeDirection(Board.getDirection()), coordinates.getX(), coordinates.getY());
             else
                 gridPane.add(pawn.getImageDirection(Board.getDirection()), coordinates.getX(), coordinates.getY());
         } 
-        else if(pawn.getPawn().isItem()) {
+        else if(pawn.getPawn().isInvincibilityItem()) {
             gridPane.add(pawn.getItemImage(), coordinates.getX(), coordinates.getY());
         }
         else if(pawn.getPawn().isBrick()) {
             gridPane.add(pawn.getBrickImage(), coordinates.getX(), coordinates.getY());
         }
         else {
-            if(superPower)
+            if(hasBecomeInvincible)
                 gridPane.add(pawn.getSuperSnakeImage(), coordinates.getX(), coordinates.getY());
             else
                 gridPane.add(pawn.getImage(), coordinates.getX(), coordinates.getY());

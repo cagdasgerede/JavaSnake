@@ -6,7 +6,7 @@ package pl.nogacz.snake.pawn;
 public enum Pawn {
     FOOD,
     BRICK,
-    ITEM,
+    INVINCIBILITY_ITEM,
     SNAKE_HEAD,
     SNAKE_BODY;
 
@@ -14,8 +14,8 @@ public enum Pawn {
         return this == FOOD;
     }
 
-    public boolean isItem() {
-        return this == ITEM;
+    public boolean isInvincibilityItem() {
+        return this == INVINCIBILITY_ITEM;
     }
 
     public boolean isHead() {
