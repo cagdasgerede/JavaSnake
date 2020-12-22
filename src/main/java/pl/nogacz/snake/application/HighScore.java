@@ -20,7 +20,7 @@ import javafx.scene.text.Font;
 import javafx.util.Callback;
 
 public class HighScore {
-    private static final File HIGH_SCORE_FILE = new File(Paths.get(".", "high.scores").toUri()); //text file, score and name per line, tab seperated
+    private static File HIGH_SCORE_FILE = new File(Paths.get(".", "high.scores").toUri()); //text file, score and name per line, tab seperated
     private static final int HIGH_SCORE_COUNT = 10;
 
     private HighScore() { }
@@ -51,7 +51,7 @@ public class HighScore {
         }
     }
 
-    private static ArrayList<Object[]> readScores() { // returns an ArrayList of [Integer, String]
+    static ArrayList<Object[]> readScores() { // returns an ArrayList of [Integer, String]
         if (!HIGH_SCORE_FILE.exists()) {
             try {
                 HIGH_SCORE_FILE.createNewFile();
@@ -76,10 +76,11 @@ public class HighScore {
         } catch (Exception e) {
             Logger.getLogger(HighScore.class.getName()).severe(e.getMessage());
         }
+        scores.sort((o1, o2) -> (int) o2[0] - (int) o1[0]);
         return truncateScores(scores);
     }
 
-    private static ArrayList<Object[]> truncateScores(ArrayList<Object[]> scores) {
+    static ArrayList<Object[]> truncateScores(ArrayList<Object[]> scores) {
         if (scores.size() > HIGH_SCORE_COUNT)
             scores = new ArrayList<>(scores.subList(0, HIGH_SCORE_COUNT));
         return scores;
@@ -106,11 +107,11 @@ public class HighScore {
     }
 
     private static TableView<Score> getScoreTable() {
-        TableView<Score> table = new TableView();
+        TableView<Score> table = new TableView<>();
         table.setEditable(true);
 
-        TableColumn<Score, Integer> scoreColumn = new TableColumn("Score");
-        TableColumn<Score, String> nameColumn = new TableColumn("Name");
+        TableColumn<Score, Integer> scoreColumn = new TableColumn<>("Score");
+        TableColumn<Score, String> nameColumn = new TableColumn<>("Name");
         table.getColumns().addAll(scoreColumn, nameColumn);
 
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
