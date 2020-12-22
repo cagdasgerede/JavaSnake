@@ -13,7 +13,7 @@ import pl.nogacz.snake.application.Design;
 public class RandomBlocksTest {
     
     @Test
-    void testSpawnRottenAppleBlack(){
+    void testSpawnRottenAppleBlack() {
 
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -35,7 +35,7 @@ public class RandomBlocksTest {
     }
 
     @Test
-    void testSpawnRottenAppleGrey(){
+    void testSpawnRottenAppleGrey() {
 
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -52,7 +52,7 @@ public class RandomBlocksTest {
     }
 
     @Test
-    void testSpawnRottenAppleOrange(){
+    void testSpawnRottenAppleOrange() {
 
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -66,7 +66,7 @@ public class RandomBlocksTest {
 
 
     @Test
-    void testDissappearRottenAppleBlack(){
+    void testDissappearRottenAppleBlack() {
         
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -93,7 +93,7 @@ public class RandomBlocksTest {
     }
 
     @Test
-    void testDissappearRottenGrey(){
+    void testDissappearRottenGrey() {
         
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -122,7 +122,7 @@ public class RandomBlocksTest {
     }
 
     @Test
-    void testDissappearRottenOrange(){
+    void testDissappearRottenOrange() {
         
         Design design = mock(Design.class);
         Board b = new Board(design);
@@ -139,7 +139,7 @@ public class RandomBlocksTest {
     }
 
     @Test
-    void testClearRottenApples(){
+    void testClearRottenApples() {
         Design design = mock(Design.class);
         Board b = new Board(design);
         

@@ -91,7 +91,7 @@ public class Board {
         return rottenApplesOrange;
     }
 
-    private void initialAssignments(){
+    private void initialAssignments() {
         rottenAppleClass[0] = new PawnClass(Pawn.ROTTEN_APPLE_BLACK);
         rottenAppleClass[1] = new PawnClass(Pawn.ROTTEN_APPLE_GREY);
         rottenAppleClass[2] = new PawnClass(Pawn.ROTTEN_APPLE_ORANGE);
@@ -107,7 +107,7 @@ public class Board {
         rottenApples.add(rottenApplesOrange);
     }
 
-    public Board(Design design){
+    public Board(Design design) {
         this.design = design;
 
         initialAssignments();
@@ -115,7 +115,7 @@ public class Board {
         mapTask();
     }
 
-    private void addStartEntity(){
+    private void addStartEntity() {
         board.put(snakeHeadCoordinates, snakeHeadClass);
 
         for(int i = 0; i < rottenApples.size(); i++){
@@ -134,25 +134,25 @@ public class Board {
         displayAllImage();
     }
 
-    private void checkMap(){
+    private void checkMap() {
         removeAllImage();
         moveSnake();
         displayAllImage();
     }
 
-    private void removeAllImage(){
+    private void removeAllImage() { 
         for(Map.Entry<Coordinates, PawnClass> entry : board.entrySet()){
             design.removePawn(entry.getKey());
         }
     }
 
-    private void displayAllImage(){
+    private void displayAllImage() {
         for(Map.Entry<Coordinates, PawnClass> entry : board.entrySet()){
             design.addPawn(entry.getKey(), entry.getValue());
         }
     }
 
-    private void moveSnake(){
+    private void moveSnake() {
         switch(direction) {
             case 1: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1)); break;
             case 2: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1)); break;
@@ -161,7 +161,7 @@ public class Board {
         }
     }
 
-    public boolean snakeHitsRottenApple(Coordinates coordinates){ // if snake hits rotten apple game ends.
+    public boolean snakeHitsRottenApple(Coordinates coordinates) { // if snake hits rotten apple game ends.
         if(getPawn(coordinates).getPawn().isRottenAppleBlack() || getPawn(coordinates).getPawn().isRottenAppleGrey() 
                || getPawn(coordinates).getPawn().isRottenAppleOrange()){
                 isEndGame = true;
@@ -171,11 +171,11 @@ public class Board {
             return false;
     }
 
-    private String endGameMessage(int point){
+    private String endGameMessage(int point) {
         return "End game...\n" + "You have " + point + " points. \n" + "Maybe try again? :)";
     }
 
-    public void moveSnakeHead(Coordinates coordinates){
+    public void moveSnakeHead(Coordinates coordinates) {
         if(coordinates.isValid()){
             if(isFieldNotNull(coordinates)){
                 if(getPawn(coordinates).getPawn().isFood()){ 
@@ -190,7 +190,7 @@ public class Board {
                     addEat();                    
                 } 
                 
-                else if(snakeHitsRottenApple(coordinates)){ 
+                else if(snakeHitsRottenApple(coordinates)) { 
                     new EndGame(endGameMessage(tailLength));
                 }
                 else {
@@ -210,11 +210,11 @@ public class Board {
         }
     }
 
-    private boolean conditionCheckToSpawnRottenApple(int i){ // control for randomly chosen spawning rotten apple time
+    private boolean conditionCheckToSpawnRottenApple(int i) { // control for randomly chosen spawning rotten apple time
         return Math.abs(this.lastSpawnTimesOfApples[i] - System.currentTimeMillis()) / 1000 == this.newRandomSpawnTimesOfApples[i];
     }
 
-    public void spawnRottenApple(){
+    public void spawnRottenApple() {
         for(int i = 0; i < rottenApples.size(); i++){
             if(conditionCheckToSpawnRottenApple(i)){
                 addRottenApples(i);
@@ -225,23 +225,23 @@ public class Board {
         }
     }
 
-    private boolean dissappearRottenAppleForFirstTime(int i){ // control for randomly chosen dissappearing rotten apple for the first time
+    private boolean dissappearRottenAppleForFirstTime(int i) { // control for randomly chosen dissappearing rotten apple for the first time
         return rottenApplesBlack.size() == 1 && dissappearRottenApplesCheck[i];
     }
 
-    private boolean checkToDissappearRottenApple(int i){ // control for randomly chosen dissappearing rotten apple time
+    private boolean checkToDissappearRottenApple(int i) { // control for randomly chosen dissappearing rotten apple time
         return Math.abs(lastDissappearTimesOfApples[i] - System.currentTimeMillis()) / 1000 == newRandomDissappearTimesOfApples[i];
     }
 
     public void disappearRottenApple(){
-        for(int i = 0; i < rottenApples.size(); i++){
+        for(int i = 0; i < rottenApples.size(); i++) {
             if(dissappearRottenAppleForFirstTime(i)){
                 newRandomDissappearTimesOfApples[i] = random.nextInt(9) + 1;
                 lastDissappearTimesOfApples[i] = System.currentTimeMillis();
                 dissappearRottenApplesCheck[i] = false;
             }
         
-        for(int k = 0; k < rottenApples.size(); k++){
+        for(int k = 0; k < rottenApples.size(); k++) {
             if(checkToDissappearRottenApple(k))
                 if(!rottenApples.get(k).isEmpty()){
                     board.remove(rottenApples.get(k).get(0));
@@ -256,7 +256,7 @@ public class Board {
         }
     }
 
-    private void moveSnakeBody(){
+    private void moveSnakeBody() {
         switch(direction){
             case 1: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() + 1)); break;
             case 2: moveSnakeBodyHandler(new Coordinates(snakeHeadCoordinates.getX(), snakeHeadCoordinates.getY() - 1)); break;
@@ -265,7 +265,7 @@ public class Board {
         }
     }
 
-    private void moveSnakeBodyHandler(Coordinates coordinates){
+    private void moveSnakeBodyHandler(Coordinates coordinates) {
         if(tailLength == snakeTail.size()) {
             Coordinates endTail = snakeTail.get(0);
             board.remove(endTail);
@@ -276,7 +276,7 @@ public class Board {
         snakeTail.add(coordinates);
     }
 
-    private void addEat(){ 
+    private void addEat() { 
         Coordinates foodCoordinates;
 
         do {
@@ -286,7 +286,7 @@ public class Board {
         board.put(foodCoordinates, foodClass);
     }
 
-    private void addRottenApples(int i){
+    private void addRottenApples(int i) {
         Coordinates rottenAppleCoordinates;
 
         do {
@@ -297,7 +297,7 @@ public class Board {
         board.put(rottenAppleCoordinates, rottenAppleClass[i]);
     }
 
-    private int totalRottenAppleSize(){
+    private int totalRottenAppleSize() {
         int sum = 0;
         for(int i = 0; i < rottenApples.size(); i++){
                 sum = sum + rottenApples.get(i).size();
@@ -306,7 +306,7 @@ public class Board {
         return sum;
     }
 
-    public void clearRottenApples(){ // when rotten apples(blocks) appear at the same time more than the value of objectLimit , board will be cleared when the (objectLimit + 1)th rotten apple spawns.
+    public void clearRottenApples() { // when rotten apples(blocks) appear at the same time more than the value of objectLimit , board will be cleared when the (objectLimit + 1)th rotten apple spawns.
         int sum = totalRottenAppleSize();
         if(sum > APPLE_SPAWN_LIMIT){
             for(int i = 0; i < rottenApples.size(); i++){
@@ -322,7 +322,7 @@ public class Board {
         }
     }
 
-    private void mapTask(){
+    private void mapTask() {
         Task<Void> task = new Task<Void>(){
             @Override
             protected Void call() throws Exception{
@@ -336,7 +336,7 @@ public class Board {
             }
         };
 
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event){
                 if(!isEndGame) {
@@ -352,7 +352,7 @@ public class Board {
         new Thread(task).start();
     }
 
-    public void readKeyboard(KeyEvent event){
+    public void readKeyboard(KeyEvent event) {
         switch(event.getCode()) {
             case W: changeDirection(1); break;
             case S: changeDirection(2); break;
@@ -366,7 +366,7 @@ public class Board {
         }
     }
 
-    private void changeDirection(int newDirection){
+    private void changeDirection(int newDirection) {
         if(newDirection == 1 && direction != 2) {
             direction = 1;
         } else if(newDirection == 2 && direction != 1){
@@ -378,15 +378,15 @@ public class Board {
         }
     }
 
-    private boolean isFieldNotNull(Coordinates coordinates){
+    private boolean isFieldNotNull(Coordinates coordinates) {
         return getPawn(coordinates) != null;
     }
 
-    private PawnClass getPawn(Coordinates coordinates){
+    private PawnClass getPawn(Coordinates coordinates) {
         return board.get(coordinates);
     }
 
-    public static int getDirection(){
+    public static int getDirection() {
         return direction;
     }
 
