@@ -28,6 +28,7 @@ public class Board {
     private int tailLength = 0;
 
     private final static int ROTTEN_FOOD_MAX_FRAME_COUNT = 20;
+    private final static int ROTTEN_FOOD_ADD_RATE = 10; // %10, it must be divisible by 100 
     private int currentRottenFoodAgeAsFrameCount = 0;
 
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
@@ -146,7 +147,7 @@ public class Board {
 
     private void addRottenFoodIfNotExistAndCount() {
         if(!isRottenFoodExist()) {
-            int randomnum = random.nextInt(10);
+            int randomnum = random.nextInt(100/(ROTTEN_FOOD_ADD_RATE));
             if(randomnum == 1) { //percentage of addRottenFood is %10
                 addRottenFood();
             } 
