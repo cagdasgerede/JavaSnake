@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
+import pl.nogacz.snake.application.KeyMap;
 import pl.nogacz.snake.application.PauseGame;
 import pl.nogacz.snake.application.SnakeSkins;
 import pl.nogacz.snake.pawn.Pawn;
@@ -192,22 +193,43 @@ public class Board {
     }
 
     public void readKeyboard(KeyEvent event) {
-        switch(event.getCode()) {
-            case W: changeDirection(1); break;
-            case S: changeDirection(2); break;
-            case A: changeDirection(3); break;
-            case D: changeDirection(4); break;
-            case ESCAPE: 
-            if(isPaused) {
-                resumeGame();
+        if(KeyMap.getIsWASD()) {
+            switch(event.getCode()) {
+                case W: changeDirection(1); break;
+                case S: changeDirection(2); break;
+                case A: changeDirection(3); break;
+                case D: changeDirection(4); break;
+                case ESCAPE: 
+                if(isPaused) {
+                    resumeGame();
+                }
+                else {
+                    isPaused = true;
+                    new PauseGame("Game Paused!\nPress Esc after pressing Continue for game to continue");
+                }   
+                break;
+                default: break;
             }
-            else {
-                isPaused = true;
-                new PauseGame("Game Paused!\nPress Esc after pressing Continue for game to continue");
-            }   
-            break;
-            default: break;
         }
+        else {
+            switch(event.getCode()) {
+                case UP: changeDirection(1); break;
+                case DOWN: changeDirection(2); break;
+                case LEFT: changeDirection(3); break;
+                case RIGHT: changeDirection(4); break;
+                case ESCAPE: 
+                if(isPaused) {
+                    resumeGame();
+                }
+                else {
+                    isPaused = true;
+                    new PauseGame("Game Paused!\nPress Esc after pressing Continue for game to continue");
+                }   
+                break;
+                default: break;
+            }
+        }
+        
     }
 
     private void changeDirection(int newDirection) {

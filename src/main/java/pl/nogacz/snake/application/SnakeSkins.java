@@ -53,16 +53,21 @@ public class SnakeSkins {
             head = headSkinTones.SKIN_TONE_GREEN;
         }
     }
+
     public void setBodySkin(bodySkinTones skin) {
         SnakeSkins.body = skin;
     }
+
     public void setHeadSkin(headSkinTones skin) {
         SnakeSkins.head = skin;
     }
+
     public static bodySkinTones getBodySkin() {
         return body;
     }
+
     public static headSkinTones getHeadSkin() {
         return head;
     }
+
 }
