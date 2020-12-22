@@ -1,4 +1,5 @@
 package pl.nogacz.snake.application;
+
 import java.net.URL;
 
 /**

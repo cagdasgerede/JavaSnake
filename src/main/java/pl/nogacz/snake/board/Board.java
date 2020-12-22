@@ -31,7 +31,9 @@ public class Board {
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
     private static SnakeSkins.bodySkinTones myVar = SnakeSkins.getBodySkin();
     private int tailLength = 0;
+
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
+
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
     private PawnClass snakeBodyClass2 = new PawnClass(Pawn.SNAKE_BODY_SKIN_ORANGE);
@@ -56,6 +58,7 @@ public class Board {
             board.put(new Coordinates(i, 0), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates(i, 21), new PawnClass(Pawn.BRICK));
         }
+
         addEat();
         displayAllImage();
     }

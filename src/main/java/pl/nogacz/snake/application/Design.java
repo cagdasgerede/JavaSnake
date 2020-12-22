@@ -43,7 +43,7 @@ public class Design {
             row.setValignment(VPos.CENTER);
             gridPane.getRowConstraints().add(row);
         }
-        
+
         gridPane.setPadding(new Insets(10, 0, 0, 10));
     }
 
