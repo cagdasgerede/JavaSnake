@@ -186,6 +186,7 @@ public class Board {
                 }
             }
         });
+
         new Thread(task).start();
     }
     public synchronized void resumeGame() {
