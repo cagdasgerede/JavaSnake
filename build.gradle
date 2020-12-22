@@ -55,6 +55,8 @@ dependencies {
 
 
 test {
+	useJUnit()
+
 	testLogging {
 		showStandardStreams = true
 	}

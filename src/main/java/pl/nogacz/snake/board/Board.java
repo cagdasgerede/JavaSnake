@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -56,6 +57,7 @@ public class Board {
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
+    private JFrame frame;
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
@@ -179,7 +181,7 @@ public class Board {
                 try {
                     Thread.sleep(140);
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    Logger.getLogger(Board.class.getName()).severe(e.getMessage());
                 }
                 return null;
             }
@@ -229,7 +231,7 @@ public class Board {
         if(!paused){
             paused = true;
             
-            JFrame frame = new JFrame("MENU"); 
+            frame = new JFrame("MENU"); 
             JPanel panel = new JPanel();   
     
             BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
@@ -365,5 +367,9 @@ public class Board {
 
     public boolean getPaused(){
         return paused;
+    }
+
+    public JFrame getFrame(){
+        return frame;
     }
 }
