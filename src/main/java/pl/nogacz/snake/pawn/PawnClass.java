@@ -1,4 +1,5 @@
 package pl.nogacz.snake.pawn;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import pl.nogacz.snake.application.Resources;
@@ -13,6 +14,7 @@ public class PawnClass {
     public PawnClass(Pawn pawn) {
         this.pawn = pawn;
     }
+
     public ImageView getImage() {
         Image image = new Image(Resources.getPath(pawn + ".png"));
         return new ImageView(image);
@@ -20,6 +22,7 @@ public class PawnClass {
 
     public ImageView getImageDirection(int direction) {
         String direct = "";
+        
         SnakeSkins.bodySkinTones myVar = SnakeSkins.getBodySkin();
         if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_DEFAULT) {
             switch(direction) {
