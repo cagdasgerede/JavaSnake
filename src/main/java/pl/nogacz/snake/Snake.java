@@ -28,4 +28,5 @@ public class Snake extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
     }
+    
 }

@@ -43,13 +43,11 @@ public class Design {
             column.setHgrow(Priority.ALWAYS);
             column.setHalignment(HPos.CENTER);
             gridPane.getColumnConstraints().add(column);
-            
             RowConstraints row = new RowConstraints(32);
             row.setVgrow(Priority.ALWAYS);
             row.setValignment(VPos.CENTER);
             gridPane.getRowConstraints().add(row);
         }
-
         gridPane.setPadding(new Insets(10, 0, 0, 10));      
     }
 
@@ -62,7 +60,7 @@ public class Design {
         menuButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 if(!board.getPaused()){
-                board.menuFrame();
+                    board.menuFrame();
                 }
         	}  
         });

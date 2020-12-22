@@ -161,7 +161,6 @@ public class Board {
 
     private void addEat() {
         Coordinates foodCoordinates;
-        //while statement modified to not put apple to the menus place
         do {
             foodCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
         } while(isFieldNotNull(foodCoordinates) || isMenuCoordinate(foodCoordinates)); 
@@ -197,9 +196,9 @@ public class Board {
 
                 if(paused){
                     while(paused){
-                        try{
+                        try {
                             Thread.sleep(100);
-                        }catch (Exception e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -335,7 +334,6 @@ public class Board {
         }
     }
 
-        //remove file:/from path
     public String pathComponent(String filename) {
         String path = Resources.getPath(filename);
         return path.substring(path.indexOf("/") + 1);
