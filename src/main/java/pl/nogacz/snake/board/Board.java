@@ -27,8 +27,8 @@ public class Board {
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
     private int tailLength = 0;
 
-    private int disappearanceTime = 20;
-    private int disappearanceCounter = 0;
+    private final static int ROTTEN_FOOD_MAX_FRAME_COUNT = 20;
+    private int currentRottenFoodAgeAsFrameCount = 0;
 
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
     private Coordinates rottenFoodCoordinates = null;
@@ -91,21 +91,7 @@ public class Board {
 
     private void moveSnakeHead(Coordinates coordinates) {
         if(coordinates.isValid()) {
-            if(!isRottenFoodExist()) {
-                int randomnum = random.nextInt(10);
-                if(randomnum == 1) {
-                    addRottenFood();
-                } 
-            } else {   
-                if(disappearanceCounter < disappearanceTime) {
-                     disappearanceCounter++;
-                }     
-                if(disappearanceCounter == disappearanceTime) { 
-                    disappearanceCounter = 0;
-                    board.remove(rottenFoodCoordinates);
-                    rottenFoodCoordinates = null;
-                }
-            } 
+            addRottenFoodIfNotExistAndCount(); 
             if(isFieldNotNull(coordinates)) {
                 if(getPawn(coordinates).getPawn().isFreshFood()) {
                     board.remove(snakeHeadCoordinates);
@@ -137,7 +123,7 @@ public class Board {
                     tailLength--;
 
                     snakeHeadCoordinates = coordinates;
-                    disappearanceCounter = 0;
+                    currentRottenFoodAgeAsFrameCount = 0;
                     rottenFoodCoordinates = null; 
                 } else {
                     isEndGame = true;
@@ -154,6 +140,24 @@ public class Board {
                 if(tailLength > 0) {
                     moveSnakeBody();
                 }
+            }
+        }
+    }
+
+    private void addRottenFoodIfNotExistAndCount() {
+        if(!isRottenFoodExist()) {
+            int randomnum = random.nextInt(10);
+            if(randomnum == 1) { //percentage of addRottenFood is %10
+                addRottenFood();
+            } 
+        } else {   
+            if(currentRottenFoodAgeAsFrameCount < ROTTEN_FOOD_MAX_FRAME_COUNT) {
+                currentRottenFoodAgeAsFrameCount++;
+            }     
+            if(currentRottenFoodAgeAsFrameCount == ROTTEN_FOOD_MAX_FRAME_COUNT) { 
+                currentRottenFoodAgeAsFrameCount = 0;
+                board.remove(rottenFoodCoordinates);
+                rottenFoodCoordinates = null;
             }
         }
     }
@@ -178,14 +182,14 @@ public class Board {
         snakeTail.add(coordinates);
     }
 
-    private void addEat(boolean bool) {
+    private void addEat(boolean isFresh) {
         Coordinates foodCoordinates;
 
         do {
             foodCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
         } while(isFieldNotNull(foodCoordinates));
 
-        if(bool) {
+        if(isFresh) {
             board.put(foodCoordinates, freshFoodClass);
         }    
         else {    
@@ -274,28 +278,20 @@ public class Board {
         this.rottenFoodCoordinates = rottenFoodCoordinates;
     }
 
-    public int getDisappearanceTime() {
-        return disappearanceTime;
+    public int getROTTEN_FOOD_MAX_FRAME_COUNT() {
+        return ROTTEN_FOOD_MAX_FRAME_COUNT;
     }
 
-    public int getDisappearanceCounter() {
-        return disappearanceCounter;
+    public int getCurrentRottenFoodAgeAsFrameCount() {
+        return currentRottenFoodAgeAsFrameCount;
     }
 
-    public void setDisappearanceCounter(int disappearanceCounter) {
-        this.disappearanceCounter = disappearanceCounter;
-    }
-
-    public HashMap<Coordinates, PawnClass> getBoard() {
-        return board;
+    public void setCurrentRottenFoodAgeAsFrameCount(int disappearanceCounter) {
+        this.currentRottenFoodAgeAsFrameCount = disappearanceCounter;
     }
 
     public void setBoard(HashMap<Coordinates, PawnClass> board) {
         this.board = board;
-    }
-
-    public ArrayList<Coordinates> getSnakeTail() {
-        return snakeTail;
     }
 
     public void setSnakeTail(ArrayList<Coordinates> snakeTail) {

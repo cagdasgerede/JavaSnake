@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class testRottenFoodFeature {
+public class TestRottenFoodFeature {
     Logger logger;
     Design design;
     Board board;
@@ -31,7 +31,7 @@ public class testRottenFoodFeature {
     
     @BeforeAll
     public void initialize() {
-        logger = LogManager.getLogger(testRottenFoodFeature.class);
+        logger = LogManager.getLogger(TestRottenFoodFeature.class);
         design = mock(Design.class);    
         board = new Board(design);
 
@@ -71,7 +71,7 @@ public class testRottenFoodFeature {
     public void testDisappearRottenFoodAfterCounting() {
         when(coordinates.isValid()).thenReturn(true);       
         board.setRottenFoodCoordinates(coordinates);       
-        board.setDisappearanceCounter(board.getDisappearanceTime());
+        board.setCurrentRottenFoodAgeAsFrameCount(board.getROTTEN_FOOD_MAX_FRAME_COUNT());
 
         try {
             Method method = Board.class.getDeclaredMethod("moveSnakeHead", Coordinates.class); 
@@ -82,7 +82,7 @@ public class testRottenFoodFeature {
         }
 
         assertFalse(board.isRottenFoodExist());
-        assertEquals(board.getDisappearanceCounter(), 0);
+        assertEquals(board.getCurrentRottenFoodAgeAsFrameCount(), 0);
     }
 
     @Test
