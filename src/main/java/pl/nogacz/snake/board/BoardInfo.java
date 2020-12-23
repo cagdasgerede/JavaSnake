@@ -34,7 +34,6 @@ public class BoardInfo implements Serializable{
         this.snakeBodyClass = snakeBodyClass;
         this.foodClass = foodClass;
         this.snakeTail = snakeTail;
-
     }
 
     public HashMap<Coordinates, PawnClass> getBoard(){return board;}
@@ -45,10 +44,4 @@ public class BoardInfo implements Serializable{
     public PawnClass getBodyClass(){return snakeBodyClass;}
     public PawnClass getFoodClass(){return foodClass;}
     public ArrayList<Coordinates> getSnakeTail(){return snakeTail;}
-
-
-    
-
-
-    
 }

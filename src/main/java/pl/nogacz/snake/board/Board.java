@@ -15,6 +15,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Board {
 
@@ -23,6 +32,7 @@ public class Board {
     private Random random = new Random();
 
     private boolean isEndGame = false;
+    private boolean isPaused = false;
 
     public enum Direction {
         UP,
@@ -31,11 +41,13 @@ public class Board {
         RIGHT
     }
 
-    private static Direction direction = Direction.UP; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
+    private static Direction direction = Direction.UP;
     private int tailLength = 0;
 
-    private int autoSavePeriod = 30;
-    private int remainingForAutoSave = 0;
+    private final static int AUTO_SAVE_FRAME_COUNT = 30;
+    private int remainingFrameCountForAutoSave = 0;
+
+    private int manuelSaveCount=0;
 
     private Coordinates snakeHeadCoordinates = new Coordinates(10, 10);
 
@@ -176,18 +188,12 @@ public class Board {
             protected Void call() throws Exception {
                 try {
                     Thread.sleep(140);
-                    if(++remainingForAutoSave==autoSavePeriod){
+                    if(++remainingFrameCountForAutoSave>=AUTO_SAVE_FRAME_COUNT){
 
-                        remainingForAutoSave = 0;
+                        remainingFrameCountForAutoSave = 0;
                         BoardInfo BI = new BoardInfo(board, direction, tailLength, snakeHeadCoordinates, snakeHeadClass, snakeBodyClass, foodClass, snakeTail);
 
-                        if(new SaveGame(BI, "AutoSave").startSave()){
-
-                            System.out.println("Game Saved");
-                        }
-        
-                        else
-                            System.out.println("An error occured while saving.");                            
+                        new SaveGame(BI, "AutoSave").autoSave();                            
                     }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -200,7 +206,7 @@ public class Board {
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                if (!isEndGame) {
+                if (!isEndGame && !isPaused) {
                     checkMap();
                     mapTask();
                 }
@@ -225,13 +231,11 @@ public class Board {
 
                 BoardInfo BI = new BoardInfo(board, direction, tailLength, snakeHeadCoordinates, snakeHeadClass, snakeBodyClass, foodClass, snakeTail);
 
-                if(new SaveGame(BI, "test").startSave()){
+                isPaused = true;
 
-                    System.out.println("Game Saved");
-                }
+                new SaveGame(BI, "SaveGame" + ++manuelSaveCount).startSave(this);
 
-                else
-                    System.out.println("An error occured while saving.");
+                getPauseMessage();
 
                 break;
             
@@ -239,13 +243,11 @@ public class Board {
                 
                 removeAllImage();
 
-                if(new LoadGame(this).startLoad()){
+                isPaused = true;
 
-                    System.out.println("Saved game loaded");
-                }
+                new LoadGame(this).startLoad();
 
-                else
-                    System.out.println("An error occured while loading the save.");
+                getPauseMessage();
 
                 break;
 
@@ -278,11 +280,6 @@ public class Board {
         return direction;
     }
 
-    public void setAutoSaveFrq(int newPeriod){
-
-        autoSavePeriod = newPeriod;
-    }
-
     public void setParameters(HashMap<Coordinates, PawnClass> board, Direction directionIN, int tailLength, Coordinates snakeHeadCoordinates, PawnClass snakeHeadClass, PawnClass snakeBodyClass, PawnClass foodClass, ArrayList<Coordinates> snakeTail){
 
         this.board = board;
@@ -293,5 +290,44 @@ public class Board {
         this.snakeBodyClass = snakeBodyClass;
         this.foodClass = foodClass;
         this.snakeTail = snakeTail;
+    }
+
+    public void setManualSaveCount(int manuelSaveCount){
+
+        this.manuelSaveCount = manuelSaveCount;
+    }
+
+    public int getManualSaveCount(){
+
+        return manuelSaveCount;
+    }
+    
+    public void getPauseMessage(){
+
+        JFrame info = new JFrame("Info");
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel();
+        JButton button = new JButton("OK");
+
+        label.setText("Game Paused. Press OK to continue.");
+        button.addActionListener(new ActionListener() { 
+
+            @Override
+            public void actionPerformed(ActionEvent e){
+
+                info.setVisible(false);                
+                info.dispose();
+                isPaused = false;
+                mapTask();
+            }
+        });
+
+        info.setSize(300,100);
+        panel.add(label);
+        panel.add(button);
+        info.add(panel);
+        info.setLocationRelativeTo(null);
+
+        info.setVisible(true);
     }
 }

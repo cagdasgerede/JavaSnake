@@ -13,7 +13,7 @@ import pl.nogacz.snake.pawn.PawnClass;
 /**
  * @author Dawid Nogacz on 19.05.2019
  */
-public class Design{
+public class Design {
 
     private GridPane gridPane = new GridPane();
 
