@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 
 import pl.nogacz.snake.board.Board;
 import pl.nogacz.snake.board.BoardInfo;
@@ -80,6 +81,18 @@ public class LoadGame {
             JPanel panel = new JPanel();
             JLabel label = new JLabel();
             JButton confirm = new JButton("Confirm");
+            JButton cancel = new JButton("Cancel");
+            cancel.addActionListener(new ActionListener(){
+
+                @Override
+                public void actionPerformed(ActionEvent e){
+    
+                    board.setIsPaused(false);
+                    board.resume();
+                    frame.setVisible(false);
+                    frame.dispose();                    
+                }
+            });
             JScrollPane scrollPane = new JScrollPane();
             JList list;
             File dateFile;
@@ -144,8 +157,10 @@ public class LoadGame {
             panel.add(label);
             panel.add(scrollPane);
             panel.add(confirm);
+            panel.add(cancel);
             frame.add(panel);            
             frame.setSize(500,300);
+            frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             frame.setLocationRelativeTo(null);
             frame.setAlwaysOnTop(true);
             frame.setVisible(true);           

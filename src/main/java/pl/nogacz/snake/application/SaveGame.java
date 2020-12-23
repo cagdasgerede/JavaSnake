@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import pl.nogacz.snake.board.Board;
 import pl.nogacz.snake.board.BoardInfo;
@@ -48,8 +49,21 @@ public class SaveGame {
         JPanel panel = new JPanel();
         JTextField input = new JTextField(defaultSaveFileName);
         JButton confirm = new JButton("Confirm");
+        JButton cancel = new JButton("Cancel");
         JLabel label = new JLabel();
         label.setText("Please enter the desired save file name:");
+        
+        cancel.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e){
+
+                board.setIsPaused(false);
+                board.resume();
+                frame.setVisible(false);
+                frame.dispose();                    
+            }
+        });
         confirm.addActionListener(new ActionListener() {
 
             @Override
@@ -77,7 +91,7 @@ public class SaveGame {
                         frame.dispose();
                         frame.setVisible(false);
                     }
-                                        
+
                     board.setIsPaused(false);
                     board.resume();
                     frame.setVisible(false);
@@ -90,8 +104,10 @@ public class SaveGame {
         panel.add(label);
         panel.add(input);
         panel.add(confirm);
+        panel.add(cancel);
         panel.setPreferredSize(new Dimension(300,150));
         frame.add(panel);
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.setSize(new Dimension(300,150));
         frame.setLocationRelativeTo(null);
         frame.setAlwaysOnTop(true);
