@@ -25,6 +25,7 @@ public class Board {
     private Random random = new Random();
 
     private boolean isEndGame = false;
+    private boolean isPaused = false;
 
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
     private int tailLength = 0;
@@ -40,10 +41,10 @@ public class Board {
     private AchievementHandler trophy=new AchievementHandler(design);                 
 
     //achievement id's:
-    private int apple=0;
-    private int turn=1;
-    private int time=2;
-    private int length=3;
+    private int apple = 0;
+    private int turn = 1;
+    private int time = 2;
+    private int length = 3;
     
 
     public Board(Design design) {
@@ -68,9 +69,11 @@ public class Board {
     }
 
     private void checkMap() {
-        removeAllImage();
-        moveSnake();
-        displayAllImage();
+        if(!isPaused) {
+            removeAllImage();
+            moveSnake();
+            displayAllImage();
+        }
     }
 
     private void removeAllImage() {
@@ -209,7 +212,9 @@ public class Board {
             case RIGHT: changeDirection(4); break;
             
             case O:                                                     // 'O' button opens achievement window.
+                isPaused = true;
                 AchievementList show=new AchievementList(trophy);
+                isPaused = false;
             break;
         }
     }

@@ -11,19 +11,29 @@ public abstract class Achievement {
     protected int milestone;
     public int id;
 
-    protected static final int max=10;
+    protected static final int max = 10;
     protected double progress;
     protected int achieved;
     protected double addition;
 
-    protected String notificationMessage1="";
-    protected String notificationMessage2="";
-    protected String statusMessage1="";
-    protected String statusMessage2="";
+    protected String notificationMessage1 = "";
+    protected String notificationMessage2 = "";
+    protected String statusMessage1 = "";
+    protected String statusMessage2 = "";
+
+    private LogWriter errorLog = new LogWriter();
 
     public void setAll(int achieved , double progress){
-        this.achieved=achieved;
-        this.progress=progress;
+        this.achieved = achieved;
+        this.progress = progress;
+    }
+
+    public void setMilestone(int milestone){
+        this.milestone = milestone;
+    }
+
+    public void setAddition(double addition){
+        this.addition = addition;
     }
 
     public double getProgress(){
@@ -49,10 +59,10 @@ public abstract class Achievement {
             toStr += statusMessage1 + " "+ (i * milestone) + " " + statusMessage2;
 
             if(achieved < i){
-                toStr+=": NOT ACHIEVED\n";
+                toStr += ": NOT ACHIEVED\n";
 
             }else{
-                toStr+=": ACHIEVED\n";
+                toStr += ": ACHIEVED\n";
             }
 
         }
@@ -60,8 +70,8 @@ public abstract class Achievement {
     }
 
     public void reset(){
-        progress=0;
-        achieved=0;
+        progress = 0;
+        achieved = 0;
     }
 
     public void add(){
@@ -70,7 +80,7 @@ public abstract class Achievement {
 
     public void showNotification() {                           //Creates a tray notification while in game for newly unlocked achievements.
 
-        String message= notificationMessage1 + " "+( achieved * milestone ) + " " + notificationMessage2;
+        String message = notificationMessage1 + " "+( achieved * milestone ) + " " + notificationMessage2;
         
         try{
          //Obtain only one instance of the SystemTray object
@@ -78,7 +88,6 @@ public abstract class Achievement {
 
          //If the icon is a file
          Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-         //Alternative (if the icon is on the classpath):
          //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("icon.png"));
  
          TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
@@ -90,7 +99,9 @@ public abstract class Achievement {
  
          trayIcon.displayMessage("Congratulations!", message, MessageType.INFO);
 
-        }catch(Exception e){e.printStackTrace();}
+        }catch(Exception e){
+            errorLog.write("Error on creating notification");
+        }
         
     }
     

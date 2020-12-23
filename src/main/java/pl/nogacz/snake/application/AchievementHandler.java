@@ -7,13 +7,12 @@ import java.util.Scanner;
 
 public class AchievementHandler {
     
-    private final String pathToAchievements = "src/main/resources/AchievementData/Achievements.txt";
-    private final String pathToCounter = "src/main/resources/AchievementData/Counter.txt";
-    private final int numberOfAchievementTypes=4;
+    private final String pathToAchievements = "AchievementData/Achievements.txt";
+    private final String pathToCounter = "AchievementData/Counter.txt";
+    private final int numberOfAchievementTypes = 4;
     private Achievement[] trophies;
     private LogWriter errorLog = new LogWriter();
     Design design;
-
 
     public AchievementHandler(Design design){         // Constructor loads achievement status from src/main/resources/AchievementData folder
         this.design = design;
@@ -26,7 +25,7 @@ public class AchievementHandler {
 
         try{
             File achievements = new File(pathToAchievements);
-            Scanner sc =new Scanner(achievements);
+            Scanner sc = new Scanner(achievements);
 
             File counter = new File(pathToCounter);
             Scanner scnr = new Scanner(counter);
@@ -43,13 +42,12 @@ public class AchievementHandler {
 
     }
 
-
     public void achievementCheck(){
         boolean change = false;
         
-        for(int count=0 ; count < numberOfAchievementTypes ; count++){
+        for(int count = 0 ; count < numberOfAchievementTypes ; count++){
             if(trophies[count].check())
-                change=true;
+                change = true;
         }
 
         if(change) 
@@ -58,7 +56,7 @@ public class AchievementHandler {
     }
 
     public void updateAchievements(){                                           // Writes achievement status to Achievements.txt
-        String achievements="";
+        String achievements = "";
         for(int count = 0 ; count < numberOfAchievementTypes ; count++){
             achievements += trophies[count].getAchieved() + "\n";
         }
@@ -95,10 +93,10 @@ public class AchievementHandler {
     }
 
     public String toString(){                                   
-        String toStr= "";
+        String toStr = "";
         
             for( int count = 0 ; count < numberOfAchievementTypes ; count++ ){
-                toStr+=trophies[count].toString(); 
+                toStr += trophies[count].toString(); 
             }
 
         return toStr;
