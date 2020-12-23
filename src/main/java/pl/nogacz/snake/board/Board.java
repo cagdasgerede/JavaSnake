@@ -170,7 +170,7 @@ public class Board {
         board.put(foodCoordinates, foodClass);
     }
 
-    private boolean isMenuCoordinate(Coordinates coordinates){
+    public boolean isMenuCoordinate(Coordinates coordinates){
         return ((coordinates.getX() == 0 || coordinates.getX() == 1 || (coordinates.getX() == 2)) && coordinates.getY() == 0);
     }
 
@@ -368,8 +368,5 @@ public class Board {
     public boolean getPaused(){
         return paused;
     }
-
-    public JFrame getFrame(){
-        return frame;
-    }
+    
 }
