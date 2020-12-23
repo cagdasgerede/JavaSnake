@@ -9,5 +9,3 @@ out/
 .settings/
 .vscode/
 bin/
-logs/
-.DS_Store
