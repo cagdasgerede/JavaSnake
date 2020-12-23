@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,7 +66,7 @@ public class LoadGame {
 
         String[] fileNames;
         String[] fileNamesRaw;
-        String path = getClass().getResource("").getPath() + "SavedGames";
+        String path = Paths.get("SavedGames").toAbsolutePath().toString();
         File f = new File(path);
 
         if(!f.isDirectory()){
@@ -117,7 +118,7 @@ public class LoadGame {
 
                         try{
 
-                        fi = new FileInputStream(getClass().getResource("").getPath() + "SavedGames/"+fileNamesRaw[selectedIndex]);
+                        fi = new FileInputStream(path + "/" + fileNamesRaw[selectedIndex]);
                         in = new ObjectInputStream(fi);
 
                         BoardInfo BI = (BoardInfo)in.readObject();

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +34,7 @@ public class SaveGame {
         this.BI = BI;
         this.defaultSaveFileName = defaultSaveFileName;
 
-        File file = new File(getClass().getResource("").getPath() + "SavedGames");
+        File file = new File(Paths.get(".", "SavedGames").toUri());
         if(!file.isDirectory()){
 
             file.mkdir();
@@ -57,7 +58,7 @@ public class SaveGame {
                     input.setText("Please enter a valid save file name.");
                 else{
                     saveFileName = input.getText();
-                    String path = getClass().getResource("").getPath() + "SavedGames/"+saveFileName;
+                    String path = Paths.get("SavedGames").toAbsolutePath().toString()+"/"+saveFileName;
                                 
                     FileOutputStream fo;
                     ObjectOutputStream out;                   
@@ -100,7 +101,7 @@ public class SaveGame {
         FileOutputStream fo;
         ObjectOutputStream out;
         
-        String path = getClass().getResource("").getPath() + "SavedGames/"+defaultSaveFileName;
+        String path = Paths.get("SavedGames").toAbsolutePath().toString()+"/"+defaultSaveFileName;
 
         try{
             fo = new FileOutputStream(path);
