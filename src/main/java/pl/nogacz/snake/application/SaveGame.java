@@ -77,7 +77,9 @@ public class SaveGame {
                         frame.dispose();
                         frame.setVisible(false);
                     }
-
+                                        
+                    board.setIsPaused(false);
+                    board.resume();
                     frame.setVisible(false);
                     frame.dispose();
                 }               

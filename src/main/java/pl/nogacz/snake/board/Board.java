@@ -228,14 +228,10 @@ public class Board {
             case RIGHT: changeDirection(Direction.RIGHT); break;
             
             case T:
-
-                BoardInfo BI = new BoardInfo(board, direction, tailLength, snakeHeadCoordinates, snakeHeadClass, snakeBodyClass, foodClass, snakeTail);
-
+            
                 isPaused = true;
 
-                new SaveGame(BI, "SaveGame" + ++manuelSaveCount).startSave(this);
-
-                getPauseMessage();
+                saveTheGame();
 
                 break;
             
@@ -245,9 +241,7 @@ public class Board {
 
                 isPaused = true;
 
-                new LoadGame(this).startLoad();
-
-                getPauseMessage();
+                loadGame();
 
                 break;
 
@@ -280,6 +274,33 @@ public class Board {
         return direction;
     }
 
+    public boolean isPaused(){
+
+        return isPaused;
+    }
+
+    public void setIsPaused(boolean isPaused){
+
+        this.isPaused = isPaused;
+    }
+
+    public void resume(){
+
+        mapTask();    
+    }
+
+    public void saveTheGame(){
+
+        BoardInfo BI = new BoardInfo(board, direction, tailLength, snakeHeadCoordinates, snakeHeadClass, snakeBodyClass, foodClass, snakeTail);
+
+        new SaveGame(BI, "SaveGame" + ++manuelSaveCount).startSave(this);
+    }
+
+    public void loadGame(){
+
+        new LoadGame(this).startLoad();
+    }
+
     public void setParameters(HashMap<Coordinates, PawnClass> board, Direction directionIN, int tailLength, Coordinates snakeHeadCoordinates, PawnClass snakeHeadClass, PawnClass snakeBodyClass, PawnClass foodClass, ArrayList<Coordinates> snakeTail){
 
         this.board = board;
@@ -300,34 +321,5 @@ public class Board {
     public int getManualSaveCount(){
 
         return manuelSaveCount;
-    }
-    
-    public void getPauseMessage(){
-
-        JFrame info = new JFrame("Info");
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel();
-        JButton button = new JButton("OK");
-
-        label.setText("Game Paused. Press OK to continue.");
-        button.addActionListener(new ActionListener() { 
-
-            @Override
-            public void actionPerformed(ActionEvent e){
-
-                info.setVisible(false);                
-                info.dispose();
-                isPaused = false;
-                mapTask();
-            }
-        });
-
-        info.setSize(300,100);
-        panel.add(label);
-        panel.add(button);
-        info.add(panel);
-        info.setLocationRelativeTo(null);
-
-        info.setVisible(true);
     }
 }

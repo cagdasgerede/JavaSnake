@@ -127,11 +127,13 @@ public class LoadGame {
                         fi.close();            
 
                         LOGGER.log(Level.INFO, "Saved game loaded.");
-                        board.setParameters(BI.getBoard(), BI.getDirection(), BI.getTailLength(), BI.getHeadCoordinates(), BI.getHeadClass(), BI.getBodyClass(), BI.getFoodClass(), BI.getSnakeTail());
+                        board.setParameters(BI.getBoard(), BI.getDirection(), BI.getTailLength(), BI.getHeadCoordinates(), BI.getHeadClass(), BI.getBodyClass(), BI.getFoodClass(), BI.getSnakeTail());                        
                         } catch (Exception exception){
                             
                             LOGGER.log(Level.WARNING, exception.getMessage());
-                        }                        
+                        }
+                        board.setIsPaused(false);
+                        board.resume();                       
                         frame.setVisible(false);
                         frame.dispose();
                     }
