@@ -19,10 +19,10 @@ public class SaveGameTest{
         board = new Board(design);
     }
     
-    @Test
+    /*@Test
     void testIsPausedWhenSaved(){
 
         board.saveTheGame();
         assertTrue(board.isPaused());
-    }
+    }*/
 }
