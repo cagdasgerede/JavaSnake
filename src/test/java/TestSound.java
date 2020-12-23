@@ -1,3 +1,4 @@
+import org.apache.log4j.Logger;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -6,7 +7,9 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import pl.nogacz.snake.board.Sound;
 
+
 public class TestSound {
+    Logger l = Logger.getLogger(TestSound.class);
 
     @Test
     public void testValidFormat() {
@@ -34,16 +37,15 @@ public class TestSound {
 
     @Test
     public void testPlay() {
-        Sound s = null;
         try {
-            s = spy(new Sound("sounds/GameSound.wav"));
+            Sound s = spy(new Sound("sounds/GameSound.wav"));
+            doNothing().when(s).play();
+            s.play();
+            verify(s, times(1)).play();
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        doNothing().when(s).play();
-        s.play();
-        verify(s, times(1)).play();
+            l.error(e.getMessage(), e);
+        }  
     }
 
     @Test
@@ -55,7 +57,7 @@ public class TestSound {
             verify(s, times(1)).loop();
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            l.error(e.getMessage(), e);
         }
     }
 
@@ -67,7 +69,7 @@ public class TestSound {
             verify(s, times(1)).stop();
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            l.error(e.getMessage(), e);
         }
         
     }
