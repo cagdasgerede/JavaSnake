@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author Dawid Nogacz on 19.05.2019
  */
@@ -31,7 +33,11 @@ public class Board {
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
-    private SoundManager m;
+    private Sound m;
+    private final static String GAME_SOUND = "sounds/GameSound.wav";
+    private final static String EAT_FOOD = "sounds/EatFood.wav";
+    private final static String GAME_OVER = "sounds/GameOver.wav";
+    private static Logger logger = Logger.getLogger(Board.class);
     
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
@@ -42,12 +48,13 @@ public class Board {
         mapTask();
     }
 
-    private void addStartEntity() {
+     public void addStartEntity() {
         board.put(snakeHeadCoordinates, snakeHeadClass);
-        try{
-            m= new SoundManager("sounds/GameSound.wav");
-        }catch(Exception e){
-            e.printStackTrace();
+        try {
+            m = new Sound(GAME_SOUND);
+            m.play();
+        } catch(Exception e){
+            logger.error(e.getMessage(), e);
         }
         m.loop();
         for(int i = 0; i < 22; i++) {
@@ -92,11 +99,11 @@ public class Board {
         if(coordinates.isValid()) {
             if(isFieldNotNull(coordinates)) {
                 if(getPawn(coordinates).getPawn().isFood()) {
-                    try{
-                        SoundManager s = new SoundManager("sounds/EatFood.wav");
+                    try {
+                        Sound s = new Sound(EAT_FOOD);
                         s.play();
                     } catch(Exception e){
-                        e.printStackTrace();
+                        logger.error(e.getMessage(), e);
                     }
                     board.remove(snakeHeadCoordinates);
                     board.put(snakeHeadCoordinates, snakeBodyClass);
@@ -110,15 +117,15 @@ public class Board {
                     addEat();
                 } else {
                     m.stop();
-                    try{
-                        m= new SoundManager("sounds/GameOver.wav");
+                    try { 
+                        m = new Sound(GAME_OVER);
                         m.play();
                         isEndGame = true;
                         new EndGame("End game...\n" +
                             "You have " + tailLength + " points. \n" +
                             "Maybe try again? :)");
-                    }catch(Exception e){
-                        e.printStackTrace();
+                    } catch(Exception e){
+                        logger.error(e.getMessage(), e);
                     }
                 }
             } else {

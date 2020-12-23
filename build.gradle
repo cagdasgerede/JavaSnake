@@ -1,11 +1,11 @@
 plugins {
+
 	id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.9'
 
     // https://imperceptiblethoughts.com/shadow/getting-started/#default-java-groovy-tasks
     id 'com.github.johnrengelman.shadow' version '6.1.0'
-
 
 }
 mainClassName = 'pl.nogacz.snake.Snake'
