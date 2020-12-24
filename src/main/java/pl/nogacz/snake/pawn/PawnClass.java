@@ -22,7 +22,7 @@ public class PawnClass {
 
     public ImageView getImageDirection(int direction) {
         String direct = "";
-        
+
         SnakeSkins.bodySkinTones myVar = SnakeSkins.getBodySkin();
         if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_DEFAULT) {
             switch(direction) {
@@ -33,6 +33,7 @@ public class PawnClass {
                 default: break;
             }
         }
+
         else if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_ORANGE) {
             switch(direction) {
                 case 1: direct = "UP_SKIN_ORANGE"; break;
@@ -42,6 +43,7 @@ public class PawnClass {
                 default: break;
             }
         }
+        
         else if(myVar == SnakeSkins.bodySkinTones.SKIN_TONE_GREEN) {
             switch(direction) {
                 case 1: direct = "UP_SKIN_GREEN"; break;
@@ -51,7 +53,7 @@ public class PawnClass {
                 default: break;
             }
         }
-        
+
         Image image = new Image(Resources.getPath(pawn + "_" + direct + ".png"));
         return new ImageView(image);
     }
