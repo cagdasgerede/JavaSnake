@@ -17,7 +17,6 @@ import javafx.stage.Modality;
 import javafx.stage.StageStyle;
 
 public class UserKeySelect {
-
     String[] user1Conrols = new String[4];
     String[] user2Conrols = new String[4];
     private String message;
@@ -53,7 +52,6 @@ public class UserKeySelect {
         VBox.setVgrow(alertVBox, Priority.ALWAYS);
         alertVBox.setPrefWidth(400.0);
         alertVBox.setSpacing(10);
-        Accordion accordion = new Accordion();
 
         Label label1 = new Label("Player1 Up");
         ChoiceBox<String> keyChoiceBox1 = new ChoiceBox<>();

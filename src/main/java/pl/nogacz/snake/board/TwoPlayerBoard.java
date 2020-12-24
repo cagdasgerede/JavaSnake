@@ -173,17 +173,18 @@ public class TwoPlayerBoard {
             if (firstPlayer.getTailLength() > secondPlayer.getTailLength()) {
                 new EndGame(
                         "Player 1 wins!\n\n" +
-                                "Player 1 collected " + firstPlayer.getTailLength() + " points. \n" +
-                                "Player 2 collected " + secondPlayer.getTailLength() + " points. \n" +
-                                "Thank you for playing :)");
+                        "Player 1 collected " + firstPlayer.getTailLength() + " points. \n" +
+                        "Player 2 collected " + secondPlayer.getTailLength() + " points. \n" +
+                        "Thank you for playing :)");
             } else if (secondPlayer.getTailLength() > firstPlayer.getTailLength()) {
                 new EndGame(
                         "Player 2 wins!\n\n" +
-                                "Player 1 collected " + firstPlayer.getTailLength() + " points. \n" +
-                                "Player 2 collected " + secondPlayer.getTailLength() + " points. \n" +
-                                "Thank you for playing :)");
+                        "Player 1 collected " + firstPlayer.getTailLength() + " points. \n" +
+                        "Player 2 collected " + secondPlayer.getTailLength() + " points. \n" +
+                        "Thank you for playing :)");
             } else {
-                new EndGame("   Draw. No winner\n\n" +
+                new EndGame(
+                        "Draw. No winner\n\n" +
                         "Player 1 collected " + firstPlayer.getTailLength() + " points. \n" +
                         "Player 2 collected " + secondPlayer.getTailLength() + " points. \n" +
                         "Thank you for playing :)");
