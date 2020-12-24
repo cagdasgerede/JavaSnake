@@ -51,6 +51,7 @@ public class PawnClass {
                 default: break;
             }
         }
+        
         Image image = new Image(Resources.getPath(pawn + "_" + direct + ".png"));
         return new ImageView(image);
     }
