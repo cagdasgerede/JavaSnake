@@ -1,6 +1,7 @@
 package pl.nogacz.snake;
 
 import org.junit.Test;
+import org.mockito.internal.verification.checkers.AtLeastDiscrepancy;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -28,47 +29,54 @@ public class InvincibilityItemTest {
     public void testInvincibility() {
 
         Design design = mock(Design.class);
-        Board board = new Board(design);
+        Board board = mock(Board.class);
+
+        when(design.getInvincibility()).thenReturn(true);
 
         board.addInvicibilityItem();
         board.activateInvincibility();
 
-        assertTrue(false == board.CountInvincibilityFrame());
+        assertTrue(true == design.getInvincibility());
 
     }
 
-    /*@Test
+    @Test
+    public void testNotInvincible() {
+        Design design = mock(Design.class);
+        Board board = mock(Board.class);
+
+        when(design.getInvincibility()).thenReturn(false);
+
+        board.deactivateInvincibility();
+
+        assertTrue(false == design.getInvincibility());
+
+    }
+
+    @Test
     public void testDissappearNotEatenItem() {
 
-        Design design = mock(Design.class);
-        Board board = new Board(design);
+        Board board = mock(Board.class);
+
+        when(board.isThereInvicibilityItem()).thenReturn(false);
 
         board.addInvicibilityItem();
-        
         board.dissappearInvincibilityItem();
 
         assertFalse(board.isThereInvicibilityItem());
 
     }
 
-    @Test
+    //could not test the invicibility after 150 frames
+    /*@Test
     public void testInvincibilityTimeOut() {
 
-        Design design = mock(Design.class);
-        Board board = new Board(design);
-        
-        int countFrameOfInvincibility = 0;
+        Board board = mock(Board.class);
 
         board.activateInvincibility();
 
-        while(board.CountInvincibilityFrame()) {
-            countFrameOfInvincibility++;
-        }
+        verify(board, atLeast(150)).CountInvincibilityFrame();
 
-        countFrameOfInvincibility++;
-
-        assertTrue(countFrameOfInvincibility == 149);
-
-    }*/
+    } */
 
 }
