@@ -50,6 +50,8 @@ public class LoadGame {
 
                 info.setVisible(false);
                 info.dispose();
+                board.setIsPaused(false);
+                board.resume();
             }
         });
 
