@@ -36,7 +36,7 @@ public class TwoPlayerBoard {
             mapTask();
     }
 
-    public static int directionToNumber(Direction direction) {
+    private static int directionToNumber(Direction direction) {
         switch (direction) {
             case UP:
                 return 1;
@@ -50,7 +50,7 @@ public class TwoPlayerBoard {
         return -1; // to return error if none of the switch cases
     }
 
-    public void initializeUserConstants(String user1Up, String user1Down, String user1Left, String user1Right, String user2Up, String user2Down, String user2Left, String user2Right) {
+    private void initializeUserConstants(String user1Up, String user1Down, String user1Left, String user1Right, String user2Up, String user2Down, String user2Left, String user2Right) {
         this.user1Up = user1Up;
         this.user1Down = user1Down;
         this.user1Left = user1Left;

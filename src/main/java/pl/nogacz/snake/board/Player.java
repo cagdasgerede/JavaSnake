@@ -37,51 +37,51 @@ public class Player {
     }
 
     //getters and setters
-    public boolean isEndGame() {
+    boolean isEndGame() {
         return isEndGame;
     }
 
-    public void setEndGame(boolean endGame) {
+    void setEndGame(boolean endGame) {
         isEndGame = endGame;
     }
 
-    public Direction getDirection() {
+    Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(Direction direction) {
+    void setDirection(Direction direction) {
         this.direction = direction;
     }
 
-    public int getTailLength() {
+    int getTailLength() {
         return tailLength;
     }
 
-    public void incrementTailLength() {
+    void incrementTailLength() {
         tailLength++;
     }
 
-    public Coordinates2P getSnakeHeadCoordinates() {
+    Coordinates2P getSnakeHeadCoordinates() {
         return snakeHeadCoordinates;
     }
 
-    public void setSnakeHeadCoordinates(Coordinates2P snakeHeadCoordinates) {
+    void setSnakeHeadCoordinates(Coordinates2P snakeHeadCoordinates) {
         this.snakeHeadCoordinates = snakeHeadCoordinates;
     }
 
-    public PawnClass getSnakeHeadClass() {
+    PawnClass getSnakeHeadClass() {
         return snakeHeadClass;
     }
 
-    public PawnClass getSnakeBodyClass() {
+    PawnClass getSnakeBodyClass() {
         return snakeBodyClass;
     }
 
-    public PawnClass getFoodClass() {
+    PawnClass getFoodClass() {
         return foodClass;
     }
 
-    public ArrayList<Coordinates> getSnakeTail() {
+    ArrayList<Coordinates> getSnakeTail() {
         return snakeTail;
     }
 }
