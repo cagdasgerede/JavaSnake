@@ -6,6 +6,7 @@ package pl.nogacz.snake.pawn;
 public enum Pawn {
     FOOD,
     BRICK,
+    STONE,
     SNAKE_HEAD,
     SNAKE_BODY;
 

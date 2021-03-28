@@ -11,7 +11,9 @@ import pl.nogacz.snake.pawn.PawnClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Random;
 
 /**
@@ -21,7 +23,7 @@ public class Board {
     private HashMap<Coordinates, PawnClass> board = new HashMap<>();
     private Design design;
     private Random random = new Random();
-
+    
     private boolean isEndGame = false;
 
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
@@ -32,7 +34,8 @@ public class Board {
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
-
+    private PawnClass stoneClass = new PawnClass(Pawn.STONE);
+    private Queue<Coordinates> queue = new LinkedList<Coordinates>();
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
     public Board(Design design) {
@@ -53,6 +56,7 @@ public class Board {
         }
 
         addEat();
+        addStone();
         displayAllImage();
     }
 
@@ -82,8 +86,16 @@ public class Board {
             case 4: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY())); break;
         }
     }
-
+    static int time_count = 1;
     private void moveSnakeHead(Coordinates coordinates) {
+        if(time_count % 20 == 0)addStone();
+        if(time_count % 30 == 0){
+            Coordinates object_1 = queue.poll();
+            Coordinates object_2 = queue.poll();
+            board.remove(object_1);
+            board.remove(object_2);
+        }
+        time_count++;
         if(coordinates.isValid()) {
             if(isFieldNotNull(coordinates)) {
                 if(getPawn(coordinates).getPawn().isFood()) {
@@ -92,7 +104,7 @@ public class Board {
                     board.put(coordinates, snakeHeadClass);
                     snakeTail.add(snakeHeadCoordinates);
                     tailLength++;
-
+                    
                     snakeHeadCoordinates = coordinates;
 
                     addEat();
@@ -138,14 +150,40 @@ public class Board {
 
     private void addEat() {
         Coordinates foodCoordinates;
-
+        
         do {
             foodCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
+           
         } while(isFieldNotNull(foodCoordinates));
 
         board.put(foodCoordinates, foodClass);
     }
+    private void addStone(){
+        Coordinates stoneCoordinates_1;
+        Coordinates stoneCoordinates_2;
+        int x,y;
+        int limit = 100;
+        while(true){    
+            x = random.nextInt(21);
+            y = random.nextInt(21);
+            do{
+                stoneCoordinates_1 = new Coordinates(x, y);
+            }while(isFieldNotNull(stoneCoordinates_1));
 
+            stoneCoordinates_2 = new Coordinates(x+1, y);
+            if(!isFieldNotNull(stoneCoordinates_2))break;
+            stoneCoordinates_2 = new Coordinates(x-1, y);
+            if(!isFieldNotNull(stoneCoordinates_2))break;
+            stoneCoordinates_2 = new Coordinates(x, y+1);
+            if(!isFieldNotNull(stoneCoordinates_2))break;
+            stoneCoordinates_2 = new Coordinates(x, y-1);
+            if(!isFieldNotNull(stoneCoordinates_2))break;
+        }
+        board.put(stoneCoordinates_1, stoneClass);
+        board.put(stoneCoordinates_2, stoneClass);
+        queue.add(stoneCoordinates_1);
+        queue.add(stoneCoordinates_2);
+    }
     private void mapTask() {
         Task<Void> task = new Task<Void>() {
             @Override
