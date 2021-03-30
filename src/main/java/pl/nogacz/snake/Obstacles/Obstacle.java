@@ -30,20 +30,19 @@ public class Obstacle {
         return null;
     }
     public void determineObstacleType(){
-        //int rand = random.nextInt(4);
-        int rand = 0;
+        int rand = random.nextInt(4);
         switch(rand){
             case 0:
                 obstacle = new Stone(gameBoard);
                 break;
             case 1:
-                obstacle = new Iron();
+                obstacle = new Iron(gameBoard);
                 break;
             case 2:
-                obstacle = new Gold();
+                obstacle = new Gold(gameBoard);
                 break;
             case 3:
-                obstacle = new Diamond();
+                obstacle = new Diamond(gameBoard);
         }
     }
     
