@@ -85,8 +85,9 @@ public class Board {
     }
     int count = 1;
     private void moveSnakeHead(Coordinates coordinates) {
-        if(count % 20 == 0)obstacleClass.addObstacle();
+        if(count % 10 == 0)obstacleClass.addObstacle();
         count++;
+        obstacleClass.deleteObstacle();
         if(coordinates.isValid()) {
             if(isFieldNotNull(coordinates)) {
                 if(getPawn(coordinates).getPawn().isFood()) {

@@ -10,6 +10,7 @@ public enum Pawn {
     IRON,
     GOLD,
     DIAMOND,
+    FIRE,
     SNAKE_HEAD,
     SNAKE_BODY;
 

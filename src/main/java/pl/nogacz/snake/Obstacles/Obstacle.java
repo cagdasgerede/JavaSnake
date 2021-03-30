@@ -1,5 +1,6 @@
 package pl.nogacz.snake.Obstacles;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import pl.nogacz.snake.board.Coordinates;
@@ -10,6 +11,8 @@ public class Obstacle {
     private PawnClass pawn;
     private Random random = new Random();
     private Coordinates[] coordinates;
+    private static int number_of_obstacles = 0;
+    private static Map<Coordinates, Integer> map = new HashMap<>();
     private static HashMap<Coordinates, PawnClass> gameBoard;
     public Obstacle(){
         
@@ -17,20 +20,44 @@ public class Obstacle {
     public Obstacle(HashMap<Coordinates, PawnClass> board){
         gameBoard = board;
     }
+    public void deleteObstacle(){
+        boolean state = true;
+        int count = 0;
+        for(Map.Entry<Coordinates, Integer> entry : map.entrySet()){
+            if(entry.getValue() == 0){
+                gameBoard.remove(entry.getKey());
+                if(state){
+                    count++;
+                    state = false;
+                }
+            }
+            else{
+                state = true;
+                entry.setValue(entry.getValue()-1); 
+            }
+        }
+        number_of_obstacles -= count;
+    }
     public Coordinates[] addObstacle(){
+        if(number_of_obstacles > 5)return null;
         determineObstacleType();
         coordinates = obstacle.addObstacle();
         pawn = obstacle.getPawnObject();
         for(Coordinates coordinate : coordinates){
             gameBoard.put(coordinate, pawn);
+            map.put(coordinate, obstacle.getRemainTime());
         }
+        number_of_obstacles++;
         return null;
+    }
+    public int getRemainTime(){
+        return 0;
     }
     public PawnClass getPawnObject(){
         return null;
     }
-    public void determineObstacleType(){
-        int rand = random.nextInt(4);
+    private void determineObstacleType(){
+        int rand = random.nextInt(5);
         switch(rand){
             case 0:
                 obstacle = new Stone();
@@ -43,9 +70,12 @@ public class Obstacle {
                 break;
             case 3:
                 obstacle = new Diamond();
+                break;
+            case 4:
+                obstacle = new Fire();
         }
     }
-    
+
     public boolean isFieldNotNull(Coordinates coordinates) {
         return gameBoard.get(coordinates) != null;
     }

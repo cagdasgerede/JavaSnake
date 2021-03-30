@@ -1,5 +1,4 @@
 package pl.nogacz.snake.Obstacles;
-import java.util.HashMap;
 import java.util.Random;
 import pl.nogacz.snake.board.Coordinates;
 import pl.nogacz.snake.pawn.Pawn;
@@ -8,9 +7,13 @@ import pl.nogacz.snake.pawn.PawnClass;
 public class Diamond extends Obstacle{
     private PawnClass diamondClass;
     private Random random;
+    int remainTime = 15;
     public Diamond(){
         diamondClass = new PawnClass(Pawn.DIAMOND);
         random = new Random();
+    }
+    public int getRemainTime(){
+        return remainTime;
     }
     public PawnClass getPawnObject(){
         return diamondClass;
