@@ -61,7 +61,7 @@ public class Obstacle {
         return null;
     }
     private void determineObstacleType(){
-        int rand = random.nextInt(5);
+        int rand = random.nextInt(6);
         switch(rand){
             case 0:
                 obstacle = new Stone();
@@ -77,6 +77,9 @@ public class Obstacle {
                 break;
             case 4:
                 obstacle = new Fire();
+                break;
+            case 5:
+                obstacle = new Lightning();
         }
     }
 

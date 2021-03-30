@@ -7,7 +7,7 @@ import pl.nogacz.snake.pawn.PawnClass;
 public class Diamond extends Obstacle{
     private PawnClass diamondClass;
     private Random random;
-    int remainTime = 15;
+    int remainTime = 20;
     public Diamond(){
         diamondClass = new PawnClass(Pawn.DIAMOND);
         random = new Random();

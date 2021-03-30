@@ -7,7 +7,7 @@ import pl.nogacz.snake.pawn.PawnClass;
 public class Iron extends Obstacle{
     private PawnClass ironClass;
     private Random random;
-    int remainTime = 25;
+    int remainTime = 30;
     public Iron(){
         ironClass = new PawnClass(Pawn.IRON);
         random = new Random();
