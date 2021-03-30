@@ -7,12 +7,10 @@ import pl.nogacz.snake.pawn.PawnClass;
 
 public class Diamond extends Obstacle{
     private PawnClass diamondClass;
-    private HashMap<Coordinates, PawnClass> gameBoard;
     private Random random;
-    public Diamond(HashMap<Coordinates, PawnClass> board){
+    public Diamond(){
         diamondClass = new PawnClass(Pawn.DIAMOND);
         random = new Random();
-        gameBoard = board;
     }
     public PawnClass getPawnObject(){
         return diamondClass;
@@ -25,7 +23,7 @@ public class Diamond extends Obstacle{
             coordinates[0] = new Coordinates(x,y);
             coordinates[1] = new Coordinates(x-1, y);
             coordinates[2] = new Coordinates(x, y+1);
-        }while(isFieldNotNull(coordinates[0],gameBoard) | isFieldNotNull(coordinates[1],gameBoard) | isFieldNotNull(coordinates[2], gameBoard));
+        }while(isFieldNotNull(coordinates[0]) | isFieldNotNull(coordinates[1]) | isFieldNotNull(coordinates[2]));
         return coordinates;
     }
   

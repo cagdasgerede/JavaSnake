@@ -10,9 +10,9 @@ public class Obstacle {
     private PawnClass pawn;
     private Random random = new Random();
     private Coordinates[] coordinates;
-    private HashMap<Coordinates, PawnClass> gameBoard;
+    private static HashMap<Coordinates, PawnClass> gameBoard;
     public Obstacle(){
-        // I don't know why I have to implement this construct
+        
     }
     public Obstacle(HashMap<Coordinates, PawnClass> board){
         gameBoard = board;
@@ -33,20 +33,20 @@ public class Obstacle {
         int rand = random.nextInt(4);
         switch(rand){
             case 0:
-                obstacle = new Stone(gameBoard);
+                obstacle = new Stone();
                 break;
             case 1:
-                obstacle = new Iron(gameBoard);
+                obstacle = new Iron();
                 break;
             case 2:
-                obstacle = new Gold(gameBoard);
+                obstacle = new Gold();
                 break;
             case 3:
-                obstacle = new Diamond(gameBoard);
+                obstacle = new Diamond();
         }
     }
     
-    public boolean isFieldNotNull(Coordinates coordinates, HashMap<Coordinates, PawnClass> board) {
-        return board.get(coordinates) != null;
+    public boolean isFieldNotNull(Coordinates coordinates) {
+        return gameBoard.get(coordinates) != null;
     }
 }

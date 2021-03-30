@@ -8,11 +8,9 @@ import pl.nogacz.snake.pawn.PawnClass;
 public class Stone extends Obstacle{
     private PawnClass stoneClass;
     private Random random;
-    private HashMap<Coordinates, PawnClass> gameBoard;
-    public Stone(HashMap<Coordinates, PawnClass> board){
+    public Stone(){
         stoneClass = new PawnClass(Pawn.STONE);
         random = new Random();
-        gameBoard = board;
     }
     public PawnClass getPawnObject(){
         return stoneClass;
@@ -24,7 +22,7 @@ public class Stone extends Obstacle{
             int y = random.nextInt(21);
             coordinates[0] = new Coordinates(x, y);
             coordinates[1] = new Coordinates(x,y-1);
-        }while(isFieldNotNull(coordinates[0],gameBoard) | isFieldNotNull(coordinates[1],gameBoard));
+        }while(isFieldNotNull(coordinates[0]) | isFieldNotNull(coordinates[1]));
         
         return coordinates;
     }
