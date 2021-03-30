@@ -24,8 +24,8 @@ public class Diamond extends Obstacle{
             int x = random.nextInt(21);
             int y = random.nextInt(21);
             coordinates[0] = new Coordinates(x,y);
-            coordinates[1] = new Coordinates(x-1, y);
-            coordinates[2] = new Coordinates(x, y+1);
+            coordinates[1] = new Coordinates(x-1, y+1);
+            coordinates[2] = new Coordinates(x+1, y-1);
         }while(isFieldNotNull(coordinates[0]) | isFieldNotNull(coordinates[1]) | isFieldNotNull(coordinates[2]));
         return coordinates;
     }

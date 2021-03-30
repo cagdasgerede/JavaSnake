@@ -1,7 +1,5 @@
 package pl.nogacz.snake.Obstacles;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
@@ -47,6 +45,7 @@ public class Obstacle {
         if(number_of_obstacles > 5)return null;
         determineObstacleType();
         coordinates = obstacle.addObstacle();
+        if(coordinates == null)return null;
         pawn = obstacle.getPawnObject();
         for(Coordinates coordinate : coordinates){
             gameBoard.put(coordinate, pawn);

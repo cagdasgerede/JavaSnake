@@ -19,13 +19,14 @@ public class Iron extends Obstacle{
         return ironClass;
     }
     public Coordinates[] addObstacle(){
-        Coordinates[] coordinates = new Coordinates[2];
+        Coordinates[] coordinates = new Coordinates[3];
         do{
             int x = random.nextInt(21);
             int y = random.nextInt(21);
             coordinates[0] = new Coordinates(x, y);
             coordinates[1] = new Coordinates(x+1, y);
-        }while(isFieldNotNull(coordinates[0]) | isFieldNotNull(coordinates[1]));
+            coordinates[2] = new Coordinates(x+2, y);
+        }while(isFieldNotNull(coordinates[0]) | isFieldNotNull(coordinates[1]) | isFieldNotNull(coordinates[2]));
         
         return coordinates;
     }
