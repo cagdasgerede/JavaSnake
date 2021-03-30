@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import pl.nogacz.snake.Obstacles.Obstacle;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
 import pl.nogacz.snake.pawn.Pawn;
@@ -21,7 +22,7 @@ public class Board {
     private HashMap<Coordinates, PawnClass> board = new HashMap<>();
     private Design design;
     private Random random = new Random();
-
+    
     private boolean isEndGame = false;
 
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
@@ -32,19 +33,18 @@ public class Board {
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
-
+    private Obstacle obstacleClass = new Obstacle(board);
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
     public Board(Design design) {
         this.design = design;
-
         addStartEntity();
         mapTask();
+        
     }
-
     private void addStartEntity() {
         board.put(snakeHeadCoordinates, snakeHeadClass);
-
+        
         for(int i = 0; i < 22; i++) {
             board.put(new Coordinates(0, i), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates(21, i), new PawnClass(Pawn.BRICK));
@@ -82,8 +82,11 @@ public class Board {
             case 4: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY())); break;
         }
     }
-
+    int count = 1;
     private void moveSnakeHead(Coordinates coordinates) {
+        if(count % 10 == 0)obstacleClass.addObstacle();
+        count++;
+        obstacleClass.deleteObstacle();
         if(coordinates.isValid()) {
             if(isFieldNotNull(coordinates)) {
                 if(getPawn(coordinates).getPawn().isFood()) {
@@ -92,7 +95,7 @@ public class Board {
                     board.put(coordinates, snakeHeadClass);
                     snakeTail.add(snakeHeadCoordinates);
                     tailLength++;
-
+                    
                     snakeHeadCoordinates = coordinates;
 
                     addEat();
@@ -138,14 +141,15 @@ public class Board {
 
     private void addEat() {
         Coordinates foodCoordinates;
-
+        
         do {
             foodCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
+           
         } while(isFieldNotNull(foodCoordinates));
 
         board.put(foodCoordinates, foodClass);
     }
-
+   
     private void mapTask() {
         Task<Void> task = new Task<Void>() {
             @Override
@@ -172,7 +176,7 @@ public class Board {
 
         new Thread(task).start();
     }
-
+    
     public void readKeyboard(KeyEvent event) {
         switch(event.getCode()) {
             case W: changeDirection(1); break;
