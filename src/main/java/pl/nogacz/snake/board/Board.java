@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import pl.nogacz.snake.Obstacles.Obstacle;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
 import pl.nogacz.snake.pawn.Pawn;
@@ -11,9 +12,7 @@ import pl.nogacz.snake.pawn.PawnClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Random;
 
 /**
@@ -34,15 +33,14 @@ public class Board {
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
-    private PawnClass stoneClass = new PawnClass(Pawn.STONE);
-    private Queue<Coordinates> queue = new LinkedList<Coordinates>();
+    private Obstacle obstacleClass = new Obstacle(board);
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
     public Board(Design design) {
         this.design = design;
-
         addStartEntity();
         mapTask();
+        
     }
 
     private void addStartEntity() {
@@ -56,7 +54,6 @@ public class Board {
         }
 
         addEat();
-        addStone();
         displayAllImage();
     }
 
@@ -86,16 +83,10 @@ public class Board {
             case 4: moveSnakeHead(new Coordinates(snakeHeadCoordinates.getX() + 1, snakeHeadCoordinates.getY())); break;
         }
     }
-    static int time_count = 1;
+    int count = 1;
     private void moveSnakeHead(Coordinates coordinates) {
-        if(time_count % 20 == 0)addStone();
-        if(time_count % 30 == 0){
-            Coordinates object_1 = queue.poll();
-            Coordinates object_2 = queue.poll();
-            board.remove(object_1);
-            board.remove(object_2);
-        }
-        time_count++;
+        if(count % 20 == 0)obstacleClass.addObstacle();
+        count++;
         if(coordinates.isValid()) {
             if(isFieldNotNull(coordinates)) {
                 if(getPawn(coordinates).getPawn().isFood()) {
@@ -158,32 +149,7 @@ public class Board {
 
         board.put(foodCoordinates, foodClass);
     }
-    private void addStone(){
-        Coordinates stoneCoordinates_1;
-        Coordinates stoneCoordinates_2;
-        int x,y;
-        int limit = 100;
-        while(true){    
-            x = random.nextInt(21);
-            y = random.nextInt(21);
-            do{
-                stoneCoordinates_1 = new Coordinates(x, y);
-            }while(isFieldNotNull(stoneCoordinates_1));
-
-            stoneCoordinates_2 = new Coordinates(x+1, y);
-            if(!isFieldNotNull(stoneCoordinates_2))break;
-            stoneCoordinates_2 = new Coordinates(x-1, y);
-            if(!isFieldNotNull(stoneCoordinates_2))break;
-            stoneCoordinates_2 = new Coordinates(x, y+1);
-            if(!isFieldNotNull(stoneCoordinates_2))break;
-            stoneCoordinates_2 = new Coordinates(x, y-1);
-            if(!isFieldNotNull(stoneCoordinates_2))break;
-        }
-        board.put(stoneCoordinates_1, stoneClass);
-        board.put(stoneCoordinates_2, stoneClass);
-        queue.add(stoneCoordinates_1);
-        queue.add(stoneCoordinates_2);
-    }
+   
     private void mapTask() {
         Task<Void> task = new Task<Void>() {
             @Override
@@ -210,7 +176,7 @@ public class Board {
 
         new Thread(task).start();
     }
-
+    
     public void readKeyboard(KeyEvent event) {
         switch(event.getCode()) {
             case W: changeDirection(1); break;

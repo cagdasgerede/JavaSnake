@@ -7,6 +7,9 @@ public enum Pawn {
     FOOD,
     BRICK,
     STONE,
+    IRON,
+    GOLD,
+    DIAMOND,
     SNAKE_HEAD,
     SNAKE_BODY;
 
