@@ -1,5 +1,7 @@
 package pl.nogacz.snake.Obstacles;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
@@ -23,6 +25,7 @@ public class Obstacle {
     public void deleteObstacle(){
         boolean state = true;
         int count = 0;
+        HashMap<Coordinates, Integer> hashmap = new HashMap<>();
         for(Map.Entry<Coordinates, Integer> entry : map.entrySet()){
             if(entry.getValue() == 0){
                 gameBoard.remove(entry.getKey());
@@ -33,9 +36,11 @@ public class Obstacle {
             }
             else{
                 state = true;
-                entry.setValue(entry.getValue()-1); 
+                entry.setValue(entry.getValue()-1);
+                hashmap.put(entry.getKey(), entry.getValue()); 
             }
         }
+        map = hashmap;
         number_of_obstacles -= count;
     }
     public Coordinates[] addObstacle(){
