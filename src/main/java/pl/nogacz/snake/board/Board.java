@@ -41,6 +41,9 @@ public class Board {
     private final int SECOND = 1000;
     private double start;
     private double end;
+    private int appearTime;
+    private int disappearTime;
+    private boolean areRandomTimesAssigned = false;
 
     public Board(Design design) {
         this.design = design;
@@ -174,18 +177,28 @@ public class Board {
     }
 
     private void mapTask() {
-        end = System.currentTimeMillis();
-        if (!isHarmfulItemThere) {
-            if (end - start > SECOND * 10) {
-                addHarmfulItem();
-                isHarmfulItemThere = true;
-                start = System.currentTimeMillis();
-            }
+        if (!areRandomTimesAssigned) {
+            do {
+                appearTime = random.nextInt(10);
+                disappearTime = random.nextInt(10);
+            } while (appearTime == 0 || disappearTime == 0);
+            areRandomTimesAssigned = true;
+
         } else {
-            if (end - start > SECOND * 5) {
-                board.remove(harmfulItemCoordinates);
-                isHarmfulItemThere = false;
-                design.removePawn(harmfulItemCoordinates);
+            end = System.currentTimeMillis();
+            if (!isHarmfulItemThere) {
+                if (end - start > SECOND * appearTime) {
+                    addHarmfulItem();
+                    isHarmfulItemThere = true;
+                    start = System.currentTimeMillis();
+                }
+            } else {
+                if (end - start > SECOND * disappearTime) {
+                    board.remove(harmfulItemCoordinates);
+                    isHarmfulItemThere = false;
+                    design.removePawn(harmfulItemCoordinates);
+                    areRandomTimesAssigned = false;
+                }
             }
         }
         Task<Void> task = new Task<Void>() {
