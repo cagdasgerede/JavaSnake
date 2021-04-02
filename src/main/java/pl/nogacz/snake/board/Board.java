@@ -98,6 +98,17 @@ public class Board {
                     snakeHeadCoordinates = coordinates;
 
                     addEat();
+                
+                } else if (getPawn(coordinates).getPawn().isHarmfulItem()) {
+                    board.remove(snakeHeadCoordinates);
+                    board.put(coordinates, snakeHeadClass);
+                    snakeHeadCoordinates = coordinates;
+                    if (tailLength > 0) {
+                        moveSnakeBody();
+                        board.remove(snakeTail.get(0));
+                        snakeTail.remove(snakeTail.get(0));
+                        tailLength--;
+                    }
                 } else {
                     isEndGame = true;
 
