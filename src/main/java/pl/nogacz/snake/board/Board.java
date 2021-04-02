@@ -32,6 +32,7 @@ public class Board {
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
+    private PawnClass harmfulItemClass = new PawnClass(Pawn.HARMFUL_ITEM);
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
@@ -53,6 +54,7 @@ public class Board {
         }
 
         addEat();
+        addHarmfulItem();
         displayAllImage();
     }
 
@@ -144,6 +146,16 @@ public class Board {
         } while(isFieldNotNull(foodCoordinates));
 
         board.put(foodCoordinates, foodClass);
+    }
+
+    private void addHarmfulItem() {
+        Coordinates harmfulItemCoordinates;
+
+        do {
+            harmfulItemCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
+        } while(isFieldNotNull(harmfulItemCoordinates));
+
+        board.put(harmfulItemCoordinates, harmfulItemClass);
     }
 
     private void mapTask() {
