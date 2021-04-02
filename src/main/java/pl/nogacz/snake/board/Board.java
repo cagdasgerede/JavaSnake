@@ -36,6 +36,12 @@ public class Board {
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
 
+    private Coordinates harmfulItemCoordinates;
+    private boolean isHarmfulItemThere = false;
+    private final int SECOND = 1000;
+    private double start;
+    private double end;
+
     public Board(Design design) {
         this.design = design;
 
@@ -44,6 +50,7 @@ public class Board {
     }
 
     private void addStartEntity() {
+        start = System.currentTimeMillis();
         board.put(snakeHeadCoordinates, snakeHeadClass);
 
         for(int i = 0; i < 22; i++) {
@@ -54,7 +61,6 @@ public class Board {
         }
 
         addEat();
-        addHarmfulItem();
         displayAllImage();
     }
 
@@ -160,8 +166,6 @@ public class Board {
     }
 
     private void addHarmfulItem() {
-        Coordinates harmfulItemCoordinates;
-
         do {
             harmfulItemCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
         } while(isFieldNotNull(harmfulItemCoordinates));
@@ -170,6 +174,20 @@ public class Board {
     }
 
     private void mapTask() {
+        end = System.currentTimeMillis();
+        if (!isHarmfulItemThere) {
+            if (end - start > SECOND * 10) {
+                addHarmfulItem();
+                isHarmfulItemThere = true;
+                start = System.currentTimeMillis();
+            }
+        } else {
+            if (end - start > SECOND * 5) {
+                board.remove(harmfulItemCoordinates);
+                isHarmfulItemThere = false;
+                design.removePawn(harmfulItemCoordinates);
+            }
+        }
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
