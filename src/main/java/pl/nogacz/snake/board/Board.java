@@ -53,7 +53,6 @@ public class Board {
     }
 
     private void addStartEntity() {
-        start = System.currentTimeMillis();
         board.put(snakeHeadCoordinates, snakeHeadClass);
 
         for(int i = 0; i < 22; i++) {
@@ -62,9 +61,10 @@ public class Board {
             board.put(new Coordinates(i, 0), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates(i, 21), new PawnClass(Pawn.BRICK));
         }
-
         addEat();
         displayAllImage();
+        start = System.currentTimeMillis();
+        addHarmFulItemInRandomTimes();
     }
 
     private void checkMap() {
@@ -136,6 +136,7 @@ public class Board {
                 }
             }
         }
+        addHarmFulItemInRandomTimes();
     }
 
     private void moveSnakeBody() {
@@ -167,16 +168,8 @@ public class Board {
 
         board.put(foodCoordinates, foodClass);
     }
-
-    private void addHarmfulItem() {
-        do {
-            harmfulItemCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
-        } while(isFieldNotNull(harmfulItemCoordinates));
-
-        board.put(harmfulItemCoordinates, harmfulItemClass);
-    }
-
-    private void mapTask() {
+    
+    private void addHarmFulItemInRandomTimes(){
         if (!areRandomTimesAssigned) {
             do {
                 appearTime = random.nextInt(10);
@@ -184,23 +177,31 @@ public class Board {
             } while (appearTime == 0 || disappearTime == 0);
             areRandomTimesAssigned = true;
 
+        } 
+
+        end = System.currentTimeMillis();
+        if (!isHarmfulItemThere) {
+            if (end - start > SECOND * appearTime) {
+                do {
+                    harmfulItemCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
+                } while(isFieldNotNull(harmfulItemCoordinates));
+        
+                board.put(harmfulItemCoordinates, harmfulItemClass);
+                isHarmfulItemThere = true;
+                start = System.currentTimeMillis();
+            }
         } else {
-            end = System.currentTimeMillis();
-            if (!isHarmfulItemThere) {
-                if (end - start > SECOND * appearTime) {
-                    addHarmfulItem();
-                    isHarmfulItemThere = true;
-                    start = System.currentTimeMillis();
-                }
-            } else {
-                if (end - start > SECOND * disappearTime) {
-                    board.remove(harmfulItemCoordinates);
-                    isHarmfulItemThere = false;
-                    design.removePawn(harmfulItemCoordinates);
-                    areRandomTimesAssigned = false;
-                }
+            if (end - start > SECOND * disappearTime) {
+                board.remove(harmfulItemCoordinates);
+                isHarmfulItemThere = false;
+                design.removePawn(harmfulItemCoordinates);
+                areRandomTimesAssigned = false;
+                start = System.currentTimeMillis();
             }
         }
+    }
+
+    private void mapTask() {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
