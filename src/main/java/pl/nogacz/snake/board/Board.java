@@ -32,8 +32,18 @@ public class Board {
     private PawnClass snakeHeadClass = new PawnClass(Pawn.SNAKE_HEAD);
     private PawnClass snakeBodyClass = new PawnClass(Pawn.SNAKE_BODY);
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
+    private PawnClass harmfulItemClass = new PawnClass(Pawn.HARMFUL_ITEM);
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
+
+    private Coordinates harmfulItemCoordinates;
+    private boolean isHarmfulItemThere = false;
+    private final int SECOND = 1000;
+    private double start;
+    private double end;
+    private int appearTime;
+    private int disappearTime;
+    private boolean areRandomTimesAssigned = false;
 
     public Board(Design design) {
         this.design = design;
@@ -51,9 +61,10 @@ public class Board {
             board.put(new Coordinates(i, 0), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates(i, 21), new PawnClass(Pawn.BRICK));
         }
-
         addEat();
         displayAllImage();
+        start = System.currentTimeMillis();
+        addHarmFulItemInRandomTimes();
     }
 
     private void checkMap() {
@@ -96,6 +107,17 @@ public class Board {
                     snakeHeadCoordinates = coordinates;
 
                     addEat();
+                
+                } else if (getPawn(coordinates).getPawn().isHarmfulItem()) {
+                    board.remove(snakeHeadCoordinates);
+                    board.put(coordinates, snakeHeadClass);
+                    snakeHeadCoordinates = coordinates;
+                    if (tailLength > 0) {
+                        moveSnakeBody();
+                        board.remove(snakeTail.get(0));
+                        snakeTail.remove(snakeTail.get(0));
+                        tailLength--;
+                    }
                 } else {
                     isEndGame = true;
 
@@ -114,6 +136,7 @@ public class Board {
                 }
             }
         }
+        addHarmFulItemInRandomTimes();
     }
 
     private void moveSnakeBody() {
@@ -144,6 +167,38 @@ public class Board {
         } while(isFieldNotNull(foodCoordinates));
 
         board.put(foodCoordinates, foodClass);
+    }
+    
+    private void addHarmFulItemInRandomTimes(){
+        if (!areRandomTimesAssigned) {
+            do {
+                appearTime = random.nextInt(10);
+                disappearTime = random.nextInt(10);
+            } while (appearTime == 0 || disappearTime == 0);
+            areRandomTimesAssigned = true;
+
+        } 
+
+        end = System.currentTimeMillis();
+        if (!isHarmfulItemThere) {
+            if (end - start > SECOND * appearTime) {
+                do {
+                    harmfulItemCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
+                } while(isFieldNotNull(harmfulItemCoordinates));
+        
+                board.put(harmfulItemCoordinates, harmfulItemClass);
+                isHarmfulItemThere = true;
+                start = System.currentTimeMillis();
+            }
+        } else {
+            if (end - start > SECOND * disappearTime) {
+                board.remove(harmfulItemCoordinates);
+                isHarmfulItemThere = false;
+                design.removePawn(harmfulItemCoordinates);
+                areRandomTimesAssigned = false;
+                start = System.currentTimeMillis();
+            }
+        }
     }
 
     private void mapTask() {
