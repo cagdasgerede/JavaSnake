@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
+import pl.nogacz.snake.application.LevelUp;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
 
@@ -136,11 +137,17 @@ public class Board {
         snakeTail.add(coordinates);
     }
 
+    int level = 1;
+    int start = 0;
     private void addEat() {
         Coordinates foodCoordinates;
-
+        start++;
         do {
             foodCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
+            if (start>1) {
+                new LevelUp("Level " + level + " Completed!!!\n");
+                level++;
+            }
         } while(isFieldNotNull(foodCoordinates));
 
         board.put(foodCoordinates, foodClass);
