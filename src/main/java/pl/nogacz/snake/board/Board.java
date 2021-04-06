@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
+import pl.nogacz.snake.application.PauseGame;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
 
@@ -21,8 +22,9 @@ public class Board {
     private HashMap<Coordinates, PawnClass> board = new HashMap<>();
     private Design design;
     private Random random = new Random();
-
+    private Coordinates foodCoordinates;
     private boolean isEndGame = false;
+    public static boolean isPressedP= false;
 
     private static int direction = 1; // 1 - UP || 2 - BOTTOM || 3 - LEFT || 4 - RIGHT
     private int tailLength = 0;
@@ -40,6 +42,29 @@ public class Board {
 
         addStartEntity();
         mapTask();
+    }
+    public Board(int dir,Coordinates foodCoordinates,int tailLength,
+                 Coordinates snakeHeadCoordinates, ArrayList<Coordinates> snakeTail,
+                 Design design){
+        this.design=design;
+        direction=dir;
+        this.foodCoordinates=foodCoordinates;
+        this.tailLength=tailLength;
+        this.snakeHeadCoordinates=snakeHeadCoordinates;
+        this.snakeTail=snakeTail;
+        addLoadEntity();
+        mapTask();
+    }
+    private void addLoadEntity(){
+        board.put(snakeHeadCoordinates, snakeHeadClass);
+        for(int i = 0; i < 22; i++) {
+            board.put(new Coordinates(0, i), new PawnClass(Pawn.BRICK));
+            board.put(new Coordinates(21, i), new PawnClass(Pawn.BRICK));
+            board.put(new Coordinates(i, 0), new PawnClass(Pawn.BRICK));
+            board.put(new Coordinates(i, 21), new PawnClass(Pawn.BRICK));
+        }
+        board.put(foodCoordinates, foodClass);
+        displayAllImage();
     }
 
     private void addStartEntity() {
@@ -137,7 +162,6 @@ public class Board {
     }
 
     private void addEat() {
-        Coordinates foodCoordinates;
 
         do {
             foodCoordinates = new Coordinates(random.nextInt(21), random.nextInt(21));
@@ -164,8 +188,17 @@ public class Board {
             @Override
             public void handle(WorkerStateEvent event) {
                 if(!isEndGame) {
-                    checkMap();
-                    mapTask();
+                    if(!isPressedP) {
+                        checkMap();
+                        mapTask();
+                    }
+                    else{
+                        new PauseGame(getBoard());
+                        if(!isPressedP){
+                            checkMap();
+                            mapTask();
+                        }
+                    }
                 }
             }
         });
@@ -184,6 +217,7 @@ public class Board {
             case DOWN: changeDirection(2); break;
             case LEFT: changeDirection(3); break;
             case RIGHT: changeDirection(4); break;
+            case P: isPressedP=true; break;
         }
     }
 
@@ -210,4 +244,10 @@ public class Board {
     public static int getDirection() {
         return direction;
     }
+
+    public Board getBoard(){return this;}
+    public int getTailLength(){return this.tailLength;}
+    public Coordinates getSnakeHeadCoordinates(){return this.snakeHeadCoordinates;}
+    public ArrayList<Coordinates> getSnakeTail(){return this.snakeTail;}
+    public Coordinates getFoodCoordinates(){return this.foodCoordinates;}
 }
