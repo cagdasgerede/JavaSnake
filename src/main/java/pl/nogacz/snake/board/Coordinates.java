@@ -26,6 +26,10 @@ public class Coordinates {
         return x <= 21 && x >= 0 && y <= 21 && y >= 0;
     }
 
+    public boolean isValidForSecond() {
+        return x <= 43 && x >= 22 && y <= 21 && y >= 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
