@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
+import pl.nogacz.snake.application.Music;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
 
@@ -44,7 +45,6 @@ public class Board {
 
     private void addStartEntity() {
         board.put(snakeHeadCoordinates, snakeHeadClass);
-
         for(int i = 0; i < 22; i++) {
             board.put(new Coordinates(0, i), new PawnClass(Pawn.BRICK));
             board.put(new Coordinates(21, i), new PawnClass(Pawn.BRICK));
@@ -94,6 +94,7 @@ public class Board {
                     tailLength++;
 
                     snakeHeadCoordinates = coordinates;
+                    Music.play_Start_End_Eat_GameMusic(Music.EAT_MUSIC_PATH);
 
                     addEat();
                 } else {
@@ -169,7 +170,6 @@ public class Board {
                 }
             }
         });
-
         new Thread(task).start();
     }
 

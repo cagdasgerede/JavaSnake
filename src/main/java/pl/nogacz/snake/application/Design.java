@@ -57,6 +57,7 @@ public class Design {
 
     public void removePawn(Coordinates coordinates) {
         gridPane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == coordinates.getX() && GridPane.getRowIndex(node) == coordinates.getY());
+        
     }
 
     public GridPane getGridPane() {

@@ -13,9 +13,10 @@ import java.util.Optional;
  */
 public class EndGame {
     private String message;
-
     public EndGame(String message) {
         this.message = message;
+        Music.stopLoopedMusic();
+        Music.play_Start_End_Eat_GameMusic(Music.END_MUSIC_PATH);
 
         printDialog();
     }
@@ -40,8 +41,10 @@ public class EndGame {
     }
 
     public void newGame() {
+        Music.play_Start_End_Eat_GameMusic(Music.START_MUSIC_PATH);
         restartApplication();
     }
+    
 
     private void restartApplication()
     {

@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pl.nogacz.snake.application.Design;
+import pl.nogacz.snake.application.Music;
 import pl.nogacz.snake.board.Board;
 
 /**
@@ -27,5 +28,6 @@ public class Snake extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+        Music.playLoopedMusic(Music.GAME_MUSIC_PATH);
     }
 }
