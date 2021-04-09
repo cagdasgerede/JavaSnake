@@ -42,9 +42,11 @@ public class TwoPlayerBoard {
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
     private ArrayList<Coordinates> snakeTail2 = new ArrayList<>();
 
-    public TwoPlayerBoard(TwoPlayerDesign design) {
-        this.design = design;
+    private char[] keys = new char[8];
 
+    public TwoPlayerBoard(TwoPlayerDesign design,char[] newKeys) {
+        this.design = design;
+        setKeys(newKeys);
         addStartEntity();
         mapTask();
     }
@@ -128,10 +130,10 @@ public class TwoPlayerBoard {
                 } else {
                     isFirstPlayerDead = true;
                     if(isFirstPlayerDead && isSecondPlayerDead){
-                        new EndGame("End game...\n" +
-                        "Player one have: " + tailLength + " points. \n" + 
-                        "Player two have: " + tailLength2 + " points. \n" +
-                        "Maybe try again? :)");
+                        new EndGame("Player two dead first\n" +
+                        "\n"+
+                        "    Player one have: " + tailLength + " points. \n" + 
+                        "    Player two have: " + tailLength2 + " points. \n");
                     }
                 }
             } else {
@@ -163,10 +165,10 @@ public class TwoPlayerBoard {
                 } else {
                     isSecondPlayerDead = true;
                     if(isFirstPlayerDead && isSecondPlayerDead){
-                        new EndGame("End game...\n" +
-                        "You have " + tailLength + " points. \n" +
-                        "Player two have: " + tailLength2 + " points. \n" +
-                        "Maybe try again? :)");
+                        new EndGame("Player one dead first\n" +
+                        "\n" +
+                        "    Player one have: " + tailLength + " points. \n" +
+                        "    Player two have: " + tailLength2 + " points. \n");
                     }
                 }
             } else {
@@ -270,17 +272,18 @@ public class TwoPlayerBoard {
     }
 
     public void readKeyboard(KeyEvent event) {
-        switch(event.getCode()) {
-            case W: changeDirection(1); break;
-            case S: changeDirection(2); break;
-            case A: changeDirection(3); break;
-            case D: changeDirection(4); break;
+        char c = event.getCode().toString().charAt(0); 
 
-            case UP: changeDirection2(1); break;
-            case DOWN: changeDirection2(2); break;
-            case LEFT: changeDirection2(3); break;
-            case RIGHT: changeDirection2(4); break;
-        }
+            if (c== keys[0]) changeDirection(1);
+            else if (c == keys[1]) changeDirection(2);
+            else if (c == keys[2]) changeDirection(3);
+            else if (c == keys[3]) changeDirection(4);
+
+            else if (c == keys[4]) changeDirection2(1);
+            else if (c == keys[5]) changeDirection2(2);
+            else if (c == keys[6]) changeDirection2(3);
+            else if (c == keys[7]) changeDirection2(4);
+        
     }
 
     private void changeDirection(int newDirection) {
@@ -325,5 +328,9 @@ public class TwoPlayerBoard {
 
     public static int getDirection2() {
         return direction2;
+    }
+
+    public void setKeys(char[] newKeys){
+        keys = newKeys.clone();
     }
 }

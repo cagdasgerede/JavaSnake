@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.TwoPlayerDesign;
+import pl.nogacz.snake.application.UserKeyDefiner;
 import pl.nogacz.snake.board.Board;
 import pl.nogacz.snake.board.TwoPlayerBoard;
 import javafx.scene.control.Alert;
@@ -35,29 +36,25 @@ public class Snake extends Application {
 
         Optional<ButtonType> result = alert.showAndWait();
 
+        Scene scene;
+
         if (result.get() == singlePlayerButton){
             Design design = new Design();
             Board board = new Board(design);
-
-            Scene scene = new Scene(design.getGridPane(), 715, 715, Color.BLACK);
+            scene = new Scene(design.getGridPane(), 715, 715, Color.BLACK);
             scene.setOnKeyReleased(event -> board.readKeyboard(event));
-    
-            primaryStage.setTitle("JavaSnake");
-            primaryStage.setScene(scene);
-            primaryStage.setResizable(false);
-            primaryStage.show();
         } else {
+            UserKeyDefiner userKeyDefiner = new UserKeyDefiner();
+            userKeyDefiner.approver();
+            char[] newKeys = userKeyDefiner.getNewKeys();    
             TwoPlayerDesign design = new TwoPlayerDesign();
-            TwoPlayerBoard board = new TwoPlayerBoard(design);
-
-            Scene scene = new Scene(design.getGridPane(), 1430, 715, Color.BLACK);
+            TwoPlayerBoard board = new TwoPlayerBoard(design, newKeys);
+            scene = new Scene(design.getGridPane(), 1430, 715, Color.BLACK);
             scene.setOnKeyReleased(event -> board.readKeyboard(event));
-    
-            primaryStage.setTitle("JavaSnake");
-            primaryStage.setScene(scene);
-            primaryStage.setResizable(false);
-            primaryStage.show();
         }
-
+        primaryStage.setTitle("JavaSnake");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 }
