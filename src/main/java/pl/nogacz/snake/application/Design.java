@@ -29,14 +29,16 @@ public class Design {
     }
 
     private void generateEmptyBoard() {
-        gridPane.setMinSize(715, 715);
-        gridPane.setMaxSize(715, 715);
+        gridPane.setMinSize(715, 750);
+        gridPane.setMaxSize(715, 750);
 
-        for(int i = 0; i < 22; i++) {
-            ColumnConstraints column = new ColumnConstraints(32);
-            column.setHgrow(Priority.ALWAYS);
-            column.setHalignment(HPos.CENTER);
-            gridPane.getColumnConstraints().add(column);
+        for(int i = 0; i < 23; i++) {
+            if(i<22){
+                ColumnConstraints column = new ColumnConstraints(32);
+                column.setHgrow(Priority.ALWAYS);
+                column.setHalignment(HPos.CENTER);
+                gridPane.getColumnConstraints().add(column);
+            }
 
             RowConstraints row = new RowConstraints(32);
             row.setVgrow(Priority.ALWAYS);
