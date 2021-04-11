@@ -3,16 +3,17 @@ package pl.nogacz.snake.board;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyEvent;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.application.EndGame;
 import pl.nogacz.snake.pawn.Pawn;
 import pl.nogacz.snake.pawn.PawnClass;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 /**
  * @author Dawid Nogacz on 19.05.2019
@@ -34,14 +35,29 @@ public class Board {
     private PawnClass foodClass = new PawnClass(Pawn.FOOD);
 
     private ArrayList<Coordinates> snakeTail = new ArrayList<>();
+    private ArrayList<String>highscores=new ArrayList<>();
 
     public Board(Design design) {
         this.design = design;
 
+        readHighScores();
         addStartEntity();
         mapTask();
     }
-
+    public void readHighScores(){
+        try {
+            File myObj = new File("HighScores");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                highscores.add(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
     private void addStartEntity() {
         board.put(snakeHeadCoordinates, snakeHeadClass);
 
@@ -101,7 +117,7 @@ public class Board {
 
                     new EndGame("End game...\n" +
                             "You have " + tailLength + " points. \n" +
-                            "Maybe try again? :)");
+                            "Maybe try again? :)",highscores);
                 }
             } else {
                 board.remove(snakeHeadCoordinates);
@@ -179,6 +195,9 @@ public class Board {
             case S: changeDirection(2); break;
             case A: changeDirection(3); break;
             case D: changeDirection(4); break;
+            case H:
+                openScores();
+                break;
 
             case UP: changeDirection(1); break;
             case DOWN: changeDirection(2); break;
@@ -186,6 +205,28 @@ public class Board {
             case RIGHT: changeDirection(4); break;
         }
     }
+    public void openScores(){
+        Alert hs = new Alert(Alert.AlertType.NONE);
+        hs.setTitle("HighScores");
+        String txt="";
+        for (int i = 0; i < highscores.size(); i++) {
+            txt+=highscores.get(i)+'\n';
+
+        }
+        hs.setContentText(txt);
+
+        ButtonType exitButton = new ButtonType("Exit");
+
+        hs.getButtonTypes().setAll( exitButton);
+
+        Optional<ButtonType> result = hs.showAndWait();
+
+        if (result.get() == exitButton){
+            hs.close();
+        }
+    }
+
+
 
     private void changeDirection(int newDirection) {
         if(newDirection == 1 && direction != 2) {
