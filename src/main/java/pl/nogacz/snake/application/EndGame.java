@@ -3,8 +3,10 @@ package pl.nogacz.snake.application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import pl.nogacz.snake.Snake;
+import pl.nogacz.snake.board.Board;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -14,26 +16,30 @@ import java.util.Optional;
 public class EndGame {
     private String message;
 
-    public EndGame(String message) {
+    public EndGame(String message) throws FileNotFoundException {
         this.message = message;
 
         printDialog();
     }
 
-    public void printDialog() {
+    public void printDialog() throws FileNotFoundException {
         Alert alert = new Alert(Alert.AlertType.NONE);
         alert.setTitle("JavaChess");
         alert.setContentText(message);
 
+        ButtonType achievementsButton = new ButtonType("Achievements");
         ButtonType newGameButton = new ButtonType("New game");
         ButtonType exitButton = new ButtonType("Exit");
 
-        alert.getButtonTypes().setAll(newGameButton, exitButton);
+
+        alert.getButtonTypes().setAll(achievementsButton,newGameButton, exitButton );
 
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == newGameButton){
             newGame();
+        }else if(result.get() == achievementsButton ){
+            Board.printAchievements();
         } else {
             System.exit(0);
         }
