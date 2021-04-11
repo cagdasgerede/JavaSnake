@@ -1,10 +1,10 @@
 package pl.nogacz.snake.application;
 
-
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import pl.nogacz.snake.board.Board;
 import pl.nogacz.snake.board.Coordinates;
@@ -57,7 +57,6 @@ public class Design {
 
     public void removePawn(Coordinates coordinates) {
         gridPane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == coordinates.getX() && GridPane.getRowIndex(node) == coordinates.getY());
-        
     }
 
     public GridPane getGridPane() {

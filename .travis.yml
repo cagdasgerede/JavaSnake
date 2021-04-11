@@ -2,7 +2,7 @@ language: java
 dist: trusty
 
 jdk:
-  - oraclejdk14
+  - oraclejdk8
 
 script:
   - ./gradlew build
