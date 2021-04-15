@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import pl.nogacz.snake.application.Design;
 import pl.nogacz.snake.board.Board;
 
+import java.io.FileNotFoundException;
+
 /**
  * @author Dawid Nogacz on 19.05.2019
  */
@@ -21,7 +23,13 @@ public class Snake extends Application {
     @Override
     public void start(Stage primaryStage) {
         Scene scene = new Scene(design.getGridPane(), 715, 715, Color.BLACK);
-        scene.setOnKeyReleased(event -> board.readKeyboard(event));
+        scene.setOnKeyReleased(event -> {
+            try {
+                board.readKeyboard(event);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
         primaryStage.setTitle("JavaSnake");
         primaryStage.setScene(scene);
